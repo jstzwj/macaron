@@ -6,7 +6,7 @@
 
 1. `chmod +x marktext-%version%-x86_64.AppImage`
 2. `./marktext-%version%-x86_64.AppImage`
-3. Now you can execute MarkText.
+3. Now you can execute Macaron.
 
 ### Installation
 
@@ -48,7 +48,7 @@ You can integrate the AppImage into the system via [AppImageLauncher](https://gi
 
 ### Known issues
 
-- MarkText is always integrated into desktop environment after updating
+- Macaron is always integrated into desktop environment after updating
 
 ## Binary
 
@@ -64,7 +64,7 @@ You need to install the `flatpak` package for your distribution. Please see the 
 
 **Install from Flathub:**
 
-After you install flatpak and flathub repository, you can install [MarkText](https://flathub.org/apps/details/com.github.marktext.marktext) with just one command (note that you may be asked to enter your password):
+After you install flatpak and flathub repository, you can install [Macaron](https://flathub.org/apps/details/com.github.marktext.marktext) with just one command (note that you may be asked to enter your password):
 
 ```
 flatpak install flathub com.github.marktext.marktext
@@ -72,11 +72,11 @@ flatpak install flathub com.github.marktext.marktext
 
 or `flatpak install --user flathub com.github.marktext.marktext` to install for the current user only.
 
-To run MarkText just execute `flatpak run com.github.marktext.marktext` or click on the MarkText icon in your application launcher.
+To run Macaron just execute `flatpak run com.github.marktext.marktext` or click on the Macaron icon in your application launcher.
 
 ### Update
 
-To update MarkText run the following command:
+To update Macaron run the following command:
 
 ```
 flatpak update com.github.marktext.marktext

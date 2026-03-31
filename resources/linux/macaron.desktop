@@ -1,17 +1,17 @@
 [Desktop Entry]
-Name=MarkText
+Name=Macaron
 Comment=Next generation markdown editor
-Exec=marktext %F
+Exec=macaron %F
 Terminal=false
 Type=Application
-Icon=marktext
+Icon=macaron
 Categories=Office;TextEditor;Utility;
 MimeType=text/markdown;
-Keywords=marktext;
-StartupWMClass=marktext
+Keywords=macaron;
+StartupWMClass=macaron
 Actions=NewWindow;
 
 [Desktop Action NewWindow]
 Name=New Window
-Exec=marktext --new-window %F
-Icon=marktext
+Exec=macaron --new-window %F
+Icon=macaron

@@ -2,7 +2,7 @@ import EventEmitter from 'events'
 import { isLinux } from '../config'
 
 /**
- * A MarkText window.
+ * A Macaron window.
  * @typedef {BaseWindow} IApplicationWindow
  * @property {number | null} id Identifier (= browserWindow.id) or null during initialization.
  * @property {Electron.BrowserWindow} browserWindow The browse window.

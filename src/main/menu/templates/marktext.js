@@ -6,9 +6,9 @@ import * as actions from '../actions/marktext'
 
 export default function (keybindings) {
   return {
-    label: 'MarkText',
+    label: 'Macaron',
     submenu: [{
-      label: 'About MarkText',
+      label: 'About Macaron',
       click (menuItem, focusedWindow) {
         showAboutDialog(focusedWindow)
       }
@@ -32,7 +32,7 @@ export default function (keybindings) {
     }, {
       type: 'separator'
     }, {
-      label: 'Hide MarkText',
+      label: 'Hide Macaron',
       accelerator: keybindings.getAccelerator('mt.hide'),
       click () {
         actions.osxHide()
@@ -51,7 +51,7 @@ export default function (keybindings) {
     }, {
       type: 'separator'
     }, {
-      label: 'Quit MarkText',
+      label: 'Quit Macaron',
       accelerator: keybindings.getAccelerator('file.quit'),
       click: app.quit
     }]

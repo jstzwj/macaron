@@ -1,9 +1,9 @@
-<p align="center"><img src="../../static/logo-small.png" alt="MarkText" width="100" height="100"></p>
+<p align="center"><img src="../../static/logo-small.png" alt="Macaron" width="100" height="100"></p>
 
-<h1 dir="rtl" align="center">MarkText</h1>
+<h1 dir="rtl" align="center">Macaron</h1>
 
 <div dir="rtl" align="center">
-  <a href="https://twitter.com/intent/tweet?via=marktextme&url=https://github.com/marktext/marktext/&text=What%20do%20you%20want%20to%20say%20to%20app?&hashtags=happyMarkText">
+  <a href="https://twitter.com/intent/tweet?via=marktextme&url=https://github.com/marktext/marktext/&text=What%20do%20you%20want%20to%20say%20to%20app?&hashtags=happyMacaron">
     <img src="https://img.shields.io/twitter/url/https/github.com/marktext/marktext.svg?style=for-the-badge" alt="twitter">
   </a>
 </div>
@@ -79,10 +79,10 @@
 
 <br>
 
-<h2 dir="rtl" align="center">دعم MarkText</h2>
+<h2 dir="rtl" align="center">دعم Macaron</h2>
 
 <div dir="rtl">
-MarkText هو مشروع مفتوح المصدر مرخص بترخيص MIT، وسيكون أحدث إصدار دائمًا متاحًا للتنزيل مجانًا من صفحة الإصدارات على GitHub. MarkText لا يزال قيد التطوير، وتطوره لا ينفصل عن جميع الرعاة. أتمنى أن تنضم إليهم:
+Macaron هو مشروع مفتوح المصدر مرخص بترخيص MIT، وسيكون أحدث إصدار دائمًا متاحًا للتنزيل مجانًا من صفحة الإصدارات على GitHub. Macaron لا يزال قيد التطوير، وتطوره لا ينفصل عن جميع الرعاة. أتمنى أن تنضم إليهم:
 </div>
 
 <div dir="rtl">
@@ -94,11 +94,11 @@ MarkText هو مشروع مفتوح المصدر مرخص بترخيص MIT، و�
 
 ## ما الفرق بين Patreon وOpen Collective؟
 <div dir="rtl">
-Patreon: سيتم رعاية الأموال مباشرة إلى Luo Ran (@jocs) الذي أنشأ MarkText ويستمر في صيانته.  
-Open Collective: جميع النفقات شفافة. سيتم استخدام الأموال لتطوير وصيانة MarkText، وتمويل الأنشطة عبر الإنترنت وخارجها، والحصول على الموارد الضرورية الأخرى.  
-ستظهر أسماء وشعارات الشركات لجميع الرعاة (من كل من Patreon وOpen Collective) على الموقع الرسمي لـ MarkText وفي ملف README.md الخاص به.
+Patreon: سيتم رعاية الأموال مباشرة إلى Luo Ran (@jocs) الذي أنشأ Macaron ويستمر في صيانته.  
+Open Collective: جميع النفقات شفافة. سيتم استخدام الأموال لتطوير وصيانة Macaron، وتمويل الأنشطة عبر الإنترنت وخارجها، والحصول على الموارد الضرورية الأخرى.  
+ستظهر أسماء وشعارات الشركات لجميع الرعاة (من كل من Patreon وOpen Collective) على الموقع الرسمي لـ Macaron وفي ملف README.md الخاص به.
 
-**هل تبحث عن تحرير مشابه لـ MarkText مع تخزين سحابي؟ جرّب Inkio**
+**هل تبحث عن تحرير مشابه لـ Macaron مع تخزين سحابي؟ جرّب Inkio**
 </div>
 <a href="https://inkio.me/" target="_blank">
   <img src="https://inkio.me/static/media/logo.35f605dc31b1a0615087.png" width="100">
@@ -136,7 +136,7 @@ Open Collective: جميع النفقات شفافة. سيتم استخدام ا�
 
 ## لقطة شاشة
 
-<img src="../../docs/marktext.png?raw=true" alt="لقطة شاشة MarkText">
+<img src="../../docs/marktext.png?raw=true" alt="لقطة شاشة Macaron">
 
 ## الميزات
 
@@ -203,9 +203,9 @@ Open Collective: جميع النفقات شفافة. سيتم استخدام ا�
 ## لماذا إنشاء محرر آخر؟
 
 <ol dir="rtl">
-<li>أنا أحب الكتابة. لقد استخدمت الكثير من محرري ماركداون، ولكن لا يزال هناك محرر لا يستطيع تلبية جميع احتياجاتي بالكامل. لا أحب أن يتم إزعاجي أثناء الكتابة بسبب بعض الأخطاء غير المحتملة. يستخدم <strong>MarkText</strong> DOM الظاهري (virtual DOM) لعرض الصفحات مما له فوائد إضافية تتمثل في الكفاءة العالية وكونه مفتوح المصدر. بهذه الطريقة يمكن لأي شخص يحب ماركداون والكتابة استخدام MarkText.</li>
-<li>كما ذكرنا سابقًا، <strong>MarkText</strong> مجاني تمامًا ومفتوح المصدر وسيبقى مفتوح المصدر إلى الأبد. نأمل أن يساهم جميع محبي ماركداون بأكوادهم الخاصة ويساعدون في تطوير <strong>MarkText</strong> ليصبح محرر ماركداون شائعًا.</li>
-<li>هناك العديد من محررات ماركداون ولكل منها مزاياها، بعضها يحتوي على ميزات لا يمتلكها الآخرون. من الصعب إرضاء احتياجات كل مستخدمي ماركداون ولكننا نأمل أن يتمكن <strong>MarkText</strong> من إرضاء كل مستخدم ماركداون قدر الإمكان. على الرغم من أن أحدث إصدار من <strong>MarkText</strong> لا يزال غير مثالي، إلا أننا سنحاول جعله بأفضل ما نستطيع.</li>
+<li>أنا أحب الكتابة. لقد استخدمت الكثير من محرري ماركداون، ولكن لا يزال هناك محرر لا يستطيع تلبية جميع احتياجاتي بالكامل. لا أحب أن يتم إزعاجي أثناء الكتابة بسبب بعض الأخطاء غير المحتملة. يستخدم <strong>Macaron</strong> DOM الظاهري (virtual DOM) لعرض الصفحات مما له فوائد إضافية تتمثل في الكفاءة العالية وكونه مفتوح المصدر. بهذه الطريقة يمكن لأي شخص يحب ماركداون والكتابة استخدام Macaron.</li>
+<li>كما ذكرنا سابقًا، <strong>Macaron</strong> مجاني تمامًا ومفتوح المصدر وسيبقى مفتوح المصدر إلى الأبد. نأمل أن يساهم جميع محبي ماركداون بأكوادهم الخاصة ويساعدون في تطوير <strong>Macaron</strong> ليصبح محرر ماركداون شائعًا.</li>
+<li>هناك العديد من محررات ماركداون ولكل منها مزاياها، بعضها يحتوي على ميزات لا يمتلكها الآخرون. من الصعب إرضاء احتياجات كل مستخدمي ماركداون ولكننا نأمل أن يتمكن <strong>Macaron</strong> من إرضاء كل مستخدم ماركداون قدر الإمكان. على الرغم من أن أحدث إصدار من <strong>Macaron</strong> لا يزال غير مثالي، إلا أننا سنحاول جعله بأفضل ما نستطيع.</li>
 </ol>
 
 ## التنزيل والتثبيت
@@ -229,13 +229,13 @@ Open Collective: جميع النفقات شفافة. سيتم استخدام ا�
 
 ### macOS
 
-يمكنك إما تنزيل أحدث إصدار `marktext-%version%.dmg` من <a href="https://github.com/marktext/marktext/releases/latest">صفحة الإصدارات</a> أو تثبيت MarkText باستخدام <a href="https://github.com/caskroom/homebrew-cask"><strong>homebrew cask</strong></a>. لاستخدام Homebrew-Cask، تحتاج فقط إلى تثبيت <a href="https://brew.sh/">Homebrew</a>.
+يمكنك إما تنزيل أحدث إصدار `marktext-%version%.dmg` من <a href="https://github.com/marktext/marktext/releases/latest">صفحة الإصدارات</a> أو تثبيت Macaron باستخدام <a href="https://github.com/caskroom/homebrew-cask"><strong>homebrew cask</strong></a>. لاستخدام Homebrew-Cask، تحتاج فقط إلى تثبيت <a href="https://brew.sh/">Homebrew</a>.
 
 <pre><code>brew install --cask mark-text</code></pre>
 
 ### Windows
 
-ما عليك سوى تنزيل وتثبيت MarkText عبر معالج الإعداد (`marktext-setup-%version%.exe`) واختيار ما إذا كنت تريد التثبيت لكل مستخدم أو على مستوى الجهاز. بدلاً من ذلك، قم بتثبيت MarkText باستخدام مدير الحزم مثل <a href="https://chocolatey.org/">Chocolatey</a> أو <a href="https://docs.microsoft.com/en-us/windows/package-manager/winget/">Winget</a>.
+ما عليك سوى تنزيل وتثبيت Macaron عبر معالج الإعداد (`marktext-setup-%version%.exe`) واختيار ما إذا كنت تريد التثبيت لكل مستخدم أو على مستوى الجهاز. بدلاً من ذلك، قم بتثبيت Macaron باستخدام مدير الحزم مثل <a href="https://chocolatey.org/">Chocolatey</a> أو <a href="https://docs.microsoft.com/en-us/windows/package-manager/winget/">Winget</a>.
 
 لاستخدام Chocolatey، تحتاج إلى تثبيت <a href="https://chocolatey.org/install">Chocolatey</a>:
 
@@ -255,30 +255,30 @@ Open Collective: جميع النفقات شفافة. سيتم استخدام ا�
 
 ## التطوير
 
-إذا كنت ترغب في بناء MarkText بنفسك، يرجى الاطلاع على <a href="../../docs/dev/BUILD.md">تعليمات البناء</a>.
+إذا كنت ترغب في بناء Macaron بنفسك، يرجى الاطلاع على <a href="../../docs/dev/BUILD.md">تعليمات البناء</a>.
 
 <ul dir="rtl">
 <li><a href="../../docs/README.md">توثيق المستخدم</a></li>
 <li><a href="../../docs/dev/README.md">توثيق المطور</a></li>
 </ul>
 
-إذا كانت لديك أي أسئلة بخصوص MarkText، فمرحبًا بك في كتابة مشكلة. عند القيام بذلك، يرجى استخدام التنسيق الافتراضي الموجود عند فتح مشكلة. بالطبع، إذا قدمت طلب دمج (PR) مباشرة، فسيتم تقديره كثيرًا.
+إذا كانت لديك أي أسئلة بخصوص Macaron، فمرحبًا بك في كتابة مشكلة. عند القيام بذلك، يرجى استخدام التنسيق الافتراضي الموجود عند فتح مشكلة. بالطبع، إذا قدمت طلب دمج (PR) مباشرة، فسيتم تقديره كثيرًا.
 
 ## التكاملات
 
 <ul dir="rtl">
-<li><a href="http://www.packal.org/workflow/mark-text">Alfred Workflow</a>: سير عمل لتطبيق Alfred على نظام macOS: استخدم "mt" لفتح الملفات/المجلدات باستخدام MarkText.</li>
+<li><a href="http://www.packal.org/workflow/mark-text">Alfred Workflow</a>: سير عمل لتطبيق Alfred على نظام macOS: استخدم "mt" لفتح الملفات/المجلدات باستخدام Macaron.</li>
 </ul>
 
 ## المساهمة
 
-MarkText قيد التطوير، يرجى التأكد من قراءة <a href="../../CONTRIBUTING.md">دليل المساهمة</a> قبل إنشاء طلب دمج. هل تريد إضافة بعض الميزات إلى MarkText؟ راجع <a href="https://github.com/marktext/marktext/projects?type=classic">خارطة الطريق</a> والمشكلات المفتوحة.
+Macaron قيد التطوير، يرجى التأكد من قراءة <a href="../../CONTRIBUTING.md">دليل المساهمة</a> قبل إنشاء طلب دمج. هل تريد إضافة بعض الميزات إلى Macaron؟ راجع <a href="https://github.com/marktext/marktext/projects?type=classic">خارطة الطريق</a> والمشكلات المفتوحة.
 
 ## المساهمون
 
-شكراً لجميع الأشخاص الذين ساهموا بالفعل في MarkText <a href="https://github.com/marktext/marktext/graphs/contributors">[المساهمين]</a>.
+شكراً لجميع الأشخاص الذين ساهموا بالفعل في Macaron <a href="https://github.com/marktext/marktext/graphs/contributors">[المساهمين]</a>.
 
-شكر خاص لـ <a href="https://github.com/Yasujizr">@Yasujizr</a> الذي صمم شعار MarkText.
+شكر خاص لـ <a href="https://github.com/Yasujizr">@Yasujizr</a> الذي صمم شعار Macaron.
 
 <a href="https://github.com/marktext/marktext/graphs/contributors">
   <img src="https://opencollective.com/marktext/contributors.svg?width=890" alt="المساهمون">

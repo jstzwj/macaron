@@ -166,8 +166,8 @@ function greeting () {
   const cols = process.stdout.columns
   let text = ''
 
-  if (cols > 155) text = 'building marktext'
-  else if (cols > 76) text = 'building|marktext'
+  if (cols > 155) text = 'building macaron'
+  else if (cols > 76) text = 'building|macaron'
   else text = false
 
   if (text) {
@@ -177,7 +177,7 @@ function greeting () {
       space: false
     })
   } else {
-    console.log(chalk.yellow.bold('\n  building marktext'))
+    console.log(chalk.yellow.bold('\n  building macaron'))
   }
   console.log(chalk.blue('  getting ready...') + '\n')
 }

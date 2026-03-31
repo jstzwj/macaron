@@ -1,4 +1,4 @@
-# Steps to release MarkText
+# Steps to release Macaron
 
 - Create a release candidate
   - Create branch `release-v%version%`
