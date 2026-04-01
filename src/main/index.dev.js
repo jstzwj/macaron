@@ -9,12 +9,16 @@ require('dotenv').config()
 
 // Install `vue-devtools`
 require('electron').app.on('ready', () => {
-  const { default: installExtension, VUEJS_DEVTOOLS } = require('electron-devtools-installer')
-  installExtension(VUEJS_DEVTOOLS)
-    .then(() => {})
-    .catch(err => {
-      console.log('Unable to install `vue-devtools`: \n', err)
-    })
+  try {
+    const { session } = require('electron')
+    const path = require('path')
+    const vueDevtoolsPath = path.join(__dirname, '../../node_modules/vue-devtools/vender')
+    session.defaultSession.loadExtension(vueDevtoolsPath)
+      .then(() => console.log('Vue Devtools loaded'))
+      .catch(err => console.log('Unable to install `vue-devtools`: \n', err))
+  } catch (err) {
+    console.log('Unable to install `vue-devtools`: \n', err)
+  }
 })
 
 /* eslint-enable */

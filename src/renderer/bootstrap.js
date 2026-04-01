@@ -1,17 +1,12 @@
-import path from 'path'
 import { ipcRenderer } from 'electron'
-import log from 'electron-log'
+import log from 'electron-log/renderer'
 import RendererPaths from './node/paths'
 
 let exceptionLogger = s => console.error(s)
 
 const configureLogger = () => {
-  const { debug, paths, windowId } = global.marktext.env
-  log.transports.console.level = process.env.NODE_ENV === 'development' ? 'info' : false // mirror to window console
-  log.transports.mainConsole = null
-  log.transports.file.resolvePath = () => path.join(paths.logPath, `editor-${windowId}.log`)
-  log.transports.file.level = debug ? 'debug' : 'info'
-  log.transports.file.sync = false
+  // In electron-log v5, the renderer forwards all logs to the main process via IPC.
+  // Transport configuration is handled in the main process only.
   exceptionLogger = log.error
 }
 

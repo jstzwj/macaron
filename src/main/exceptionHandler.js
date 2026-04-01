@@ -8,7 +8,7 @@
 
 import { app, clipboard, crashReporter, dialog, ipcMain } from 'electron'
 import os from 'os'
-import log from 'electron-log'
+import log from 'electron-log/main'
 import { createAndOpenGitHubIssueUrl } from './utils/createGitHubIssue'
 
 const EXIT_ON_ERROR = !!process.env.MARKTEXT_EXIT_ON_ERROR

@@ -23,14 +23,13 @@ files:
 - "!node_modules/**/*.cjs.map"
 - "!node_modules/**/*.mjs.map"
 - "!node_modules/**/*.ts.map"
-- "!node_modules/vscode-ripgrep/{jsconfig.json,*.md,LICENSE}"
-- "!node_modules/vscode-ripgrep/download.js"
-- "!node_modules/vscode-ripgrep/postinstall.js"
+- "!node_modules/@vscode/ripgrep/{jsconfig.json,*.md,LICENSE}"
+- "!node_modules/@vscode/ripgrep/download.js"
+- "!node_modules/@vscode/ripgrep/postinstall.js"
 # Don't bundle build files
 - "!node_modules/ced/bin"
 - "!node_modules/fontmanager-redux/bin"
 - "!node_modules/keyboard-layout/bin"
-- "!node_modules/keytar/bin"
 - "!node_modules/native-keymap/bin"
 # Large source files that aren't needed
 - "!node_modules/dagre-d3/dist/dagre-d3.min.js"
@@ -110,8 +109,9 @@ linux:
   - "text/markdown"
   icon: "resources/icons"
   desktop:
-    StartupWMClass: "macaron"
-    Keywords: "macaron;"
+    entry:
+      StartupWMClass: "macaron"
+      Keywords: "macaron;"
   target:
   - target: "AppImage"
   - target: "deb"
@@ -140,7 +140,7 @@ linux:
 deb:
   # Custom dependencies:
   depends:
-  # keytar
+  # safeStorage (electron)
   - "libsecret-1-0"
   # keyboard-layout
   - "libx11-xcb1"
@@ -153,7 +153,7 @@ deb:
 rpm:
   # Custom dependencies:
   depends:
-  # keytar
+  # safeStorage (electron)
   - "libsecret"
   # keyboard-layout
   - "libX11-xcb"

@@ -1,8 +1,8 @@
 'use strict'
 
 const nodeMajor = Number(process.versions.node.match(/^(\d+)\./)[1])
-if (nodeMajor !== 24) {
-  console.error('[ERROR] Node.js v24 LTS is required.\n')
+if (nodeMajor < 24) {
+  console.error('[ERROR] Node.js v24+ is required.\n')
   process.exit(1)
 }
 

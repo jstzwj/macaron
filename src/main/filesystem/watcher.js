@@ -1,6 +1,6 @@
 import path from 'path'
 import fsPromises from 'fs/promises'
-import log from 'electron-log'
+import log from 'electron-log/main'
 import chokidar from 'chokidar'
 import { exists } from 'common/filesystem'
 import { hasMarkdownExtension } from 'common/filesystem/paths'

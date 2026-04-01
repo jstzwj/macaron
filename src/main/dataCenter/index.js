@@ -1,19 +1,12 @@
 import fs from 'fs'
 import path from 'path'
 import EventEmitter from 'events'
-import { BrowserWindow, ipcMain, dialog } from 'electron'
+import { BrowserWindow, ipcMain, dialog, safeStorage } from 'electron'
 import schema from './schema'
 import Store from 'electron-store'
-import log from 'electron-log'
+import log from 'electron-log/main'
 import { ensureDirSync } from 'common/filesystem'
 import { IMAGE_EXTENSIONS } from 'common/filesystem/paths'
-
-let keytar = null
-try {
-  keytar = require('keytar')
-} catch (err) {
-  log.warn('Keytar is unavailable, falling back to plain storage:', err)
-}
 
 const DATA_CENTER_NAME = 'dataCenter'
 
@@ -24,7 +17,6 @@ class DataCenter extends EventEmitter {
     const { dataCenterPath, userDataPath } = paths
     this.dataCenterPath = dataCenterPath
     this.userDataPath = userDataPath
-    this.serviceName = 'marktext'
     this.encryptKeys = ['githubToken']
     this.hasDataCenterFile = fs.existsSync(path.join(this.dataCenterPath, `./${DATA_CENTER_NAME}.json`))
     this.store = new Store({
@@ -59,20 +51,21 @@ class DataCenter extends EventEmitter {
   }
 
   async getAll () {
-    const { serviceName, encryptKeys } = this
-    const data = this.store.store
+    const { encryptKeys } = this
+    const data = { ...this.store.store }
     try {
-      const encryptData = await Promise.all(encryptKeys.map(key => {
-        return keytar ? keytar.getPassword(serviceName, key) : Promise.resolve(data[key] || '')
-      }))
-      const encryptObj = encryptKeys.reduce((acc, k, i) => {
-        return {
-          ...acc,
-          [k]: encryptData[i]
+      for (const key of encryptKeys) {
+        const encryptedKey = `_encrypted_${key}`
+        if (data[encryptedKey]) {
+          if (safeStorage.isEncryptionAvailable()) {
+            data[key] = safeStorage.decryptString(Buffer.from(data[encryptedKey], 'base64'))
+          } else {
+            data[key] = ''
+          }
+          delete data[encryptedKey]
         }
-      }, {})
-
-      return Object.assign(data, encryptObj)
+      }
+      return data
     } catch (err) {
       log.error('Failed to decrypt secure keys:', err)
       return data
@@ -114,9 +107,14 @@ class DataCenter extends EventEmitter {
    * return a promise
    */
   getItem (key) {
-    const { encryptKeys, serviceName } = this
+    const { encryptKeys } = this
     if (encryptKeys.includes(key)) {
-      return keytar ? keytar.getPassword(serviceName, key) : Promise.resolve(this.store.get(key))
+      const encrypted = this.store.get(`_encrypted_${key}`)
+      if (!encrypted) return Promise.resolve(this.store.get(key) || '')
+      if (!safeStorage.isEncryptionAvailable()) {
+        return Promise.resolve('')
+      }
+      return Promise.resolve(safeStorage.decryptString(Buffer.from(encrypted, 'base64')))
     } else {
       const value = this.store.get(key)
       return Promise.resolve(value)
@@ -124,19 +122,18 @@ class DataCenter extends EventEmitter {
   }
 
   async setItem (key, value) {
-    const { encryptKeys, serviceName } = this
+    const { encryptKeys } = this
     if (key === 'screenshotFolderPath') {
       ensureDirSync(value)
     }
     ipcMain.emit('broadcast-user-data-changed', { [key]: value })
     if (encryptKeys.includes(key)) {
-      try {
-        if (keytar) {
-          return await keytar.setPassword(serviceName, key, value)
-        }
-        return this.store.set(key, value)
-      } catch (err) {
-        log.error('Keytar error:', err)
+      if (safeStorage.isEncryptionAvailable()) {
+        const encrypted = safeStorage.encryptString(value)
+        this.store.set(`_encrypted_${key}`, encrypted.toString('base64'))
+        this.store.delete(key)
+      } else {
+        this.store.set(key, value)
       }
     } else {
       return this.store.set(key, value)

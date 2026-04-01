@@ -2,8 +2,9 @@ import path from 'path'
 import fsPromises from 'fs/promises'
 import { exec } from 'child_process'
 import dayjs from 'dayjs'
-import log from 'electron-log'
-import { app, BrowserWindow, clipboard, dialog, ipcMain, nativeTheme, shell } from 'electron'
+import log from 'electron-log/main'
+import { app, BrowserWindow, clipboard, dialog, ipcMain, Menu, nativeTheme, shell } from 'electron'
+import plist from 'plist'
 import { isChildOfDirectory } from 'common/filesystem/paths'
 import { isLinux, isOsx, isWindows } from '../config'
 import parseArgs from '../cli/parser'
@@ -563,6 +564,179 @@ class App {
     ipcMain.on('mt::open-keybindings-config', () => {
       const { keybindings } = this._accessor
       keybindings.openConfigInFileManager()
+    })
+
+    ipcMain.handle('mt::window-state-get', event => {
+      const win = BrowserWindow.fromWebContents(event.sender)
+      return {
+        isFullScreen: !!win?.isFullScreen(),
+        isMaximized: !!win?.isMaximized()
+      }
+    })
+
+    ipcMain.handle('mt::window-action', (event, action) => {
+      const win = BrowserWindow.fromWebContents(event.sender)
+      if (!win) {
+        return null
+      }
+
+      switch (action) {
+        case 'close':
+          win.close()
+          break
+        case 'minimize':
+          win.minimize()
+          break
+        case 'toggle-maximize':
+          if (win.isFullScreen()) {
+            win.setFullScreen(false)
+          } else if (win.isMaximized()) {
+            win.unmaximize()
+          } else {
+            win.maximize()
+          }
+          break
+        case 'toggle-full-screen':
+          win.setFullScreen(!win.isFullScreen())
+          break
+      }
+      return null
+    })
+
+    ipcMain.on('mt::popup-app-menu', event => {
+      const win = BrowserWindow.fromWebContents(event.sender)
+      const menu = Menu.getApplicationMenu()
+      if (win && menu) {
+        menu.popup({ window: win, x: 23, y: 20 })
+      }
+    })
+
+    ipcMain.handle('mt::clipboard-get-file-path', () => {
+      if (isLinux) {
+        return ''
+      }
+
+      if (isOsx) {
+        if (!clipboard.has('NSFilenamesPboardType')) {
+          return ''
+        }
+        const result = plist.parse(clipboard.read('NSFilenamesPboardType'))
+        return Array.isArray(result) && result.length ? result[0] : ''
+      }
+
+      if (isWindows) {
+        const rawFilePath = clipboard.read('FileNameW')
+        const filePath = rawFilePath.replace(new RegExp(String.fromCharCode(0), 'g'), '')
+        return filePath && typeof filePath === 'string' ? filePath : ''
+      }
+
+      return ''
+    })
+
+    ipcMain.on('mt::popup-tabs-context-menu', (event, { x, y, tab }) => {
+      const win = BrowserWindow.fromWebContents(event.sender)
+      if (!win || !tab) {
+        return
+      }
+
+      const { id: tabId, pathname } = tab
+      const menu = Menu.buildFromTemplate([
+        {
+          label: 'Close',
+          id: 'closeThisTab',
+          click: () => event.sender.send('mt::context-menu-tabs-action', { type: 'close-this', tabId })
+        },
+        {
+          label: 'Close others',
+          id: 'closeOtherTabs',
+          click: () => event.sender.send('mt::context-menu-tabs-action', { type: 'close-others', tabId })
+        },
+        {
+          label: 'Close saved tabs',
+          id: 'closeSavedTabs',
+          click: () => event.sender.send('mt::context-menu-tabs-action', { type: 'close-saved', tabId })
+        },
+        {
+          label: 'Close all tabs',
+          id: 'closeAllTabs',
+          click: () => event.sender.send('mt::context-menu-tabs-action', { type: 'close-all', tabId })
+        },
+        { type: 'separator' },
+        {
+          label: 'Rename',
+          id: 'renameFile',
+          enabled: !!pathname,
+          click: () => event.sender.send('mt::context-menu-tabs-action', { type: 'rename', tabId })
+        },
+        {
+          label: 'Copy path',
+          id: 'copyPath',
+          enabled: !!pathname,
+          click: () => event.sender.send('mt::context-menu-tabs-action', { type: 'copy-path', tabId })
+        },
+        {
+          label: 'Show in folder',
+          id: 'showInFolder',
+          enabled: !!pathname,
+          click: () => event.sender.send('mt::context-menu-tabs-action', { type: 'show-in-folder', tabId })
+        }
+      ])
+      menu.popup({ window: win, x, y })
+    })
+
+    ipcMain.on('mt::popup-sidebar-context-menu', (event, { x, y, hasPathCache }) => {
+      const win = BrowserWindow.fromWebContents(event.sender)
+      if (!win) {
+        return
+      }
+
+      const menu = Menu.buildFromTemplate([
+        {
+          label: 'New File',
+          id: 'newFileMenuItem',
+          click: () => event.sender.send('mt::context-menu-sidebar-action', { type: 'new-file' })
+        },
+        {
+          label: 'New Directory',
+          id: 'newDirectoryMenuItem',
+          click: () => event.sender.send('mt::context-menu-sidebar-action', { type: 'new-directory' })
+        },
+        { type: 'separator' },
+        {
+          label: 'Copy',
+          id: 'copyMenuItem',
+          click: () => event.sender.send('mt::context-menu-sidebar-action', { type: 'copy' })
+        },
+        {
+          label: 'Cut',
+          id: 'cutMenuItem',
+          click: () => event.sender.send('mt::context-menu-sidebar-action', { type: 'cut' })
+        },
+        {
+          label: 'Paste',
+          id: 'pasteMenuItem',
+          enabled: !!hasPathCache,
+          click: () => event.sender.send('mt::context-menu-sidebar-action', { type: 'paste' })
+        },
+        { type: 'separator' },
+        {
+          label: 'Rename',
+          id: 'renameMenuItem',
+          click: () => event.sender.send('mt::context-menu-sidebar-action', { type: 'rename' })
+        },
+        {
+          label: 'Move To Trash',
+          id: 'deleteMenuItem',
+          click: () => event.sender.send('mt::context-menu-sidebar-action', { type: 'delete' })
+        },
+        { type: 'separator' },
+        {
+          label: 'Show In Folder',
+          id: 'showInFolderMenuItem',
+          click: () => event.sender.send('mt::context-menu-sidebar-action', { type: 'show-in-folder' })
+        }
+      ])
+      menu.popup({ window: win, x, y })
     })
 
     ipcMain.handle('mt::keybinding-get-pref-keybindings', () => {
