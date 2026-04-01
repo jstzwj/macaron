@@ -1,8 +1,7 @@
 ● 可以，当前 package.json 里还能升的包不少。按“建议优先级”分组如下。
 
   一、我建议优先处理的                                                                                                                                             
-                                                                                                                                                                     这些升级价值高，且不像 Vue / CodeMirror 那样会直接变成重构。                                                                                                     
-                                                                                                                                                                     工具链/构建                                                                                                                                                                                                                                                                                                                         
+  这些升级价值高，且不像 Vue / CodeMirror 那样会直接变成重构。                               
   - webpack-merge 5 -> 6
   - copy-webpack-plugin 10 -> 14
   - css-loader 6 -> 7

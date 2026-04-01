@@ -1,7 +1,7 @@
 // This file is copy from marked and modified.
 const { removeCustomClass, padding } = require('../help.js')
 const { MT_MARKED_OPTIONS } = require('../config.js')
-const fetch = require('node-fetch')
+const fetch = require('node-fetch').default
 const fs = require('fs')
 const path = require('path')
 const { pathToFileURL } = require('url')

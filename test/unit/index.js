@@ -1,6 +1,12 @@
+import { expect, assert, should } from 'chai'
 import Vue from 'vue'
+
 Vue.config.devtools = false
 Vue.config.productionTip = false
+
+global.expect = expect
+global.assert = assert
+global.should = should()
 
 // require all test files (files that ends with .spec.js)
 const testsContext = require.context('./specs', true, /\.spec$/)

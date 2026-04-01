@@ -3,7 +3,7 @@
 const { removeCustomClass } = require('../help.js')
 const { writeResult } = require('../commonMark/run.spec.js')
 const { MT_MARKED_OPTIONS } = require('../config.js')
-const fetch = require('node-fetch')
+const fetch = require('node-fetch').default
 const cheerio = require('cheerio')
 const marked = require('../../../src/muya/lib/parser/marked/index.js').default
 const HtmlDiffer = require('@markedjs/html-differ').HtmlDiffer

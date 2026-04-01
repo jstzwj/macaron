@@ -1,7 +1,11 @@
-import htmlTags from 'html-tags'
-import voidHtmlTags from 'html-tags/void'
+import htmlTagsModule from 'html-tags'
 import { generateKeyHash, genUpper2LowerKeyHash } from '../utils/hash'
 import { getLongUniqueId } from '../utils/random'
+
+const htmlTags = Array.isArray(htmlTagsModule) ? htmlTagsModule : htmlTagsModule.default
+const voidHtmlTags = Array.isArray(htmlTagsModule?.voidHtmlTags)
+  ? htmlTagsModule.voidHtmlTags
+  : htmlTagsModule.default?.voidHtmlTags
 
 // [0.25, 0.5, 1, 2, 4, 8] <—?—> [256M, 500M/768M, 1G/1000M, 2G, 4G, 8G]
 // Electron 2.0.2 not support yet! So give a default value 4

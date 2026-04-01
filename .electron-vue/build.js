@@ -4,8 +4,8 @@ process.env.NODE_ENV = 'production'
 
 const { say } = require('cfonts')
 const path = require('path')
-const chalk = require('chalk')
-const del = require('del')
+const chalk = require('chalk').default
+const { deleteSync } = require('del')
 const fs = require('fs-extra')
 const webpack = require('webpack')
 const Listr = require('listr')
@@ -24,7 +24,7 @@ else if (process.env.BUILD_TARGET === 'web') web()
 else build()
 
 function clean () {
-  del.sync(['build/*', '!build/icons', '!build/icons/icon.*'])
+  deleteSync(['build/*', '!build/icons', '!build/icons/icon.*'])
   console.log(`\n${doneLog}\n`)
   process.exit()
 }
@@ -32,8 +32,8 @@ function clean () {
 async function build () {
   greeting()
 
-  del.sync(['dist/electron/*', '!.gitkeep'])
-  del.sync(['static/themes/*'])
+  deleteSync(['dist/electron/*', '!.gitkeep'])
+  deleteSync(['static/themes/*'])
 
   const from = path.resolve(__dirname, '../src/muya/themes')
   const to = path.resolve(__dirname, '../static/themes')

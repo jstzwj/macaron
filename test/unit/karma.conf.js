@@ -36,11 +36,11 @@ let webpackConfig = merge(baseConfig, {
 delete webpackConfig.entry
 delete webpackConfig.externals
 delete webpackConfig.output.libraryTarget
-
-// BUG: TypeError: Cannot read property 'loaders' of undefined
-// // apply vue option to apply isparta-loader on js
-// webpackConfig.module.rules
-//   .find(rule => rule.use.loader === 'vue-loader').use.options.loaders.js = 'babel-loader'
+webpackConfig.resolve = webpackConfig.resolve || {}
+webpackConfig.resolve.alias = {
+  ...(webpackConfig.resolve.alias || {}),
+  'vega-embed$': path.resolve(__dirname, './stubs/vegaEmbed.js')
+}
 
 module.exports = config => {
   config.set({
@@ -72,7 +72,7 @@ module.exports = config => {
         { type: 'text-summary' }
       ]
     },
-    frameworks: ['mocha', 'chai', 'webpack'],
+    frameworks: ['mocha', 'webpack'],
     files: ['./index.js'],
     preprocessors: {
       './index.js': ['webpack', 'sourcemap']
