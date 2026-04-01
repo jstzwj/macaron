@@ -188,11 +188,6 @@ const rendererConfig = {
         : false
     }),
     new webpack.DefinePlugin(getRendererEnvironmentDefinitions()),
-    // Use node http request instead axios's XHR adapter.
-    new webpack.NormalModuleReplacementPlugin(
-      /.+[\/\\]node_modules[\/\\]axios[\/\\]lib[\/\\]adapters[\/\\]xhr\.js$/,
-      'http.js'
-    ),
     new VueLoaderPlugin()
   ],
   cache: false,

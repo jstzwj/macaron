@@ -18,4 +18,6 @@ thumbs.db
 .claude/settings.local.json
 .claude/worktrees/
 test-results/
+playwright-report/
+macaron-v*.tgz
 native-keymap-3.3.9.tgz
