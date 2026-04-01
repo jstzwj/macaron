@@ -153,6 +153,7 @@ const rendererConfig = {
   },
   plugins: [
     new ESLintPlugin({
+      configType: 'eslintrc',
       cache: !isProduction,
       extensions: ['js', 'vue'],
       files: [

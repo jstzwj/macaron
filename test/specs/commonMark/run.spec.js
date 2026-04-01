@@ -1,33 +1,59 @@
 // This file is copy from marked and modified.
-import { removeCustomClass, padding } from '../help'
-import { MT_MARKED_OPTIONS } from '../config'
+const { removeCustomClass, padding } = require('../help.js')
+const { MT_MARKED_OPTIONS } = require('../config.js')
 const fetch = require('node-fetch')
-const markedJs = require('marked')
-const marked = require('../../../src/muya/lib/parser/marked/index.js').default
-const HtmlDiffer = require('@markedjs/html-differ').HtmlDiffer
 const fs = require('fs')
 const path = require('path')
+const { pathToFileURL } = require('url')
+const marked = require('../../../src/muya/lib/parser/marked/index.js').default
+const HtmlDiffer = require('@markedjs/html-differ').HtmlDiffer
 
 const options = { ignoreSelfClosingSlash: true, ignoreAttributes: ['id', 'class'] }
 
 const htmlDiffer = new HtmlDiffer(options)
 
-const getSpecs = async () => {
-  const version = await fetch('https://raw.githubusercontent.com/commonmark/commonmark.js/master/package.json')
-    .then(res => res.json())
-    .then(pkg => pkg.version.replace(/^(\d+\.\d+).*$/, '$1'))
+const getMarkedJs = async () => {
+  const markedModule = await import(pathToFileURL(require.resolve('marked')).href)
+  return markedModule.marked
+}
 
-  return fetch(`https://spec.commonmark.org/${version}/spec.json`)
-    .then(res => res.json())
-    .then(specs => ({ specs, version }))
+const readJsonResponse = async (url) => {
+  const res = await fetch(url)
+  const contentType = res.headers.get('content-type') || ''
+  const text = await res.text()
+
+  if (!res.ok || !/json/i.test(contentType)) {
+    console.error('[spec-fetch]', {
+      url,
+      finalUrl: res.url,
+      status: res.status,
+      contentType,
+      snippet: text.slice(0, 400)
+    })
+  }
+
+  try {
+    return JSON.parse(text)
+  } catch (err) {
+    err.message = `${err.message}\nFailed URL: ${url}\nFinal URL: ${res.url}\nStatus: ${res.status}\nContent-Type: ${contentType}\nBody snippet: ${text.slice(0, 400)}`
+    throw err
+  }
+}
+
+const getSpecs = async () => {
+  const pkg = await readJsonResponse('https://raw.githubusercontent.com/commonmark/commonmark.js/master/package.json')
+  const version = pkg.version.replace(/^(\d+\.\d+).*$/, '$1')
+  const specs = await readJsonResponse(`https://spec.commonmark.org/${version}/spec.json`)
+
+  return { specs, version }
 }
 
 const getMarkedSpecs = async (version) => {
-  return fetch(`https://raw.githubusercontent.com/markedjs/marked/master/test/specs/commonmark/commonmark.${version}.json`)
-    .then(res => res.json())
+  return readJsonResponse(`https://raw.githubusercontent.com/markedjs/marked/master/test/specs/commonmark/commonmark.${version}.json`)
 }
 
-export const writeResult = (version, specs, markedSpecs, type = 'commonmark') => {
+const writeResult = async (version, specs, markedSpecs, type = 'commonmark') => {
+  const markedJs = await getMarkedJs()
   let result = '## Test Result\n\n'
   const totalCount = specs.length
   const failedCount = specs.filter(s => s.shouldFail).length
@@ -55,7 +81,6 @@ export const writeResult = (version, specs, markedSpecs, type = 'commonmark') =>
   }
   result += `Total test ${totalCount} examples, and failed ${failedCount} examples:\n\n`
 
-  // |section|failed/total|percentage|
   const sectionMaxLen = Math.max(...Object.keys(classifiedResult).map(key => key.length))
   const failedTotalLen = 15
   const percentageLen = 15
@@ -88,7 +113,6 @@ export const writeResult = (version, specs, markedSpecs, type = 'commonmark') =>
     })
   const failedPath = type === 'commonmark' ? `./${type}.${version}.md` : `../gfm/${type}.${version}.md`
   fs.writeFileSync(path.join(__dirname, failedPath), result)
-  // compare with markedjs
   let compareResult = '## Compare with `marked.js`\n\n'
   compareResult += `Marked.js failed examples count: ${markedSpecs.filter(s => s.shouldFail).length}\n`
   compareResult += `Macaron failed examples count: ${failedCount}\n\n`
@@ -108,7 +132,7 @@ export const writeResult = (version, specs, markedSpecs, type = 'commonmark') =>
       compareResult += 'Actural Html\n'
       compareResult += `${acturalHtml}\n`
       compareResult += 'marked.js html\n'
-      compareResult += `${markedJs(spec.markdown, { headerIds: false })}\n`
+      compareResult += `${markedJs(spec.markdown)}\n`
       compareResult += '```\n\n'
     }
   })
@@ -129,11 +153,16 @@ const diffAndGenerateResult = async () => {
     }
   })
   fs.writeFileSync(path.join(__dirname, `./commonmark.${version}.json`), JSON.stringify(specs, null, 2) + '\n')
-  writeResult(version, specs, markedSpecs, 'commonmark')
+  await writeResult(version, specs, markedSpecs, 'commonmark')
 }
 
-try {
-  diffAndGenerateResult()
-} catch (err) {
-  console.log(err)
+module.exports = {
+  writeResult,
+  diffAndGenerateResult
+}
+
+if (require.main === module) {
+  diffAndGenerateResult().catch(err => {
+    console.log(err)
+  })
 }

@@ -52,6 +52,7 @@ const mainConfig = {
   },
   plugins: [
     new ESLintPlugin({
+      configType: 'eslintrc',
       extensions: ['js'],
       files: [
         'src',

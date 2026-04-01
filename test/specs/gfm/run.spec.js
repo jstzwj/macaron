@@ -1,8 +1,8 @@
 // This file is copy from https://github.com/markedjs/marked/blob/master/test/specs/gfm/getSpecs.js
 // And for custom use.
-import { removeCustomClass } from '../help'
-import { writeResult } from '../commonMark/run.spec'
-import { MT_MARKED_OPTIONS } from '../config'
+const { removeCustomClass } = require('../help.js')
+const { writeResult } = require('../commonMark/run.spec.js')
+const { MT_MARKED_OPTIONS } = require('../config.js')
 const fetch = require('node-fetch')
 const cheerio = require('cheerio')
 const marked = require('../../../src/muya/lib/parser/marked/index.js').default
@@ -13,6 +13,29 @@ const path = require('path')
 const options = { ignoreSelfClosingSlash: true, ignoreAttributes: ['id', 'class'] }
 
 const htmlDiffer = new HtmlDiffer(options)
+
+const readJsonResponse = async (url) => {
+  const res = await fetch(url)
+  const contentType = res.headers.get('content-type') || ''
+  const text = await res.text()
+
+  if (!res.ok || !/json/i.test(contentType)) {
+    console.error('[spec-fetch]', {
+      url,
+      finalUrl: res.url,
+      status: res.status,
+      contentType,
+      snippet: text.slice(0, 400)
+    })
+  }
+
+  try {
+    return JSON.parse(text)
+  } catch (err) {
+    err.message = `${err.message}\nFailed URL: ${url}\nFinal URL: ${res.url}\nStatus: ${res.status}\nContent-Type: ${contentType}\nBody snippet: ${text.slice(0, 400)}`
+    throw err
+  }
+}
 
 const getSpecs = () => {
   return fetch('https://github.github.com/gfm/')
@@ -44,8 +67,7 @@ const getSpecs = () => {
 }
 
 const getMarkedSpecs = async (version) => {
-  return fetch(`https://raw.githubusercontent.com/markedjs/marked/master/test/specs/gfm/gfm.${version}.json`)
-    .then(res => res.json())
+  return readJsonResponse(`https://raw.githubusercontent.com/markedjs/marked/master/test/specs/gfm/gfm.${version}.json`)
 }
 
 const diffAndGenerateResult = async () => {
@@ -58,11 +80,15 @@ const diffAndGenerateResult = async () => {
     }
   })
   fs.writeFileSync(path.resolve(__dirname, `./gfm.${version}.json`), JSON.stringify(specs, null, 2) + '\n')
-  writeResult(version, specs, markedSpecs, 'gfm')
+  await writeResult(version, specs, markedSpecs, 'gfm')
 }
 
-try {
-  diffAndGenerateResult()
-} catch (err) {
-  console.log(err)
+module.exports = {
+  diffAndGenerateResult
+}
+
+if (require.main === module) {
+  diffAndGenerateResult().catch(err => {
+    console.log(err)
+  })
 }

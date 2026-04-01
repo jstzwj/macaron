@@ -1,8 +1,11 @@
 module.exports = {
   root: true,
+  parser: '@babel/eslint-parser',
   parserOptions: {
-    parser: '@babel/eslint-parser',
     requireConfigFile: false,
+    babelOptions: {
+      configFile: './babel.config.js'
+    },
     ecmaVersion: 11,
     ecmaFeatures: {
       impliedStrict: true
@@ -25,6 +28,22 @@ module.exports = {
     __static: true
   },
   plugins: ['html', 'vue'],
+  overrides: [{
+    files: ['*.vue', '**/*.vue'],
+    parser: 'vue-eslint-parser',
+    parserOptions: {
+      parser: '@babel/eslint-parser',
+      requireConfigFile: false,
+      babelOptions: {
+        configFile: './babel.config.js'
+      },
+      ecmaVersion: 11,
+      ecmaFeatures: {
+        impliedStrict: true
+      },
+      sourceType: 'module'
+    }
+  }],
   rules: {
     // Two spaces but disallow semicolons
     indent: ['error', 2, { 'SwitchCase': 1, 'ignoreComments': true }],
@@ -60,6 +79,11 @@ module.exports = {
   ignorePatterns: [
     'node_modules',
     'src/muya/dist/**/*',
-    'src/muya/webpack.config.js'
+    'src/muya/webpack.config.js',
+    'test/unit/coverage/**',
+    'test/unit/*.js',
+    'test/e2e/*.js',
+    'src/renderer/assets/symbolIcon/index.js',
+    'src/muya/lib/assets/libs/*.js'
   ]
 }
