@@ -10,8 +10,9 @@ git clone https://github.com/marktext/marktext.git
 
 Before you can get started developing, you need set up your build environment:
 
-- Node.js `>=v16` but `<v17` and yarn
-- Python `>=v3.6` for node-gyp
+- Node.js `24.x` LTS and Yarn Classic `1.22.x`
+- Python `>=v3.10` for node-gyp
+- On Windows, `node-gyp` may need Visual Studio C++ build tools and a recent Windows SDK
 - C++ compiler and development tools
 - Build is supported on Linux, macOS and Windows
 
@@ -28,15 +29,15 @@ On Red Hat-based Linux: `sudo dnf install libX11-devel libxkbfile-devel libsecre
 
 **Additional development dependencies on Windows:**
 
-- Windows 10 SDK (only needed before Windows 10)
-- Visual Studio 2019 (preferred)
+- Windows 11 SDK (or newer Windows 10 SDK)
+- Visual Studio 2022 Build Tools (preferred)
 
 ### Let's build
 
-1. Go to `marktext` folder
+1. Go to the `macaron` folder
 2. Install dependencies: `yarn install` or `yarn install --frozen-lockfile`
 3. Build Macaron binaries and packages: `yarn run build`
-4. Macaron binary is located under `build` folder
+4. Macaron binaries are located under the `build` folder
 
 Copy the build app to applications folder, or if on Windows run the executable installer.
 

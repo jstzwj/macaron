@@ -6,11 +6,11 @@ asarUnpack:
 - "**/*.node"
 directories:
   output: "build"
-# Don't let electron-builder rebuild native deps during packaging.
-# We handle native rebuilds ourselves in the rebuild script.
-npmRebuild: false
+# Workaround: Don't download prebuilt libraries (GH#2953).
+buildDependenciesFromSource: true
 files:
 - "dist/electron/**/*"
+- "node_modules/keytar/build/Release/*.node"
 # Don't bundle these files
 - "!**/node_modules/**/{CHANGELOG.md,README.md,README,readme.md,readme}"
 - "!node_modules/css-b64-images/{draft.png,draft.xcf}"
@@ -28,6 +28,7 @@ files:
 - "!node_modules/vscode-ripgrep/postinstall.js"
 # Don't bundle build files
 - "!node_modules/ced/bin"
+- "!node_modules/ced/vendor"
 - "!node_modules/fontmanager-redux/bin"
 - "!node_modules/keyboard-layout/bin"
 - "!node_modules/keytar/bin"

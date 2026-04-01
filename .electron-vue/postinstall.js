@@ -23,10 +23,20 @@ if (fs.existsSync(windowsReleasePath)) {
 // WORKAROUND: electron-builder downloads the wrong prebuilt architecture on macOS and the reason is unknown.
 //   For now, we rebuild all native libraries from source.
 const keytarPath = path.resolve(__dirname, '../node_modules/keytar')
-if (process.platform === 'darwin' && fs.existsSync(keytarPath)) {
+if (fs.existsSync(keytarPath)) {
   const keytarPackageJsonPath = path.join(keytarPath, 'package.json')
-  let packageText = fs.readFileSync(keytarPackageJsonPath, { encoding : 'utf-8' })
 
-  packageText = packageText.replace(/"install": "prebuild-install \|\| npm run build",/i, '"install": "npm run build",')
-  fs.writeFileSync(keytarPackageJsonPath, packageText, { encoding : 'utf-8' })
+  if (process.platform === 'darwin') {
+    let packageText = fs.readFileSync(keytarPackageJsonPath, { encoding : 'utf-8' })
+    packageText = packageText.replace(/"install": "prebuild-install \|\| npm run build",/i, '"install": "npm run build",')
+    fs.writeFileSync(keytarPackageJsonPath, packageText, { encoding : 'utf-8' })
+  }
+
+  // Add "build/Release" to keytar's "files" whitelist so electron-builder
+  // includes the native binary in the packaged app.
+  const pkg = JSON.parse(fs.readFileSync(keytarPackageJsonPath, { encoding: 'utf-8' }))
+  if (pkg.files && !pkg.files.includes('build/Release')) {
+    pkg.files.push('build/Release')
+    fs.writeFileSync(keytarPackageJsonPath, JSON.stringify(pkg, null, 2) + '\n', { encoding: 'utf-8' })
+  }
 }

@@ -28,7 +28,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 16
+          node-version: 24
           check-latest: true
           cache: yarn
           cache-dependency-path: yarn.lock
@@ -91,19 +91,19 @@ jobs:
       - name: Calculate checksums
         if: runner.os == 'Linux'
         run: |
-          sha256sum build/marktext-x64.tar.gz
-          sha256sum build/marktext-x86_64.AppImage
-          sha256sum build/marktext-*.deb
-          sha256sum build/marktext-*.rpm
+          sha256sum build/macaron-x64.tar.gz
+          sha256sum build/macaron-x86_64.AppImage
+          sha256sum build/macaron-*.deb
+          sha256sum build/macaron-*.rpm
         shell: bash
 
       - name: Calculate checksums
         if: runner.os == 'macOS'
         run: |
-          shasum -a 256 build/marktext-arm64-mac.zip
-          shasum -a 256 build/marktext-x64-mac.zip
-          shasum -a 256 build/marktext-arm64.dmg
-          shasum -a 256 build/marktext-x64.dmg
+          shasum -a 256 build/macaron-arm64-mac.zip
+          shasum -a 256 build/macaron-x64-mac.zip
+          shasum -a 256 build/macaron-arm64.dmg
+          shasum -a 256 build/macaron-x64.dmg
         shell: bash
 
   windows:
@@ -123,7 +123,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 16
+          node-version: 24
           check-latest: true
           cache: yarn
           cache-dependency-path: yarn.lock
@@ -172,6 +172,6 @@ jobs:
 
       - name: Calculate checksums
         run: |
-          get-filehash -Algorithm SHA256 "build\marktext-setup.exe"
-          get-filehash -Algorithm SHA256 "build\marktext-*-win.zip"
+          get-filehash -Algorithm SHA256 "build\macaron-setup.exe"
+          get-filehash -Algorithm SHA256 "build\macaron-*-win.zip"
         shell: pwsh
