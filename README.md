@@ -4,13 +4,13 @@
 
 <div align="center">
   <strong>:high_brightness: Next generation markdown editor :crescent_moon:</strong><br>
-  A simple and elegant open-source markdown editor that focused on speed and usability.<br>
+  A simple and elegant open-source markdown editor focused on speed and usability.<br>
   <sub>Available for Linux, macOS and Windows.</sub>
 </div>
 
 <br>
 
-> **Note:** Macaron is a fork of [MarkText](https://github.com/marktext/marktext), an excellent open-source Markdown editor. We thank the MarkText contributors for their great work. Macaron continues to build on this foundation, aiming to provide an improved and actively maintained Markdown editing experience.
+> **Note:** Macaron is the reborn, next-generation version of [MarkText](https://github.com/marktext/marktext). We thank the MarkText contributors for their great work. Macaron builds on that foundation and continues it with active maintenance and ongoing improvements.
 
 <br>
 
@@ -80,8 +80,8 @@
 
 ## Features
 
-- Realtime preview (WYSIWYG) and a clean and simple interface to get a distraction-free writing experience.
-- Support [CommonMark Spec](https://spec.commonmark.org/0.29/), [GitHub Flavored Markdown Spec](https://github.github.com/gfm/) and selective support [Pandoc markdown](https://pandoc.org/MANUAL.html#pandocs-markdown).
+- Realtime preview (WYSIWYG) and a clean and simple interface for a distraction-free writing experience.
+- Support [CommonMark Spec](https://spec.commonmark.org/0.29/), [GitHub Flavored Markdown Spec](https://github.github.com/gfm/) and selective support for [Pandoc markdown](https://pandoc.org/MANUAL.html#pandocs-markdown).
 - Markdown extensions such as math expressions (KaTeX), front matter and emojis.
 - Support paragraphs and inline style shortcuts to improve your writing efficiency.
 - Output **HTML** and **PDF** files.
@@ -120,7 +120,7 @@ Macaron is in development, please make sure to read the [Contributing Guide](CON
 
 ## Acknowledgements
 
-Macaron is a fork of [MarkText](https://github.com/marktext/marktext). Special thanks to:
+Macaron is the reborn continuation of [MarkText](https://github.com/marktext/marktext). Special thanks to:
 
 - @[Jocs](https://github.com/Jocs) (Luo Ran) for creating MarkText
 - @[fxha](https://github.com/fxha) (Felix Hauser) for co-maintaining MarkText

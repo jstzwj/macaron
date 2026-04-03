@@ -1,161 +1,112 @@
-> **This documentation is outdated, based on the original readme from 14 April 2018!**
-
-<p align="center"><img src="../../static/logo-small.png" alt="marktext" width="100" height="100"></p>
+<p align="center"><img src="../../static/logo-small.png" alt="Macaron" width="100" height="100"></p>
 
 <h1 align="center">Macaron</h1>
 
 <div align="center">
-  <a href="https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Fmarktext%2Fmarktext">
-    <img src="https://img.shields.io/twitter/url/https/github.com/marktext/marktext.svg?style=for-the-badge" alt="twitter">
-  </a>
-</div>
-<div align="center">
-  <strong>:high_brightness:Edytor markdown nowej generacji:crescent_moon:</strong>
-</div>
-<div align="center">
-  Aplikacja na bazie <code>Electron</code> na platformy OS X, Windows i Linux
+  <strong>:high_brightness: Edytor Markdown nowej generacji :crescent_moon:</strong><br>
+  Prosty i elegancki, otwartoźródłowy edytor Markdown, skupiony na szybkości i użyteczności.<br>
+  <sub>Dostępny dla Linuxa, macOS i Windowsa.</sub>
 </div>
 
-<br />
+<br>
+
+> **Uwaga:** Macaron to odrodzona, nowej generacji wersja [MarkText](https://github.com/marktext/marktext). Dziękujemy twórcom i współtwórcom MarkText za ich świetną pracę. Macaron rozwija ten fundament dalej dzięki aktywnemu utrzymaniu i ciągłym ulepszeniom.
+
+<br>
 
 <div align="center">
-  <!-- Version -->
-  <a href="https://marktext.github.io/website">
-    <img src="https://badge.fury.io/gh/jocs%2Fmarktext.svg" alt="website">
-  </a>
   <!-- License -->
-  <a href="https://marktext.github.io/website">
+  <a href="../../LICENSE">
     <img src="https://img.shields.io/github/license/marktext/marktext.svg" alt="LICENSE">
   </a>
   <!-- Build Status -->
-  <a href="https://marktext.github.io/website">
+  <a href="https://travis-ci.org/marktext/marktext/">
     <img src="https://travis-ci.org/marktext/marktext.svg?branch=master" alt="build">
   </a>
-  <!-- Downloads total -->
-  <a href="https://marktext.github.io/website">
-    <img src="https://img.shields.io/github/downloads/marktext/marktext/total.svg" alt="total download">
-  </a>
-  <!-- Downloads latest release -->
-  <a href="https://marktext.github.io/website">
-    <img src="https://img.shields.io/github/downloads/marktext/marktext/v0.17.1/total.svg" alt="latest download">
-  </a>
-  <!-- deps -->
-  <a href="https://marktext.github.io/website">
-    <img src="https://img.shields.io/hackage-deps/v/lens.svg" alt="dependencies">
-  </a>
-  <!-- donates -->
-  <a href="https://opencollective.com/marktext">
-    <img src="https://opencollective.com/marktext/tiers/backer/badge.svg?label=backer&color=brightgreen" alt="donate">
+  <a href="https://ci.appveyor.com/project/marktext/marktext/branch/master">
+    <img src="https://ci.appveyor.com/api/projects/status/l4gxgydj0i95hmxg/branch/master?svg=true" alt="build">
   </a>
 </div>
 
 <div align="center">
-  <h3>
-    <a href="https://marktext.github.io/website">
-      Strona
-    </a>
-    <span> | </span>
-    <a href="https://github.com/marktext/marktext#features">
-      Cechy programu
-    </a>
-    <span> | </span>
-    <a href="https://github.com/marktext/marktext#download-and-installation">
-      Instalacja
-    </a>
-    <span> | </span>
-    <a href="https://github.com/marktext/marktext#development">
-      Rozwój
-    </a>
-    <span> | </span>
-    <a href="https://github.com/marktext/marktext#contribution">
-      Udział w projekcie
-    </a>
-  </h3>
+  <sub>Tłumaczenia:</sub>
+  <a href="ar.md#readme"><span>:saudi_arabia:</span></a>
+  <a href="zh_cn.md#readme"><span>:cn:</span></a>
+  <a href="zh_tw.md#readme"><span>:taiwan:</span></a>
+  <a href="pl.md#readme"><span>:poland:</span></a>
+  <a href="ja.md#readme"><span>:jp:</span></a>
+  <a href="french.md#readme"><span>:fr:</span></a>
+  <a href="tr.md#readme"><span>:tr:</span></a>
+  <a href="spanish.md#readme"><span>:es:</span></a>
+  <a href="pt.md#readme"><span>:portugal:</span></a>
+  <a href="ko.md#readme"><span>:kr:</span></a>
 </div>
 
 <div align="center">
-  <sub>Edytor Markdown, który potrafi. Zbudowany z ❤︎ przez
-    <a href="https://github.com/Jocs">Jocs</a> i
+  <sub>Ten edytor Markdown został stworzony przez
+    <a href="https://github.com/Jocs">Jocs</a>,
     <a href="https://github.com/marktext/marktext/graphs/contributors">
-      innych
+      współtwórców MarkText
     </a>
+    oraz współtwórców Macarona.
   </sub>
 </div>
 
 <br />
 
-![](../../docs/marktext.gif)
+## Zrzut ekranu
 
-### Cechy programu
+![](../../docs/marktext.png?raw=true)
 
-- Podgląd na żywo - użycie [snabbdom](https://github.com/snabbdom/snabbdom) jako swojego silnika renderującego.
-- Wsparcie specyfikacji [CommonMark](https://spec.commonmark.org/0.29/) i [GitHub Flavored Markdown](https://github.github.com/gfm/).
-- Wsparcie paragrafów i skrótów klawiatowych dla stylów wbudowanych w celu zwiększenia twojej wydajności podczas pisania.
-- Zapis do plików **HTML** i **PDF**.
-- Ciemny i jasny motyw.
-- Różne tryby edycji: **Kod źródłowy**, **Maszyna do pisania**, **Skupienie**.
+## Funkcje
 
-<h4 align="center">:crescent_moon:Motywy:high_brightness:</h4>
+- Podgląd w czasie rzeczywistym (WYSIWYG) oraz czysty i prosty interfejs zapewniający pisanie bez rozpraszania.
+- Obsługa [CommonMark Spec](https://spec.commonmark.org/0.29/), [GitHub Flavored Markdown Spec](https://github.github.com/gfm/) oraz częściowa obsługa [Pandoc markdown](https://pandoc.org/MANUAL.html#pandocs-markdown).
+- Rozszerzenia Markdown, takie jak wzory matematyczne (KaTeX), front matter i emoji.
+- Obsługa akapitów i skrótów stylów inline, aby poprawić wydajność pisania.
+- Eksport do plików **HTML** i **PDF**.
+- Różne motywy: **Cadmium Light**, **Material Dark** itp.
+- Różne tryby edycji: **Source Code mode**, **Typewriter mode**, **Focus mode**.
+- Wklejanie obrazów bezpośrednio ze schowka.
 
-| Ciemny :crescent_moon:                                             | Jasny :high_brightness:                                             |
-|:------------------------------------------------------------------:|:-------------------------------------------------------------------:|
-| ![](../../docs/dark.jpg) | ![](../../docs/light.jpg) |
+<h4 align="center">:crescent_moon:motywy:high_brightness:</h4>
 
-<h4 align="center">:smile_cat:Tryby edycji:dog:</h4>
+| Cadmium Light                                     | Dark                                            |
+|:-------------------------------------------------:|:-----------------------------------------------:|
+| ![](../../docs/themeImages/cadmium-light.png?raw=true)  | ![](../../docs/themeImages/dark.png?raw=true)         |
+| Graphite Light                                    | Material Dark                                   |
+| ![](../../docs/themeImages/graphite-light.png?raw=true) | ![](../../docs/themeImages/materal-dark.png?raw=true) |
+| Ulysses Light                                     | One Dark                                        |
+| ![](../../docs/themeImages/ulysses-light.png?raw=true)  | ![](../../docs/themeImages/one-dark.png?raw=true)     |
 
-| Kod źródłowy                                                         | Maszyna do pisania                                                       | Skupienie                                                           |
-|:--------------------------------------------------------------------:|:------------------------------------------------------------------------:|:-------------------------------------------------------------------:|
+<h4 align="center">:smile_cat:tryby edycji:dog:</h4>
+
+| Source Code          | Typewriter               | Focus               |
+|:--------------------:|:------------------------:|:-------------------:|
 | ![](../../docs/source.gif) | ![](../../docs/typewriter.gif) | ![](../../docs/focus.gif) |
 
-### Dlaczego kolejny edytor?
+## Rozwój
 
-1. Kocham pisać. Używałem wiele różnych edytorów markdown, ale wciąż nie ma takiego, który byłby w pełni zgodny z moimi oczekiwaniami. Nie lubię, kiedy pisanie przerywają mi niemożliwe do wytrzymania błędy. **Macaron** używa wirtualnego DOM do wyrenderowania strony co sprawia, że jest bardzo wydajny. Program jest rozpowszechniany na licencji open source dla wszystkich przyjaciół kochających markdown i pisanie.
-2. Jak już zostało wspomniane powyżej, **Macaron** będzie zawsze rozpowszechniany na licencji open source. Wierzymy, że wszyscy wielbiciele markdown dołożą swoją cegiełkę do kodów źródłowych programu i pomogą w rozwijaniu **Macaron**.
-3. Istnieje wiele edytorów markdown i każdy z nich ma swoje cechy szczególne, jednak ciężko jest zaspokoić wszystkie potrzeby użytkowników. Wierzę, że **Macaron** jest w stanie zaspokoić potrzeby jak największej grupy osób. Mimo iż najnowsza wersja **Macaron** nie jest idealna, próbujemy stworzyć go tak doskonałym jak to jest tylko możliwe.
+Jeśli chcesz samodzielnie zbudować Macaron, zajrzyj do naszych [instrukcji budowy](../../docs/dev/BUILD.md).
 
-### Instalacja
+- [Dokumentacja użytkownika](../../docs/README.md)
+- [Dokumentacja deweloperska](../../docs/dev/README.md)
 
-![Conda](https://img.shields.io/conda/pn/conda-forge/python.svg?style=for-the-badge)
+Jeśli masz pytania dotyczące Macaron, możesz otworzyć issue. Podczas zgłoszenia użyj domyślnego formatu dostępnego przy tworzeniu issue. Oczywiście bezpośrednie przesłanie PR będzie bardzo mile widziane.
 
-| ![]( https://github.com/ryanoasis/nerd-fonts/wiki/screenshots/v1.0.x/mac-pass-sm.png)                                                                                                             | ![]( https://github.com/ryanoasis/nerd-fonts/wiki/screenshots/v1.0.x/windows-pass-sm.png)                                                                                                                     | ![]( https://github.com/ryanoasis/nerd-fonts/wiki/screenshots/v1.0.x/linux-pass-sm.png)                                                                                                                                   |
-|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
-| [![latest version](https://img.shields.io/github/downloads/marktext/marktext/latest/marktext-x64.dmg.svg)](https://github.com/marktext/marktext/releases/download/v0.17.1/marktext-x64.dmg) | [![latest version](https://img.shields.io/github/downloads/marktext/marktext/latest/marktext-setup.exe.svg)](https://github.com/marktext/marktext/releases/download/v0.17.1/marktext-setup.exe) | [![latest version](https://img.shields.io/github/downloads/marktext/marktext/latest/marktext-x86_64.AppImage.svg)](https://github.com/marktext/marktext/releases/download/v0.17.1/marktext-x86_64.AppImage) |
+## Wkład
 
-Nie znalazłeś swojego systemu? Przejdź do strony [release](https://github.com/marktext/marktext/releases). Wciąż nie znalazłeś? Zgłoś [problem](https://github.com/marktext/marktext/issues).
+Macaron jest w trakcie rozwoju, dlatego przed utworzeniem pull requesta przeczytaj [przewodnik współtworzenia](../../CONTRIBUTING.md). Chcesz dodać nowe funkcje do Macaron? Sprawdź otwarte issues.
 
-Chciałbyś zobaczyć jak nowe udogodnienia wprowadziła najnowsza wersja? Udaj się do [CHANGELOG](../../.github/CHANGELOG.md)
+## Podziękowania
 
-Jeśli używasz systemu OS X, to możesz zainstalować Macaron za pomocą [**homebrew cask**](https://github.com/caskroom/homebrew-cask). Aby zacząć korzystać z Homebrew-Cask potrzebujesz tylko [Homebrew](https://brew.sh/).
+Macaron to odrodzona kontynuacja [MarkText](https://github.com/marktext/marktext). Specjalne podziękowania dla:
 
-> brew install --cask mark-text
+- @[Jocs](https://github.com/Jocs) (Luo Ran) za stworzenie MarkText
+- @[fxha](https://github.com/fxha) (Felix Hauser) za współutrzymywanie MarkText
+- @[Yasujizr](https://github.com/Yasujizr) za zaprojektowanie logo MarkText
+- Wszystkich [współtwórców MarkText](https://github.com/marktext/marktext/graphs/contributors)
 
-![](../../docs/brew-cask.gif)
+## Licencja
 
-### Rozwój
-
-Jeżeli chciałbyś samodzielnie zbudować **Macaron**:
-
-- sklonuj to repozytorium.
-- uruchom komendę `npm install`
-- uruchom komendę `npm run build`
-- skopiuj zbudowaną aplikację do folderu Applications lub jeśli używasz systemu Windows uruchom instalator.
-
-W przypadku jakichkolwiek pytań podczas korzystania z **Macaron** zaczęcamy do zgłoszenia problemu. Mamy nadzieję, że będziesz trzymał się ustalonego z góry formatu zgłaszania problemów. Wspaniale by było, jeżeli to właśnie ty naprawisz błąd i zgłosisz pull request.
-
-## Udział w projekcie
-
-Macaron jest w trakcie rozwijania. Upewnij się, że przeczytałeś [Contributing Guide](../../CONTRIBUTING.md) przed stworzeniem pull request. Chcesz dodać nowe udogodnienia do Macaron? Udaj się do [TODO LIST](../../.github/TODOLIST.md)
-
-Dziękujemy wszystkim osobom, które już wzięły udział w projekcie Macaron! Jeżeli już jesteś członkiem [contributors](https://github.com/marktext/marktext/graphs/contributors), otwórz pull request aby dodać twoje imię i zdjęcie do poniższej listy osób, które pomogły przy projekcie.
-
-Specjalne podziękowania dla @[Yasujizr](https://github.com/Yasujizr), który zaprojektował logo Macaron.
-
-| [![Jocs](https://avatars0.githubusercontent.com/u/9712830?s=150&v=4)](https://github.com/Jocs) | [![ywwhack](https://avatars1.githubusercontent.com/u/8746197?s=150&v=4)](https://github.com/ywwhack) | [![notAlaanor](https://avatars1.githubusercontent.com/u/17591936?s=150&v=4)](https://github.com/notAlaanor) | [![fxha](https://avatars1.githubusercontent.com/u/22716132?s=150&v=4)](https://github.com/fxha) |
-|:----------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|
-| [Jocs](https://github.com/Jocs)                                                                | [ywwhack](https://github.com/ywwhack)                                                                | [notAlaanor](https://github.com/notAlaanor)                                                                 | [fxha](https://github.com/fxha)                                                                 |
-
-### Licencja
-
- [**MIT**](../../LICENSE).
-
-Copyright (c) 2017-present, @Jocs
+[**MIT**](../../LICENSE).
