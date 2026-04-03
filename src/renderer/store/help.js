@@ -1,6 +1,11 @@
 import { getUniqueId, cloneObj } from '../util'
 import { translate } from '../i18n'
 
+const getUntitledIndex = filename => {
+  const match = filename.match(/(\d+)$/)
+  return match ? Number(match[1]) : 0
+}
+
 /**
  * Default internel markdown document with editor options.
  *
@@ -76,7 +81,7 @@ export const getBlankFileState = (tabs, defaultEncoding = 'utf8', lineEnding = '
   const fileState = cloneObj(defaultFileState, true)
   let untitleId = Math.max(...tabs.map(f => {
     if (f.pathname === '') {
-      return +f.filename.split('-')[1]
+      return getUntitledIndex(f.filename)
     } else {
       return 0
     }

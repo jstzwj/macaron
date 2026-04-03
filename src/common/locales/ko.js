@@ -190,7 +190,7 @@ export default {
   },
   fileOperation: {
     newFile: '새 파일',
-    untitled: '제목 없음-{id}',
+    untitled: '제목 없음 {id}',
     import: {
       title: '가져오기 또는 열기',
       dropHere: '여기에 놓아 Macaron으로 가져오세요'

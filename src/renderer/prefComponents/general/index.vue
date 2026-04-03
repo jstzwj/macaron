@@ -87,11 +87,25 @@
       </template>
       <template #children>
         <section class="startup-action-ctrl">
-          <el-radio-group v-model="startUpAction">
-            <el-radio value="folder" style="margin-bottom: 10px;">{{ $t('settings.general.openDefaultDirectory') }}<span>: {{defaultDirectoryToOpen}}</span></el-radio>
-            <el-button size="small" @click="selectDefaultDirectoryToOpen">{{ $t('settings.general.selectFolder') }}</el-button>
-            <el-radio value="blank">{{ $t('settings.general.openBlankPage') }}</el-radio>
-          </el-radio-group>
+          <label>
+            <input
+              type="radio"
+              name="startup-action"
+              value="folder"
+              v-model="startUpAction"
+            >
+            {{ $t('settings.general.openDefaultDirectory') }}<span>: {{defaultDirectoryToOpen}}</span>
+          </label>
+          <button type="button" class="select-folder-button" @click="selectDefaultDirectoryToOpen">{{ $t('settings.general.selectFolder') }}</button>
+          <label>
+            <input
+              type="radio"
+              name="startup-action"
+              value="blank"
+              v-model="startUpAction"
+            >
+            {{ $t('settings.general.openBlankPage') }}
+          </label>
         </section>
       </template>
     </compound>
@@ -103,6 +117,7 @@
       <template #children>
         <cur-select
           :description="$t('settings.general.userInterfaceLanguage')"
+          :notes="$t('settings.general.requiresRestart')"
           :value="language"
           :options="translatedLanguageOptions"
           :onChange="value => onSelectChange('language', value)"

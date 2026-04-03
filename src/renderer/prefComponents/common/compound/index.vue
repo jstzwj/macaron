@@ -1,22 +1,22 @@
-<template>
-  <section class="pref-compound-item">
-    <div class="pref-compound-head">
-      <slot name="head"/>
-    </div>
-    <div class="pref-compound-body">
-      <slot name="children"/>
-    </div>
-    <div v-if="notes" class="notes">
-      {{notes}}
-    </div>
-  </section>
-</template>
-
 <script>
+import { h } from 'vue'
 
 export default {
   props: {
     notes: String
+  },
+  render () {
+    const head = this.$slots.head ? this.$slots.head() : []
+    const children = this.$slots.children ? this.$slots.children() : []
+    const notes = this.notes
+      ? h('div', { class: 'notes' }, this.notes)
+      : null
+
+    return h('section', { class: 'pref-compound-item' }, [
+      h('div', { class: 'pref-compound-head' }, head),
+      h('div', { class: 'pref-compound-body' }, children),
+      notes
+    ])
   }
 }
 </script>

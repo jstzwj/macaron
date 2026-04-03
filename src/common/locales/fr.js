@@ -190,7 +190,7 @@ export default {
   },
   fileOperation: {
     newFile: 'Nouveau fichier',
-    untitled: 'Sans-titre-{id}',
+    untitled: 'Sans titre {id}',
     import: {
       title: 'Importer ou Ouvrir',
       dropHere: 'Déposez ici pour importer vos éléments dans Macaron'

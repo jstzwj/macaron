@@ -2,19 +2,23 @@
   <div class="pref-sidebar">
     <h3 class="title">{{ $t('app.preferences') }}</h3>
     <section class="search-wrapper">
-      <el-autocomplete
-        popper-class="pref-autocomplete"
+      <input
+        class="search-input"
         v-model="state"
-        :fetch-suggestions="querySearch"
         :placeholder="$t('settings.searchPlaceholder')"
-        :trigger-on-focus="false"
-        @select="handleSelect">
-        <template #prefix><el-icon><Search /></el-icon></template>
-        <template #default="{ item }">
+      >
+      <div v-if="state && filteredResults.length" class="search-results">
+        <button
+          v-for="item of filteredResults"
+          :key="`${item.category}-${item.preference}`"
+          class="search-result-item"
+          type="button"
+          @click="handleSelect(item)"
+        >
           <div class="name">{{ item.category }}</div>
           <span class="addr">{{ item.preference }}</span>
-        </template>
-      </el-autocomplete>
+        </button>
+      </div>
     </section>
     <section class="category">
       <div v-for="c of translatedCategory" :key="c.label" class="item"
@@ -38,11 +42,22 @@ export default {
     this.category = category
     return {
       currentCategory: 'general',
-      restaurants: [],
+      searchItems: [],
       state: ''
     }
   },
   computed: {
+    filteredResults () {
+      const query = this.state.trim().toLowerCase()
+      if (!query) {
+        return []
+      }
+
+      return this.searchItems.filter(item => {
+        return item.preference.toLowerCase().includes(query) ||
+          item.category.toLowerCase().includes(query)
+      })
+    },
     translatedCategory () {
       return this.category.map(item => ({
         ...item,
@@ -58,20 +73,6 @@ export default {
     }
   },
   methods: {
-    querySearch (queryString, cb) {
-      const restaurants = this.restaurants
-      const results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants
-      cb(results)
-    },
-    createFilter (queryString) {
-      return (restaurant) => {
-        return (restaurant.preference.toLowerCase().indexOf(queryString.toLowerCase()) >= 0) ||
-            (restaurant.category.toLowerCase().indexOf(queryString.toLowerCase()) >= 0)
-      }
-    },
-    loadAll () {
-      return searchContent
-    },
     handleSelect (item) {
       this.$router.push({
         path: `/preference/${item.category.toLowerCase()}`
@@ -96,14 +97,14 @@ export default {
   },
 
   mounted () {
-    this.restaurants = this.loadAll()
+    this.searchItems = searchContent
     if (this.$route && this.$route.name) {
       this.currentCategory = this.$route.name
     }
     ipcRenderer.on('settings::change-tab', this.onIpcCategoryChange)
   },
   unmounted () {
-    ipcRenderer.removeAllListener('settings::change-tab', this.onIpcCategoryChange)
+    ipcRenderer.removeListener('settings::change-tab', this.onIpcCategoryChange)
   }
 }
 </script>
@@ -129,43 +130,50 @@ export default {
     -webkit-app-region: no-drag;
     padding: 0 20px;
     margin: 30px 0;
+    position: relative;
   }
-  .el-autocomplete {
+  .search-input {
     width: 100%;
-    & .el-input__inner {
-      background: transparent;
-      height: 35px;
-      line-height: 35px;
-    }
+    height: 35px;
+    line-height: 35px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    background: transparent;
+    color: var(--editorColor);
+    border: 1px solid var(--floatBorderColor);
+    border-radius: 6px;
+    outline: none;
   }
-  .pref-autocomplete.el-autocomplete-suggestion {
+  .search-results {
+    margin-top: 8px;
+    max-height: 240px;
+    overflow-y: auto;
     background: var(--floatBgColor);
-    border-color: var(--floatBorderColor);
-    & .el-autocomplete-suggestion__wrap li:hover {
-      background: var(--floatHoverColor);
-    }
-    & .el-popper__arrow {
-      display: none;
-    }
-    & li {
-      line-height: normal;
-      padding: 7px;
-      opacity: .8;
-
-      & .name {
-        text-overflow: ellipsis;
-        overflow: hidden;
-        color: var(--editorColor80);
-      }
-      & .addr {
-        font-size: 12px;
-        color: var(--editorColor);
-      }
-
-      & .highlighted .addr {
-        color: var(--editorColor);
-      }
-    }
+    border: 1px solid var(--floatBorderColor);
+    border-radius: 6px;
+  }
+  .search-result-item {
+    width: 100%;
+    display: block;
+    text-align: left;
+    padding: 7px;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    opacity: .8;
+    color: inherit;
+  }
+  .search-result-item:hover {
+    background: var(--floatHoverColor);
+  }
+  .search-result-item .name {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    color: var(--editorColor80);
+  }
+  .search-result-item .addr {
+    font-size: 12px;
+    color: var(--editorColor);
   }
   .category {
     -webkit-app-region: no-drag;

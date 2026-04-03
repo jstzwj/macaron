@@ -1,12 +1,12 @@
 import * as actions from '../actions/theme'
 
-export default function (userPreference) {
+export default function (userPreference, i18n) {
   const { theme } = userPreference.getAll()
   return {
-    label: '&Theme',
+    label: i18n.t('menu.theme.root'),
     id: 'themeMenu',
     submenu: [{
-      label: 'Cadmium Light',
+      label: i18n.t('menu.theme.light'),
       type: 'radio',
       id: 'light',
       checked: theme === 'light',
@@ -14,7 +14,7 @@ export default function (userPreference) {
         actions.selectTheme('light')
       }
     }, {
-      label: 'Dark',
+      label: i18n.t('menu.theme.dark'),
       type: 'radio',
       id: 'dark',
       checked: theme === 'dark',
@@ -22,7 +22,7 @@ export default function (userPreference) {
         actions.selectTheme('dark')
       }
     }, {
-      label: 'Graphite Light',
+      label: i18n.t('menu.theme.graphite'),
       type: 'radio',
       id: 'graphite',
       checked: theme === 'graphite',
@@ -30,7 +30,7 @@ export default function (userPreference) {
         actions.selectTheme('graphite')
       }
     }, {
-      label: 'Material Dark',
+      label: i18n.t('menu.theme.materialDark'),
       type: 'radio',
       id: 'material-dark',
       checked: theme === 'material-dark',
@@ -38,7 +38,7 @@ export default function (userPreference) {
         actions.selectTheme('material-dark')
       }
     }, {
-      label: 'One Dark',
+      label: i18n.t('menu.theme.oneDark'),
       type: 'radio',
       id: 'one-dark',
       checked: theme === 'one-dark',
@@ -46,7 +46,7 @@ export default function (userPreference) {
         actions.selectTheme('one-dark')
       }
     }, {
-      label: 'Ulysses Light',
+      label: i18n.t('menu.theme.ulysses'),
       type: 'radio',
       id: 'ulysses',
       checked: theme === 'ulysses',

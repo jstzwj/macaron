@@ -190,7 +190,7 @@ export default {
   },
   fileOperation: {
     newFile: 'Yeni Dosya',
-    untitled: 'Başlıksız-{id}',
+    untitled: 'Başlıksız {id}',
     import: {
       title: 'İçe Aktar veya Aç',
       dropHere: 'Öğelerinizi Macaron\'a getirmek için buraya bırakın'

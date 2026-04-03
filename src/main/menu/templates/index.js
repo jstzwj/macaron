@@ -38,10 +38,10 @@ export default function (keybindings, preferences, recentlyUsedFiles, i18n) {
     ...(process.platform === 'darwin' ? [marktext(keybindings, i18n)] : []),
     file(keybindings, preferences, recentlyUsedFiles, i18n),
     edit(keybindings, i18n),
-    paragraph(keybindings),
-    format(keybindings),
+    paragraph(keybindings, i18n),
+    format(keybindings, i18n),
     window(keybindings, i18n),
-    theme(preferences),
+    theme(preferences, i18n),
     view(keybindings, i18n),
     help(i18n)
   ]

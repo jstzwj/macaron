@@ -199,7 +199,7 @@ export default {
   },
   fileOperation: {
     newFile: 'New File',
-    untitled: 'Untitled-{id}',
+    untitled: 'Untitled {id}',
     import: {
       title: 'Import or Open',
       dropHere: 'Drop here to get you stuff into Macaron'

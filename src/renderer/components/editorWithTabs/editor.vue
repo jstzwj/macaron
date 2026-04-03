@@ -24,54 +24,45 @@
       >
       </div>
     </div>
-    <el-dialog
+    <dialog
       v-if="dialogTableVisible"
-      v-model="dialogTableVisible"
-      :teleported="false"
-      :show-close="isShowClose"
-      :modal="true"
       class="ag-dialog-table"
-      width="454px"
-      center
+      open
       dir='ltr'
     >
-      <template #title>
-        <div class="dialog-title">
-          {{ $t('editor.insertTable.title') }}
-        </div>
-      </template>
-      <el-form :model="tableChecker" :inline="true">
-        <el-form-item :label="$t('editor.insertTable.rows')">
-          <el-input-number
+      <div class="dialog-title">
+        {{ $t('editor.insertTable.title') }}
+      </div>
+      <form class="table-form" @submit.prevent="handleDialogTableConfirm">
+        <label class="table-field">
+          {{ $t('editor.insertTable.rows') }}
+          <input
             ref="rowInput"
-            size="mini"
-            v-model="tableChecker.rows"
-            controls-position="right"
-            :min="1"
-            :max="30"
-          ></el-input-number>
-        </el-form-item>
-        <el-form-item :label="$t('editor.insertTable.columns')">
-          <el-input-number
-            size="mini"
-            v-model="tableChecker.columns"
-            controls-position="right"
-            :min="1"
-            :max="20"
-          ></el-input-number>
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button @click="dialogTableVisible = false">
-            {{ $t('editor.insertTable.cancel') }}
-          </el-button>
-          <el-button type="primary" @click="handleDialogTableConfirm">
-            {{ $t('editor.insertTable.ok') }}
-          </el-button>
-        </div>
-      </template>
-    </el-dialog>
+            type="number"
+            v-model.number="tableChecker.rows"
+            min="1"
+            max="30"
+          >
+        </label>
+        <label class="table-field">
+          {{ $t('editor.insertTable.columns') }}
+          <input
+            type="number"
+            v-model.number="tableChecker.columns"
+            min="1"
+            max="20"
+          >
+        </label>
+      </form>
+      <div class="dialog-footer">
+        <button type="button" class="dialog-btn" @click="dialogTableVisible = false">
+          {{ $t('editor.insertTable.cancel') }}
+        </button>
+        <button type="button" class="dialog-btn primary" @click="handleDialogTableConfirm">
+          {{ $t('editor.insertTable.ok') }}
+        </button>
+      </div>
+    </dialog>
     <search
       v-if="!sourceCode"
     ></search>
@@ -190,7 +181,6 @@ export default {
       selectionChange: null,
       editor: null,
       pathname: '',
-      isShowClose: false,
       dialogTableVisible: false,
       imageViewerVisible: false,
       tableChecker: {
@@ -1168,9 +1158,89 @@ export default {
     flex: 1;
     color: var(--editorColor);
     & .ag-dialog-table {
-      & .el-button {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+      width: 454px;
+      border: 1px solid var(--floatBorderColor);
+      border-radius: 8px;
+      background: var(--floatBgColor);
+      color: var(--editorColor);
+      padding: 20px 24px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, .25);
+
+      &::backdrop {
+        background: rgba(0, 0, 0, .5);
+      }
+
+      & .dialog-title {
+        text-align: center;
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 16px;
+      }
+
+      & .table-form {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 16px;
+      }
+
+      & .table-field {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 14px;
+
+        & input[type="number"] {
+          width: 80px;
+          height: 28px;
+          padding: 0 8px;
+          background: transparent;
+          color: var(--editorColor);
+          border: 1px solid var(--editorColor10);
+          border-radius: 4px;
+          outline: none;
+        }
+
+        & input[type="number"]:focus {
+          border-color: var(--themeColor);
+        }
+      }
+
+      & .dialog-footer {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+      }
+
+      & .dialog-btn {
         font-size: 13px;
         width: 70px;
+        height: 30px;
+        border: 1px solid var(--editorColor10);
+        border-radius: 4px;
+        background: transparent;
+        color: var(--editorColor);
+        cursor: pointer;
+
+        &:hover {
+          border-color: var(--themeColor);
+          color: var(--themeColor);
+        }
+
+        &.primary {
+          background: var(--themeColor);
+          border-color: var(--themeColor);
+          color: #fff;
+
+          &:hover {
+            opacity: .85;
+          }
+        }
       }
     }
   }

@@ -199,7 +199,7 @@ export default {
   },
   fileOperation: {
     newFile: '新建文件',
-    untitled: '未命名-{id}',
+    untitled: '未命名 {id}',
     import: {
       title: '导入或打开',
       dropHere: '拖放到此处将内容导入 Macaron'

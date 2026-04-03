@@ -190,7 +190,7 @@ export default {
   },
   fileOperation: {
     newFile: 'ملف جديد',
-    untitled: 'بدون عنوان-{id}',
+    untitled: 'بدون عنوان {id}',
     import: {
       title: 'استيراد أو فتح',
       dropHere: 'اسحب到这里 لاستيراد ملفاتك إلى Macaron'

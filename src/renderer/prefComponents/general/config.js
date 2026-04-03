@@ -67,4 +67,31 @@ export const languageOptions = [{
 }, {
   labelKey: 'settings.options.language.zh-CN',
   value: 'zh-CN'
+}, {
+  labelKey: 'settings.options.language.zh-TW',
+  value: 'zh-TW'
+}, {
+  labelKey: 'settings.options.language.ja',
+  value: 'ja'
+}, {
+  labelKey: 'settings.options.language.ko',
+  value: 'ko'
+}, {
+  labelKey: 'settings.options.language.fr',
+  value: 'fr'
+}, {
+  labelKey: 'settings.options.language.es',
+  value: 'es'
+}, {
+  labelKey: 'settings.options.language.pt',
+  value: 'pt'
+}, {
+  labelKey: 'settings.options.language.pl',
+  value: 'pl'
+}, {
+  labelKey: 'settings.options.language.tr',
+  value: 'tr'
+}, {
+  labelKey: 'settings.options.language.ar',
+  value: 'ar'
 }]

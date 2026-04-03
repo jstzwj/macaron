@@ -199,7 +199,7 @@ export default {
   },
   fileOperation: {
     newFile: '新規ファイル',
-    untitled: '無題-{id}',
+    untitled: '無題 {id}',
     import: {
       title: 'インポートまたは開く',
       dropHere: 'ここにドロップして Macaron に取り込みます'
