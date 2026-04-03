@@ -1,0 +1,500 @@
+export default {
+  app: {
+    preferences: '偏好設定',
+    name: 'Macaron'
+  },
+  settings: {
+    searchPlaceholder: '搜尋偏好設定',
+    categories: {
+      general: '一般',
+      editor: '編輯器',
+      markdown: 'Markdown',
+      spelling: '拼字',
+      theme: '主題',
+      image: '圖片',
+      keybindings: '快速鍵'
+    },
+    general: {
+      title: '一般',
+      autoSave: '自動儲存',
+      autoSaveDescription: '自動儲存文件變更',
+      autoSaveDelayDescription: '文件編輯後延遲多久自動儲存',
+      window: '視窗',
+      titleBarStyle: '標題列樣式',
+      requiresRestart: '需要重新啟動後生效。',
+      hideScrollbars: '隱藏捲軸',
+      openFilesInNewWindow: '在新視窗中開啟檔案',
+      openFoldersInNewWindow: '在新視窗中開啟資料夾',
+      zoom: '縮放',
+      sidebar: '側邊欄',
+      wrapTextInToc: '目錄中長文字自動換行',
+      sortFieldForFilesInOpenFolders: '開啟資料夾中的檔案排序欄位',
+      startupAction: '啟動時操作',
+      openDefaultDirectory: '開啟預設目錄',
+      selectFolder: '選擇資料夾',
+      openBlankPage: '開啟空白頁',
+      misc: '其他',
+      userInterfaceLanguage: '介面語言'
+    },
+    options: {
+      titleBarStyle: {
+        custom: '自訂',
+        native: '原生'
+      },
+      fileSortBy: {
+        created: '建立時間',
+        modified: '修改時間',
+        title: '標題'
+      },
+      language: {
+        system: '跟隨系統',
+        en: 'English',
+        'zh-CN': '简体中文'
+      }
+    }
+  },
+  search: {
+    placeholder: '搜尋',
+    replacementPlaceholder: '取代內容',
+    caseSensitive: '區分大小寫',
+    wholeWord: '全字匹配',
+    regex: '使用正規表示式',
+    replaceAll: '全部取代',
+    replaceSingle: '取代目前',
+    invalidRegex: '無效的正規表示式：/{value}/。',
+    regexMatchesEmpty: '正規表示式 /{value}/ 會匹配空字串。'
+  },
+  titleBar: {
+    words: '單字',
+    characters: '字元',
+    paragraphs: '段落',
+    stats: {
+      word: {
+        short: '詞',
+        full: '單字'
+      },
+      character: {
+        short: '字',
+        full: '字元'
+      },
+      paragraph: {
+        short: '段',
+        full: '段落'
+      },
+      all: {
+        short: '全',
+        full: '字元（含空格）'
+      }
+    }
+  },
+  commandPalette: {
+    placeholder: '輸入命令以執行'
+  },
+  exportDialog: {
+    title: '匯出選項',
+    tabs: {
+      info: '資訊',
+      page: '頁面',
+      style: '樣式',
+      theme: '主題',
+      header: '頁首和頁尾',
+      toc: '目錄'
+    },
+    infoText: '請自訂頁面外觀，然後點擊「匯出」繼續。',
+    pageTitle: '頁面標題：',
+    pageSize: '頁面大小：',
+    widthHeightMm: '寬/高（毫米）：',
+    landscape: '橫向：',
+    pageMargin: '頁邊距（毫米）：',
+    topBottom: '上/下：',
+    leftRight: '左/右：',
+    overwriteFontSettings: '覆蓋主題字型設定：',
+    fontFamily: '字型：',
+    fontSize: '字型大小',
+    lineHeight: '行高',
+    autoNumberingHeadings: '標題自動編號：',
+    showFrontMatter: '顯示 Front Matter：',
+    themeText: '您可以透過選擇主題或建立自訂主題來改變文件外觀。',
+    theme: '主題：',
+    headerFooterText: '如果定義了頁首和/或頁尾，這些文字會出現在所有頁面上。',
+    headerType: '頁首類型：',
+    leftHeaderText: '左側頁首文字：',
+    mainHeaderText: '中間頁首文字：',
+    rightHeaderText: '右側頁首文字：',
+    footerType: '頁尾類型：',
+    leftFooterText: '左側頁尾文字：',
+    mainFooterText: '中間頁尾文字：',
+    rightFooterText: '右側頁尾文字：',
+    customizeStyle: '自訂樣式：',
+    allowStyledHeaderFooter: '允許帶樣式的頁首和頁尾：',
+    headerFooterFontSize: '頁首和頁尾字型大小',
+    includeTopHeading: '包含最高級標題：',
+    includeTopHeadingDetail: '同時包含第一級標題。',
+    tocTitle: '標題：',
+    export: '匯出...',
+    option: {
+      custom: '自訂',
+      none: '無',
+      singleCell: '單格',
+      threeCells: '三格',
+      default: '預設',
+      simple: '簡單',
+      styled: '帶樣式'
+    }
+  },
+  notification: {
+    information: '提示',
+    defaultMessage: '您不應該看到這則訊息',
+    spelling: '拼字',
+    spellcheckerDisabled: '無法變更語言，因為拼字檢查器已停用。'
+  },
+  editor: {
+    insertTable: {
+      title: '插入表格',
+      rows: '列數',
+      columns: '欄數',
+      cancel: '取消',
+      ok: '確定'
+    },
+    contextMenu: {
+      tabs: {
+        close: '關閉',
+        closeOthers: '關閉其他',
+        closeSavedTabs: '關閉已儲存分頁',
+        closeAllTabs: '關閉所有分頁',
+        rename: '重新命名',
+        copyPath: '複製路徑',
+        showInFolder: '在資料夾中顯示'
+      },
+      sideBar: {
+        newFile: '新增檔案',
+        newDirectory: '新增資料夾',
+        copy: '複製',
+        cut: '剪下',
+        paste: '貼上',
+        rename: '重新命名',
+        moveToTrash: '移至資源回收筒',
+        showInFolder: '在資料夾中顯示'
+      }
+    },
+    notification: {
+      ok: '確定'
+    },
+    imageUpload: {
+      title: '上傳圖片',
+      uploadFailed: '上傳失敗，圖片將被複製到圖片資料夾',
+      sizeExceeded: '無法上傳超過 5M 的圖片，圖片將被複製到圖片資料夾',
+      noUploader: '未提供圖片上傳器。',
+      copyDeletionUrl: '點擊複製已上傳圖片的刪除連結到剪貼簿（{url}）。'
+    }
+  },
+  fileOperation: {
+    newFile: '新增檔案',
+    untitled: '未命名-{id}',
+    import: {
+      title: '匯入或開啟',
+      dropHere: '拖放到此處將內容匯入 Macaron'
+    },
+    export: {
+      successTitle: '匯出成功',
+      successMessage: '成功匯出「{filename}」！',
+      failTitle: '列印/匯出失敗',
+      failMessage: '列印/匯出 {filename} 失敗'
+    }
+  },
+  about: {
+    appName: 'Macaron',
+    copyright: '版權所有 © 2017-{year} Luo Ran',
+    copyrightContributors: '版權所有 © 2018-{year} Macaron 貢獻者'
+  },
+  update: {
+    title: '更新',
+    notAvailable: '暫無更新',
+    downloaded: '更新已下載',
+    available: '發現新版本'
+  },
+  searchFolder: {
+    placeholder: '在資料夾中搜尋...',
+    noFolderOpen: '未開啟資料夾',
+    noResults: '未找到結果。',
+    cancel: '取消',
+    openFolder: '開啟資料夾'
+  },
+  preferences: {
+    keybindings: {
+      title: '快速鍵',
+      description: '自訂 Macaron 快速鍵，並點擊下方的儲存按鈕套用所有變更（需要重新啟動）。所有可用和預設快速鍵可以在{link}找到。',
+      onlineLink: '線上',
+      columnDescription: '描述',
+      columnKeyCombination: '按鍵組合',
+      columnOptions: '選項',
+      buttonEdit: '編輯',
+      buttonReset: '重設',
+      buttonUnbind: '解除綁定',
+      buttonSave: '儲存',
+      buttonRestoreDefaults: '還原預設快速鍵',
+      saveFailedTitle: '儲存失敗',
+      saveFailedMessage: '儲存時發生意外錯誤。',
+      keyInputDialog: {
+        placeholder: '按下按鍵組合',
+        hint: '按 Enter 繼續，或按 ESC 退出。',
+        invalidKey: '目前按鍵組合無法綁定！'
+      },
+      shortcutInUseTitle: '快速鍵已被佔用',
+      shortcutInUseMessage: '快速鍵 "{accelerator}" 已被佔用。請先取消綁定該快速鍵，然後重試。'
+    },
+    spellchecker: {
+      title: '拼字檢查',
+      enableSpellcheck: '啟用拼字檢查',
+      hideMarks: '隱藏拼字錯誤標記',
+      autoDetectLanguage: '自動偵測文件語言',
+      defaultLanguage: '拼字檢查預設語言',
+      macOSInfo: '輸入時將自動偵測使用的語言。可以透過系統偏好設定中的「語言與地區」新增其他語言。',
+      customDictionary: '自訂字典：',
+      customDictionaryDesc: '編輯自訂字典中的單字。',
+      columnWord: '單字',
+      columnOptions: '選項',
+      buttonDelete: '刪除',
+      noWords: '暫無單字',
+      switchLanguageFailed: '切換語言失敗',
+      removeWordFailed: '刪除自訂單字失敗',
+      removeWordFailedMessage: '儲存時發生意外錯誤。'
+    },
+    image: {
+      title: '圖片',
+      insertActionDesc: '從本機資料夾或剪貼簿插入圖片後的預設操作',
+      clipboardHint: '剪貼簿處理僅在 macOS 和 Windows 上完全支援。',
+      uploader: {
+        title: '上傳器',
+        currentUploader: '目前圖片上傳器是 {name}。',
+        noUploader: '目前未選擇上傳器。請選擇一個上傳器並進行設定。',
+        saveConfigTitle: '儲存設定',
+        githubSaved: 'Github 設定已儲存。',
+        scriptSaved: '命令列腳本設定已儲存',
+        githubWarning: 'Github 將在未來版本中移除，請使用 picgo',
+        picgoNotInstalled: '您的系統未安裝 {link}，請先安裝。',
+        picgoLink: 'picgo',
+        githubToken: 'GitHub 權杖：',
+        githubTokenHint: '權杖在 macOS 上由 Keychain 儲存，在 Linux 上由 Secret Service API/libsecret 儲存，在 Windows 上由 Credential Vault 儲存',
+        tokenPlaceholder: '輸入權杖',
+        ownerPlaceholder: '擁有者',
+        repoPlaceholder: '儲存庫',
+        branchPlaceholder: '分支',
+        ownerName: '擁有者名稱：',
+        repoName: '儲存庫名稱：',
+        branchName: '分支名稱（選填）：',
+        scriptLocation: 'Shell 腳本位置：',
+        scriptPathPlaceholder: '腳本絕對路徑',
+        scriptDesc: '腳本將以圖片檔案路徑作為唯一參數執行，應輸出以下任一的有效值',
+        scriptDescHtml: 'HTMLImageElement'
+      }
+    },
+    theme: {
+      title: '主題',
+      autoSwitch: '根據系統設定自動調整應用程式主題',
+      openFolder: '開啟主題資料夾',
+      openFolderButton: '開啟資料夾',
+      importTheme: '匯入自訂主題',
+      importButton: '匯入主題'
+    },
+    markdown: {
+      title: 'Markdown',
+      lists: '列表：',
+      preferLooseList: '偏好寬鬆列表項',
+      bulletMarker: '無序列表的偏好標記',
+      orderDelimiter: '有序列表的偏好標記',
+      listIndentation: '列表的偏好縮排',
+      extensions: 'Markdown 擴充功能：',
+      frontmatter: 'Front matter 格式',
+      superSubScript: '啟用 Pandoc 風格的上標和下標',
+      footnotes: '啟用 Pandoc 風格的註腳',
+      footnotesNote: '需要重新啟動。',
+      compatibility: '相容性：',
+      enableHtml: '啟用 HTML 轉譯',
+      gitlabCompat: '啟用 GitLab 相容模式',
+      diagrams: '圖表：',
+      sequenceTheme: '時序圖主題',
+      misc: '其他：',
+      headingStyle: '偏好的標題樣式'
+    },
+    editor: {
+      title: '編輯器',
+      textEditor: '文字編輯器設定：',
+      fontSize: '字型大小',
+      lineHeight: '行高',
+      fontFamily: '字型',
+      maxWidth: '文字編輯器最大寬度',
+      maxWidthNote: "留空使用主題預設值，否則使用帶單位後綴的數字，單位為 'ch'（字元）、'px'（像素）或 '%'（百分比）。",
+      codeBlock: '程式碼區塊設定：',
+      codeFontSize: '字型大小',
+      codeFontFamily: '字型',
+      lineNumbers: '顯示行號',
+      trimEmptyLines: '刪除首尾空行',
+      writing: '寫作行為：',
+      autoPairBracket: '書寫時自動閉合括號',
+      autoPairMarkdown: '自動完成 Markdown 語法',
+      autoPairQuote: '自動閉合引號',
+      fileRepresentation: '檔案表示：',
+      tabWidth: '偏好的定位字元寬度',
+      lineSeparator: '換行符類型',
+      encoding: '預設編碼',
+      detectEncoding: '自動偵測檔案編碼',
+      trailingNewline: '末尾換行符處理',
+      misc: '其他：',
+      textDirection: '文字方向',
+      hideInsertHint: '隱藏選擇新段落類型的提示',
+      hideLinkPopup: '游標位於連結上時隱藏彈出視窗',
+      autoCheck: '是否自動檢查任何相關任務'
+    }
+  },
+  menu: {
+    macaron: {
+      root: 'Macaron',
+      about: '關於 Macaron',
+      checkForUpdates: '檢查更新...',
+      preferences: '偏好設定',
+      services: '服務',
+      hide: '隱藏 Macaron',
+      hideOthers: '隱藏其他',
+      showAll: '顯示全部',
+      quit: '結束 Macaron'
+    },
+    file: {
+      root: '檔案(&F)',
+      newTab: '新增分頁',
+      newWindow: '新增視窗',
+      openFile: '開啟檔案...',
+      openFolder: '開啟資料夾...',
+      openRecent: '開啟最近使用',
+      clearRecentlyUsed: '清除最近使用',
+      save: '儲存',
+      saveAs: '另存為...',
+      autoSave: '自動儲存',
+      moveTo: '移動到...',
+      rename: '重新命名...',
+      import: '匯入...',
+      export: '匯出',
+      html: 'HTML',
+      pdf: 'PDF',
+      print: '列印',
+      preferences: '偏好設定...',
+      closeTab: '關閉分頁',
+      closeWindow: '關閉視窗',
+      quit: '結束'
+    },
+    edit: {
+      root: '編輯(&E)',
+      simpleRoot: '編輯',
+      undo: '復原',
+      redo: '重做',
+      cut: '剪下',
+      copy: '複製',
+      paste: '貼上',
+      copyAsMarkdown: '複製為 Markdown',
+      copyAsHtml: '複製為 HTML',
+      pasteAsPlainText: '貼上為純文字',
+      selectAll: '全選',
+      duplicate: '複製段落',
+      createParagraph: '建立段落',
+      deleteParagraph: '刪除段落',
+      find: '尋找',
+      findNext: '尋找下一個',
+      findPrevious: '尋找上一個',
+      replace: '取代',
+      findInFolder: '在資料夾中尋找',
+      screenshot: '螢幕截圖',
+      lineEnding: '換行符',
+      lineEndingCrlf: '歸位換行 (CRLF)',
+      lineEndingLf: '換行 (LF)'
+    },
+    paragraph: {
+      root: '段落(&P)',
+      heading1: '標題 1',
+      heading2: '標題 2',
+      heading3: '標題 3',
+      heading4: '標題 4',
+      heading5: '標題 5',
+      heading6: '標題 6',
+      promoteHeading: '提升標題層級',
+      demoteHeading: '降低標題層級',
+      table: '表格',
+      codeFences: '程式碼區塊',
+      quoteBlock: '引用區塊',
+      mathBlock: '數學公式區塊',
+      htmlBlock: 'HTML 區塊',
+      orderedList: '有序列表',
+      bulletList: '無序列表',
+      taskList: '任務列表',
+      looseListItem: '寬鬆列表項',
+      paragraph: '段落',
+      horizontalRule: '水平分隔線',
+      frontMatter: 'Front Matter'
+    },
+    format: {
+      root: '格式(&O)',
+      bold: '粗體',
+      italic: '斜體',
+      underline: '底線',
+      superscript: '上標',
+      subscript: '下標',
+      highlight: '螢光標記',
+      inlineCode: '行內程式碼',
+      inlineMath: '行內公式',
+      strikethrough: '刪除線',
+      hyperlink: '超連結',
+      image: '圖片',
+      clearFormatting: '清除格式'
+    },
+    theme: {
+      root: '主題(&T)',
+      light: 'Cadmium 淺色',
+      dark: '深色',
+      graphite: 'Graphite 淺色',
+      materialDark: 'Material 深色',
+      oneDark: 'One Dark',
+      ulysses: 'Ulysses 淺色'
+    },
+    view: {
+      root: '檢視(&V)',
+      commandPalette: '命令面板...',
+      sourceCodeMode: '原始碼模式',
+      typewriterMode: '打字機模式',
+      focusMode: '專注模式',
+      showSidebar: '顯示側邊欄',
+      showTabBar: '顯示分頁列',
+      toggleToc: '切換目錄',
+      reloadImages: '重新載入圖片',
+      showDevTools: '顯示開發者工具',
+      reloadWindow: '重新載入視窗'
+    },
+    window: {
+      root: '視窗(&W)',
+      minimize: '最小化',
+      alwaysOnTop: '一律置頂',
+      zoomIn: '放大',
+      zoomOut: '縮小',
+      showInFullScreen: '進入全螢幕',
+      bringAllToFront: '全部移至最前'
+    },
+    help: {
+      root: '說明(&H)',
+      quickStart: '快速開始...',
+      markdownReference: 'Markdown 參考...',
+      changelog: '更新日誌...',
+      donate: '透過 Open Collective 捐贈...',
+      feedbackViaTwitter: '透過 Twitter 回饋...',
+      reportIssue: '回報問題或請求功能...',
+      website: '網站...',
+      watchOnGitHub: '在 GitHub 上關注...',
+      followOnGitHub: '在 Github 上關注我們...',
+      followOnTwitter: '在 Twitter 上關注我們...',
+      license: '授權條款...',
+      checkForUpdates: '檢查更新...',
+      about: '關於 Macaron...'
+    },
+    dock: {
+      open: '開啟...',
+      clearRecent: '清除最近使用'
+    }
+  }
+}

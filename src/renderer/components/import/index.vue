@@ -19,8 +19,8 @@
           <div class="img-wrapper">
             <img :src="`${importIcon.url}`" alt="import file">
           </div>
-          <div>Import or Open</div>
-          <p> Drop here to get you stuff into Macaron</p>
+          <div>{{ $t('fileOperation.import.title') }}</div>
+          <p>{{ $t('fileOperation.import.dropHere') }}</p>
         </div>
         <div class="file-list">
           <div>.md</div>

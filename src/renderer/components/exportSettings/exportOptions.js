@@ -18,33 +18,33 @@ export const pageSizeList = [
     label: 'Tabloid (17" x 11")',
     value: 'Tabloid'
   }, {
-    label: 'Custom',
+    labelKey: 'exportDialog.option.custom',
     value: 'custom'
   }
 ]
 
 export const headerFooterTypes = [
   {
-    label: 'None',
+    labelKey: 'exportDialog.option.none',
     value: 0
   }, {
-    label: 'Single cell',
+    labelKey: 'exportDialog.option.singleCell',
     value: 1
   }, {
-    label: 'Three cells',
+    labelKey: 'exportDialog.option.threeCells',
     value: 2
   }
 ]
 
 export const headerFooterStyles = [
   {
-    label: 'Default',
+    labelKey: 'exportDialog.option.default',
     value: 0
   }, {
-    label: 'Simple',
+    labelKey: 'exportDialog.option.simple',
     value: 1
   }, {
-    label: 'Styled',
+    labelKey: 'exportDialog.option.styled',
     value: 2
   }
 ]

@@ -1,8 +1,8 @@
 export const titleBarStyleOptions = [{
-  label: 'Custom',
+  labelKey: 'settings.options.titleBarStyle.custom',
   value: 'custom'
 }, {
-  label: 'Native',
+  labelKey: 'settings.options.titleBarStyle.native',
   value: 'native'
 }]
 
@@ -48,17 +48,23 @@ export const zoomOptions = [{
 }]
 
 export const fileSortByOptions = [{
-  label: 'Creation time',
+  labelKey: 'settings.options.fileSortBy.created',
   value: 'created'
 }, {
-  label: 'Modification time',
+  labelKey: 'settings.options.fileSortBy.modified',
   value: 'modified'
 }, {
-  label: 'Title',
+  labelKey: 'settings.options.fileSortBy.title',
   value: 'title'
 }]
 
 export const languageOptions = [{
-  label: 'English',
+  labelKey: 'settings.options.language.system',
+  value: 'system'
+}, {
+  labelKey: 'settings.options.language.en',
   value: 'en'
+}, {
+  labelKey: 'settings.options.language.zh-CN',
+  value: 'zh-CN'
 }]

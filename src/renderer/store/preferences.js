@@ -1,5 +1,7 @@
 import { ipcRenderer } from 'electron'
 import bus from '../bus'
+import { SYSTEM_LANGUAGE } from '../../common/i18n'
+import { setRendererLanguage } from '../i18n'
 
 // user preference
 const state = {
@@ -14,7 +16,8 @@ const state = {
   fileSortBy: 'created',
   startUpAction: 'lastState',
   defaultDirectoryToOpen: '',
-  language: 'en',
+  language: SYSTEM_LANGUAGE,
+  systemLocale: '',
 
   editorFontFamily: 'Open Sans',
   fontSize: 16,
@@ -105,6 +108,8 @@ const mutations = {
         state[key] = preference[key]
       }
     })
+
+    setRendererLanguage(state.language, state.systemLocale)
   },
   SET_MODE (state, { type, checked }) {
     state[type] = checked

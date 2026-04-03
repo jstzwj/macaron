@@ -7,6 +7,7 @@ import { hasKeys, getUniqueId } from '../util'
 import listToTree from '../util/listToTree'
 import { createDocumentState, getOptionsFromState, getSingleFileState, getBlankFileState } from './help'
 import notice from '../services/notification'
+import { translate } from '../i18n'
 import {
   FileEncodingCommand,
   LineEndingCommand,
@@ -376,8 +377,8 @@ const actions = {
 
   SHOW_IMAGE_DELETION_URL ({ commit }, deletionUrl) {
     notice.notify({
-      title: 'Image deletion URL',
-      message: `Click to copy the deletion URL of the uploaded image to the clipboard (${deletionUrl}).`,
+      title: translate('editor.imageUpload.title'),
+      message: translate('editor.imageUpload.copyDeletionUrl', { url: deletionUrl }),
       showConfirm: true,
       time: 20000
     })
@@ -1078,8 +1079,8 @@ const actions = {
   LINTEN_FOR_EXPORT_SUCCESS ({ commit }) {
     ipcRenderer.on('mt::export-success', (e, { type, filePath }) => {
       notice.notify({
-        title: 'Exported successfully',
-        message: `Exported "${path.basename(filePath)}" successfully!`,
+        title: translate('fileOperation.export.successTitle'),
+        message: translate('fileOperation.export.successMessage', { filename: path.basename(filePath) }),
         showConfirm: true
       })
         .then(() => {

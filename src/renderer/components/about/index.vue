@@ -34,18 +34,26 @@ import MarkTextLogo from '../../assets/images/logo.png'
 
 export default {
   data () {
-    this.name = 'Macaron'
-    this.copyright = `Copyright © 2017-${new Date().getFullYear()} Luo Ran`
-    this.copyrightContributors = `Copyright © 2018-${new Date().getFullYear()} Macaron Contributors`
     this.logo = MarkTextLogo
+    const currentYear = new Date().getFullYear()
     return {
-      showAboutDialog: false
+      showAboutDialog: false,
+      currentYear
     }
   },
   computed: {
     ...mapState({
       appVersion: state => state.appVersion
-    })
+    }),
+    name () {
+      return this.$t('about.appName')
+    },
+    copyright () {
+      return this.$t('about.copyright', { year: this.currentYear })
+    },
+    copyrightContributors () {
+      return this.$t('about.copyrightContributors', { year: this.currentYear })
+    }
   },
   created () {
     bus.$on('aboutDialog', this.showDialog)

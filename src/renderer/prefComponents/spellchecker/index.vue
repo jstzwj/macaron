@@ -1,30 +1,30 @@
 <template>
   <div class="pref-spellchecker">
-    <h4>Spelling</h4>
+    <h4>{{ $t('preferences.spellchecker.title') }}</h4>
     <compound>
       <template #head>
         <bool
-          description="Enable spell checking"
+          :description="$t('preferences.spellchecker.enableSpellcheck')"
           :bool="spellcheckerEnabled"
           :onChange="handleSpellcheckerEnabled"
         ></bool>
       </template>
       <template #children>
         <bool
-          description="Hide marks for spelling errors"
+          :description="$t('preferences.spellchecker.hideMarks')"
           :bool="spellcheckerNoUnderline"
           :disable="!spellcheckerEnabled"
           :onChange="value => onSelectChange('spellcheckerNoUnderline', value)"
         ></bool>
         <bool
           v-show="isOsx"
-          description="Automatically detect document language"
+          :description="$t('preferences.spellchecker.autoDetectLanguage')"
           :bool="true"
           :disable="true"
         ></bool>
         <cur-select
           v-show="!isOsx"
-          description="Default language for spell checking"
+          :description="$t('preferences.spellchecker.defaultLanguage')"
           :value="spellcheckerLanguage"
           :options="availableDictionaries"
           :disable="!spellcheckerEnabled"
@@ -34,23 +34,23 @@
     </compound>
 
     <div v-if="isOsx && spellcheckerEnabled" class="description">
-      The used language will be detected automatically while typing. Additional languages may be added through "Language & Region" in your system preferences pane.
+      {{ $t('preferences.spellchecker.macOSInfo') }}
     </div>
 
     <div v-if="!isOsx && spellcheckerEnabled">
-      <h6 class="title">Custom dictionary:</h6>
-      <div class="description">Edit words in custom dictionary.</div>
+      <h6 class="title">{{ $t('preferences.spellchecker.customDictionary') }}</h6>
+      <div class="description">{{ $t('preferences.spellchecker.customDictionaryDesc') }}</div>
       <el-table
         :data="wordsInCustomDictionary"
-        empty-text="No words available"
+        :empty-text="$t('preferences.spellchecker.noWords')"
         style="width: 100%"
       >
-        <el-table-column prop="word" label="Word">
+        <el-table-column prop="word" :label="$t('preferences.spellchecker.columnWord')">
         </el-table-column>
 
-        <el-table-column fixed="right" label="Options" width="90">
+        <el-table-column fixed="right" :label="$t('preferences.spellchecker.columnOptions')" width="90">
           <template #default="scope">
-            <el-button @click="handleDeleteClick(scope.row)" link size="small" title="Delete">
+            <el-button @click="handleDeleteClick(scope.row)" link size="small" :title="$t('preferences.spellchecker.buttonDelete')">
               <el-icon><Delete /></el-icon>
             </el-button>
           </template>
@@ -72,6 +72,7 @@ import { isOsx } from '@/util'
 import { SpellChecker } from '@/spellchecker'
 import { getLanguageName } from '@/spellchecker/languageMap'
 import notice from '@/services/notification'
+import { translate } from '../../i18n'
 
 export default {
   components: {
@@ -133,7 +134,7 @@ export default {
         .catch(error => {
           log.error(error)
           notice.notify({
-            title: 'Failed to switch language',
+            title: translate('preferences.spellchecker.switchLanguageFailed'),
             type: 'error',
             message: error.message
           })
@@ -153,9 +154,9 @@ export default {
               this.wordsInCustomDictionary = this.wordsInCustomDictionary.filter(item => item.word !== selectedItem.word)
             } else {
               notice.notify({
-                title: 'Failed to remove custom word',
+                title: translate('preferences.spellchecker.removeWordFailed'),
                 type: 'error',
-                message: 'An unexpected error occurred while saving.'
+                message: translate('preferences.spellchecker.removeWordFailedMessage')
               })
             }
           })

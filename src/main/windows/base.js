@@ -1,5 +1,6 @@
 import EventEmitter from 'events'
 import { isLinux } from '../config'
+import { SYSTEM_LANGUAGE } from '../../common/i18n'
 
 /**
  * A Macaron window.
@@ -76,7 +77,9 @@ class BaseWindow extends EventEmitter {
       codeFontSize,
       hideScrollbar,
       theme,
-      titleBarStyle
+      titleBarStyle,
+      language,
+      systemLocale
     } = userPreference.getAll()
 
     /* eslint-disable */
@@ -99,6 +102,8 @@ class BaseWindow extends EventEmitter {
     url.searchParams.set('hsb', hideScrollbar ? '1' : '0')
     url.searchParams.set('theme', theme)
     url.searchParams.set('tbs', titleBarStyle)
+    url.searchParams.set('lang', language || SYSTEM_LANGUAGE)
+    url.searchParams.set('sl', systemLocale || '')
 
     return url
   }

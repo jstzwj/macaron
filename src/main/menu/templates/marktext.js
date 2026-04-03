@@ -4,21 +4,21 @@ import * as actions from '../actions/marktext'
 
 // macOS only menu.
 
-export default function (keybindings) {
+export default function (keybindings, i18n) {
   return {
-    label: 'Macaron',
+    label: i18n.t('menu.macaron.root'),
     submenu: [{
-      label: 'About Macaron',
+      label: i18n.t('menu.macaron.about'),
       click (menuItem, focusedWindow) {
         showAboutDialog(focusedWindow)
       }
     }, {
-      label: 'Check for updates...',
+      label: i18n.t('menu.macaron.checkForUpdates'),
       click (menuItem, focusedWindow) {
         actions.checkUpdates(focusedWindow)
       }
     }, {
-      label: 'Preferences',
+      label: i18n.t('menu.macaron.preferences'),
       accelerator: keybindings.getAccelerator('file.preferences'),
       click () {
         actions.userSetting()
@@ -26,32 +26,32 @@ export default function (keybindings) {
     }, {
       type: 'separator'
     }, {
-      label: 'Services',
+      label: i18n.t('menu.macaron.services'),
       role: 'services',
       submenu: []
     }, {
       type: 'separator'
     }, {
-      label: 'Hide Macaron',
+      label: i18n.t('menu.macaron.hide'),
       accelerator: keybindings.getAccelerator('mt.hide'),
       click () {
         actions.osxHide()
       }
     }, {
-      label: 'Hide Others',
+      label: i18n.t('menu.macaron.hideOthers'),
       accelerator: keybindings.getAccelerator('mt.hide-others'),
       click () {
         actions.osxHideAll()
       }
     }, {
-      label: 'Show All',
+      label: i18n.t('menu.macaron.showAll'),
       click () {
         actions.osxShowAll()
       }
     }, {
       type: 'separator'
     }, {
-      label: 'Quit Macaron',
+      label: i18n.t('menu.macaron.quit'),
       accelerator: keybindings.getAccelerator('file.quit'),
       click: app.quit
     }]

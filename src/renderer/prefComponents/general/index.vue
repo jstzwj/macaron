@@ -1,18 +1,18 @@
 <template>
   <div class="pref-general">
-    <h4>General</h4>
+    <h4>{{ $t('settings.general.title') }}</h4>
     <compound>
       <template #head>
-        <h6 class="title">Auto Save:</h6>
+        <h6 class="title">{{ $t('settings.general.autoSave') }}:</h6>
       </template>
       <template #children>
         <bool
-          description="Automatically save document changes"
+          :description="$t('settings.general.autoSaveDescription')"
           :bool="autoSave"
           :onChange="value => onSelectChange('autoSave', value)"
         ></bool>
         <range
-          description="Delay following document edit before automatically saving"
+          :description="$t('settings.general.autoSaveDelayDescription')"
           :value="autoSaveDelay"
           :min="1000"
           :max="10000"
@@ -25,34 +25,34 @@
 
     <compound>
       <template #head>
-        <h6 class="title">Window:</h6>
+        <h6 class="title">{{ $t('settings.general.window') }}:</h6>
       </template>
       <template #children>
         <cur-select
           v-if="!isOsx"
-          description="Title bar style"
-          notes="Requires restart."
+          :description="$t('settings.general.titleBarStyle')"
+          :notes="$t('settings.general.requiresRestart')"
           :value="titleBarStyle"
-          :options="titleBarStyleOptions"
+          :options="translatedTitleBarStyleOptions"
           :onChange="value => onSelectChange('titleBarStyle', value)"
         ></cur-select>
         <bool
-          description="Hide scrollbars"
+          :description="$t('settings.general.hideScrollbars')"
           :bool="hideScrollbar"
           :onChange="value => onSelectChange('hideScrollbar', value)"
         ></bool>
         <bool
-          description="Open files in new window"
+          :description="$t('settings.general.openFilesInNewWindow')"
           :bool="openFilesInNewWindow"
           :onChange="value => onSelectChange('openFilesInNewWindow', value)"
         ></bool>
         <bool
-          description="Open folders in new window"
+          :description="$t('settings.general.openFoldersInNewWindow')"
           :bool="openFolderInNewWindow"
           :onChange="value => onSelectChange('openFolderInNewWindow', value)"
         ></bool>
         <cur-select
-          description="Zoom"
+          :description="$t('settings.general.zoom')"
           :value="zoom"
           :options="zoomOptions"
           :onChange="value => onSelectChange('zoom', value)"
@@ -62,20 +62,19 @@
 
     <compound>
       <template #head>
-        <h6 class="title">Sidebar:</h6>
+        <h6 class="title">{{ $t('settings.general.sidebar') }}:</h6>
       </template>
       <template #children>
         <bool
-          description="Wrap text in table of contents"
+          :description="$t('settings.general.wrapTextInToc')"
           :bool="wordWrapInToc"
           :onChange="value => onSelectChange('wordWrapInToc', value)"
         ></bool>
 
-        <!-- TODO: The description is very bad and the entry isn't used by the editor. -->
         <cur-select
-          description="Sort field for files in open folders"
+          :description="$t('settings.general.sortFieldForFilesInOpenFolders')"
           :value="fileSortBy"
-          :options="fileSortByOptions"
+          :options="translatedFileSortByOptions"
           :onChange="value => onSelectChange('fileSortBy', value)"
           :disable="true"
         ></cur-select>
@@ -84,18 +83,14 @@
 
     <compound>
       <template #head>
-        <h6 class="title">Action on startup:</h6>
+        <h6 class="title">{{ $t('settings.general.startupAction') }}:</h6>
       </template>
       <template #children>
         <section class="startup-action-ctrl">
           <el-radio-group v-model="startUpAction">
-            <!--
-              Hide "lastState" for now (#2064).
-            <el-radio class="ag-underdevelop" value="lastState">Restore last editor session</el-radio>
-            -->
-            <el-radio value="folder" style="margin-bottom: 10px;">Open the default directory<span>: {{defaultDirectoryToOpen}}</span></el-radio>
-            <el-button size="small" @click="selectDefaultDirectoryToOpen">Select Folder</el-button>
-            <el-radio value="blank">Open a blank page</el-radio>
+            <el-radio value="folder" style="margin-bottom: 10px;">{{ $t('settings.general.openDefaultDirectory') }}<span>: {{defaultDirectoryToOpen}}</span></el-radio>
+            <el-button size="small" @click="selectDefaultDirectoryToOpen">{{ $t('settings.general.selectFolder') }}</el-button>
+            <el-radio value="blank">{{ $t('settings.general.openBlankPage') }}</el-radio>
           </el-radio-group>
         </section>
       </template>
@@ -103,15 +98,14 @@
 
     <compound>
       <template #head>
-        <h6 class="title">Misc:</h6>
+        <h6 class="title">{{ $t('settings.general.misc') }}:</h6>
       </template>
       <template #children>
         <cur-select
-          description="User interface language"
+          :description="$t('settings.general.userInterfaceLanguage')"
           :value="language"
-          :options="languageOptions"
+          :options="translatedLanguageOptions"
           :onChange="value => onSelectChange('language', value)"
-          :disable="true"
         ></cur-select>
       </template>
     </compound>
@@ -134,6 +128,13 @@ import {
   languageOptions
 } from './config'
 
+const translateOptions = (translator, options) => {
+  return options.map(option => ({
+    ...option,
+    label: option.labelKey ? translator(option.labelKey) : option.label
+  }))
+}
+
 export default {
   components: {
     Compound,
@@ -143,10 +144,7 @@ export default {
     Separator
   },
   data () {
-    this.titleBarStyleOptions = titleBarStyleOptions
     this.zoomOptions = zoomOptions
-    this.fileSortByOptions = fileSortByOptions
-    this.languageOptions = languageOptions
     this.isOsx = isOsx
     return {}
   },
@@ -164,6 +162,15 @@ export default {
       fileSortBy: state => state.preferences.fileSortBy,
       language: state => state.preferences.language
     }),
+    translatedTitleBarStyleOptions () {
+      return translateOptions(this.$t, titleBarStyleOptions)
+    },
+    translatedFileSortByOptions () {
+      return translateOptions(this.$t, fileSortByOptions)
+    },
+    translatedLanguageOptions () {
+      return translateOptions(this.$t, languageOptions)
+    },
     startUpAction: {
       get: function () {
         return this.$store.state.preferences.startUpAction

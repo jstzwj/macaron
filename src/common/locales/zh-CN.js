@@ -1,0 +1,509 @@
+export default {
+  app: {
+    preferences: '偏好设置',
+    name: 'Macaron'
+  },
+  settings: {
+    searchPlaceholder: '搜索偏好设置',
+    categories: {
+      general: '通用',
+      editor: '编辑器',
+      markdown: 'Markdown',
+      spelling: '拼写',
+      theme: '主题',
+      image: '图片',
+      keybindings: '快捷键'
+    },
+    general: {
+      title: '通用',
+      autoSave: '自动保存',
+      autoSaveDescription: '自动保存文档更改',
+      autoSaveDelayDescription: '文档编辑后延迟多久自动保存',
+      window: '窗口',
+      titleBarStyle: '标题栏样式',
+      requiresRestart: '需要重启后生效。',
+      hideScrollbars: '隐藏滚动条',
+      openFilesInNewWindow: '在新窗口中打开文件',
+      openFoldersInNewWindow: '在新窗口中打开文件夹',
+      zoom: '缩放',
+      sidebar: '侧边栏',
+      wrapTextInToc: '目录中长文本自动换行',
+      sortFieldForFilesInOpenFolders: '打开文件夹中的文件排序字段',
+      startupAction: '启动时操作',
+      openDefaultDirectory: '打开默认目录',
+      selectFolder: '选择文件夹',
+      openBlankPage: '打开空白页',
+      misc: '其他',
+      userInterfaceLanguage: '界面语言'
+    },
+    options: {
+      titleBarStyle: {
+        custom: '自定义',
+        native: '原生'
+      },
+      fileSortBy: {
+        created: '创建时间',
+        modified: '修改时间',
+        title: '标题'
+      },
+      language: {
+        system: '跟随系统',
+        en: 'English',
+        'zh-CN': '简体中文',
+        'zh-TW': '繁體中文',
+        ja: '日本語',
+        ko: '한국어',
+        fr: 'Français',
+        es: 'Español',
+        pt: 'Português',
+        pl: 'Polski',
+        tr: 'Türkçe',
+        ar: 'العربية'
+      }
+    }
+  },
+  search: {
+    placeholder: '搜索',
+    replacementPlaceholder: '替换内容',
+    caseSensitive: '区分大小写',
+    wholeWord: '全字匹配',
+    regex: '使用正则表达式',
+    replaceAll: '全部替换',
+    replaceSingle: '替换当前',
+    invalidRegex: '无效的正则表达式：/{value}/。',
+    regexMatchesEmpty: '正则表达式 /{value}/ 会匹配空字符串。'
+  },
+  titleBar: {
+    words: '单词',
+    characters: '字符',
+    paragraphs: '段落',
+    stats: {
+      word: {
+        short: '词',
+        full: '单词'
+      },
+      character: {
+        short: '字',
+        full: '字符'
+      },
+      paragraph: {
+        short: '段',
+        full: '段落'
+      },
+      all: {
+        short: '全',
+        full: '字符（含空格）'
+      }
+    }
+  },
+  commandPalette: {
+    placeholder: '输入命令以执行'
+  },
+  exportDialog: {
+    title: '导出选项',
+    tabs: {
+      info: '信息',
+      page: '页面',
+      style: '样式',
+      theme: '主题',
+      header: '页眉和页脚',
+      toc: '目录'
+    },
+    infoText: '请自定义页面外观，然后点击”导出”继续。',
+    pageTitle: '页面标题：',
+    pageSize: '页面大小：',
+    widthHeightMm: '宽/高（毫米）：',
+    landscape: '横向：',
+    pageMargin: '页边距（毫米）：',
+    topBottom: '上/下：',
+    leftRight: '左/右：',
+    overwriteFontSettings: '覆盖主题字体设置：',
+    fontFamily: '字体：',
+    fontSize: '字号',
+    lineHeight: '行高',
+    autoNumberingHeadings: '标题自动编号：',
+    showFrontMatter: '显示 Front Matter：',
+    themeText: '你可以通过选择主题或创建自定义主题来改变文档外观。',
+    theme: '主题：',
+    headerFooterText: '如果定义了页眉和/或页脚，这些文本会出现在所有页面上。',
+    headerType: '页眉类型：',
+    leftHeaderText: '左侧页眉文本：',
+    mainHeaderText: '中间页眉文本：',
+    rightHeaderText: '右侧页眉文本：',
+    footerType: '页脚类型：',
+    leftFooterText: '左侧页脚文本：',
+    mainFooterText: '中间页脚文本：',
+    rightFooterText: '右侧页脚文本：',
+    customizeStyle: '自定义样式：',
+    allowStyledHeaderFooter: '允许带样式的页眉和页脚：',
+    headerFooterFontSize: '页眉和页脚字号',
+    includeTopHeading: '包含最高级标题：',
+    includeTopHeadingDetail: '同时包含第一级标题。',
+    tocTitle: '标题：',
+    export: '导出...',
+    option: {
+      custom: '自定义',
+      none: '无',
+      singleCell: '单格',
+      threeCells: '三格',
+      default: '默认',
+      simple: '简单',
+      styled: '带样式'
+    }
+  },
+  notification: {
+    information: '提示',
+    defaultMessage: '你不应该看到这条消息',
+    spelling: '拼写',
+    spellcheckerDisabled: '无法更改语言，因为拼写检查器已禁用。'
+  },
+  editor: {
+    insertTable: {
+      title: '插入表格',
+      rows: '行数',
+      columns: '列数',
+      cancel: '取消',
+      ok: '确定'
+    },
+    contextMenu: {
+      tabs: {
+        close: '关闭',
+        closeOthers: '关闭其他',
+        closeSavedTabs: '关闭已保存标签页',
+        closeAllTabs: '关闭所有标签页',
+        rename: '重命名',
+        copyPath: '复制路径',
+        showInFolder: '在文件夹中显示'
+      },
+      sideBar: {
+        newFile: '新建文件',
+        newDirectory: '新建文件夹',
+        copy: '复制',
+        cut: '剪切',
+        paste: '粘贴',
+        rename: '重命名',
+        moveToTrash: '移至回收站',
+        showInFolder: '在文件夹中显示'
+      }
+    },
+    notification: {
+      ok: '确定'
+    },
+    imageUpload: {
+      title: '上传图片',
+      uploadFailed: '上传失败，图片将被复制到图片文件夹',
+      sizeExceeded: '无法上传超过 5M 的图片，图片将被复制到图片文件夹',
+      noUploader: '未提供图片上传器。',
+      copyDeletionUrl: '点击复制已上传图片的删除链接到剪贴板（{url}）。'
+    }
+  },
+  fileOperation: {
+    newFile: '新建文件',
+    untitled: '未命名-{id}',
+    import: {
+      title: '导入或打开',
+      dropHere: '拖放到此处将内容导入 Macaron'
+    },
+    export: {
+      successTitle: '导出成功',
+      successMessage: '成功导出"{filename}"！',
+      failTitle: '打印/导出失败',
+      failMessage: '打印/导出 {filename} 失败'
+    }
+  },
+  about: {
+    appName: 'Macaron',
+    copyright: '版权所有 © 2017-{year} Luo Ran',
+    copyrightContributors: '版权所有 © 2018-{year} Macaron 贡献者'
+  },
+  update: {
+    title: '更新',
+    notAvailable: '暂无更新',
+    downloaded: '更新已下载',
+    available: '发现新版本'
+  },
+  searchFolder: {
+    placeholder: '在文件夹中搜索...',
+    noFolderOpen: '未打开文件夹',
+    noResults: '未找到结果。',
+    cancel: '取消',
+    openFolder: '打开文件夹'
+  },
+  preferences: {
+    keybindings: {
+      title: '快捷键',
+      description: '自定义 Macaron 快捷键，并点击下方的保存按钮应用所有更改（需要重启）。所有可用和默认快捷键可以在{link}找到。',
+      onlineLink: '在线',
+      columnDescription: '描述',
+      columnKeyCombination: '按键组合',
+      columnOptions: '选项',
+      buttonEdit: '编辑',
+      buttonReset: '重置',
+      buttonUnbind: '解除绑定',
+      buttonSave: '保存',
+      buttonRestoreDefaults: '恢复默认快捷键',
+      saveFailedTitle: '保存失败',
+      saveFailedMessage: '保存时发生意外错误。',
+      keyInputDialog: {
+        placeholder: '按下按键组合',
+        hint: '按 Enter 继续，或按 ESC 退出。',
+        invalidKey: '当前按键组合无法绑定！'
+      },
+      shortcutInUseTitle: '快捷键已被占用',
+      shortcutInUseMessage: '快捷键 "{accelerator}" 已被占用。请先取消绑定该快捷键，然后重试。'
+    },
+    spellchecker: {
+      title: '拼写检查',
+      enableSpellcheck: '启用拼写检查',
+      hideMarks: '隐藏拼写错误标记',
+      autoDetectLanguage: '自动检测文档语言',
+      defaultLanguage: '拼写检查默认语言',
+      macOSInfo: '输入时将自动检测使用的语言。可以通过系统偏好设置中的"语言与地区"添加其他语言。',
+      customDictionary: '自定义词典：',
+      customDictionaryDesc: '编辑自定义词典中的单词。',
+      columnWord: '单词',
+      columnOptions: '选项',
+      buttonDelete: '删除',
+      noWords: '暂无单词',
+      switchLanguageFailed: '切换语言失败',
+      removeWordFailed: '删除自定义单词失败',
+      removeWordFailedMessage: '保存时发生意外错误。'
+    },
+    image: {
+      title: '图片',
+      insertActionDesc: '从本地文件夹或剪贴板插入图片后的默认操作',
+      clipboardHint: '剪贴板处理仅在 macOS 和 Windows 上完全支持。',
+      uploader: {
+        title: '上传器',
+        currentUploader: '当前图片上传器是 {name}。',
+        noUploader: '当前未选择上传器。请选择一个上传器并进行配置。',
+        saveConfigTitle: '保存配置',
+        githubSaved: 'Github 配置已保存。',
+        scriptSaved: '命令行脚本配置已保存',
+        githubWarning: 'Github 将在未来版本中移除，请使用 picgo',
+        picgoNotInstalled: '您的系统未安装 {link}，请先安装。',
+        picgoLink: 'picgo',
+        githubToken: 'GitHub 令牌：',
+        githubTokenHint: '令牌在 macOS 上由 Keychain 保存，在 Linux 上由 Secret Service API/libsecret 保存，在 Windows 上由 Credential Vault 保存',
+        tokenPlaceholder: '输入令牌',
+        ownerPlaceholder: '所有者',
+        repoPlaceholder: '仓库',
+        branchPlaceholder: '分支',
+        ownerName: '所有者名称：',
+        repoName: '仓库名称：',
+        branchName: '分支名称（可选）：',
+        scriptLocation: 'Shell 脚本位置：',
+        scriptPathPlaceholder: '脚本绝对路径',
+        scriptDesc: '脚本将以图片文件路径作为唯一参数执行，应输出以下任一的有效值',
+        scriptDescHtml: 'HTMLImageElement'
+      }
+    },
+    theme: {
+      title: '主题',
+      autoSwitch: '根据系统设置自动调整应用程序主题',
+      openFolder: '打开主题文件夹',
+      openFolderButton: '打开文件夹',
+      importTheme: '导入自定义主题',
+      importButton: '导入主题'
+    },
+    markdown: {
+      title: 'Markdown',
+      lists: '列表：',
+      preferLooseList: '偏好宽松列表项',
+      bulletMarker: '无序列表的偏好标记',
+      orderDelimiter: '有序列表的偏好标记',
+      listIndentation: '列表的偏好缩进',
+      extensions: 'Markdown 扩展：',
+      frontmatter: 'Front matter 格式',
+      superSubScript: '启用 Pandoc 风格的上标和下标',
+      footnotes: '启用 Pandoc 风格的脚注',
+      footnotesNote: '需要重启。',
+      compatibility: '兼容性：',
+      enableHtml: '启用 HTML 渲染',
+      gitlabCompat: '启用 GitLab 兼容模式',
+      diagrams: '图表：',
+      sequenceTheme: '时序图主题',
+      misc: '其他：',
+      headingStyle: '偏好的标题样式'
+    },
+    editor: {
+      title: '编辑器',
+      textEditor: '文本编辑器设置：',
+      fontSize: '字号',
+      lineHeight: '行高',
+      fontFamily: '字体',
+      maxWidth: '文本编辑器最大宽度',
+      maxWidthNote: "留空使用主题默认值，否则使用带单位后缀的数字，单位为 'ch'（字符）、'px'（像素）或 '%'（百分比）。",
+      codeBlock: '代码块设置：',
+      codeFontSize: '字号',
+      codeFontFamily: '字体',
+      lineNumbers: '显示行号',
+      trimEmptyLines: '删除首尾空行',
+      writing: '写作行为：',
+      autoPairBracket: '书写时自动闭合括号',
+      autoPairMarkdown: '自动完成 Markdown 语法',
+      autoPairQuote: '自动闭合引号',
+      fileRepresentation: '文件表示：',
+      tabWidth: '偏好的制表符宽度',
+      lineSeparator: '换行符类型',
+      encoding: '默认编码',
+      detectEncoding: '自动检测文件编码',
+      trailingNewline: '末尾换行符处理',
+      misc: '其他：',
+      textDirection: '文本方向',
+      hideInsertHint: '隐藏选择新段落类型的提示',
+      hideLinkPopup: '光标位于链接上时隐藏弹出窗口',
+      autoCheck: '是否自动检查任何相关任务'
+    }
+  },
+  menu: {
+    macaron: {
+      root: 'Macaron',
+      about: '关于 Macaron',
+      checkForUpdates: '检查更新...',
+      preferences: '偏好设置',
+      services: '服务',
+      hide: '隐藏 Macaron',
+      hideOthers: '隐藏其他',
+      showAll: '显示全部',
+      quit: '退出 Macaron'
+    },
+    file: {
+      root: '文件(&F)',
+      newTab: '新建标签页',
+      newWindow: '新建窗口',
+      openFile: '打开文件...',
+      openFolder: '打开文件夹...',
+      openRecent: '打开最近使用',
+      clearRecentlyUsed: '清除最近使用',
+      save: '保存',
+      saveAs: '另存为...',
+      autoSave: '自动保存',
+      moveTo: '移动到...',
+      rename: '重命名...',
+      import: '导入...',
+      export: '导出',
+      html: 'HTML',
+      pdf: 'PDF',
+      print: '打印',
+      preferences: '偏好设置...',
+      closeTab: '关闭标签页',
+      closeWindow: '关闭窗口',
+      quit: '退出'
+    },
+    edit: {
+      root: '编辑(&E)',
+      simpleRoot: '编辑',
+      undo: '撤销',
+      redo: '重做',
+      cut: '剪切',
+      copy: '复制',
+      paste: '粘贴',
+      copyAsMarkdown: '复制为 Markdown',
+      copyAsHtml: '复制为 HTML',
+      pasteAsPlainText: '粘贴为纯文本',
+      selectAll: '全选',
+      duplicate: '复制段落',
+      createParagraph: '创建段落',
+      deleteParagraph: '删除段落',
+      find: '查找',
+      findNext: '查找下一个',
+      findPrevious: '查找上一个',
+      replace: '替换',
+      findInFolder: '在文件夹中查找',
+      screenshot: '截图',
+      lineEnding: '换行符',
+      lineEndingCrlf: '回车换行 (CRLF)',
+      lineEndingLf: '换行 (LF)'
+    },
+    paragraph: {
+      root: '段落(&P)',
+      heading1: '标题 1',
+      heading2: '标题 2',
+      heading3: '标题 3',
+      heading4: '标题 4',
+      heading5: '标题 5',
+      heading6: '标题 6',
+      promoteHeading: '提升标题级别',
+      demoteHeading: '降低标题级别',
+      table: '表格',
+      codeFences: '代码块',
+      quoteBlock: '引用块',
+      mathBlock: '数学公式块',
+      htmlBlock: 'HTML 块',
+      orderedList: '有序列表',
+      bulletList: '无序列表',
+      taskList: '任务列表',
+      looseListItem: '宽松列表项',
+      paragraph: '段落',
+      horizontalRule: '水平分割线',
+      frontMatter: 'Front Matter'
+    },
+    format: {
+      root: '格式(&O)',
+      bold: '加粗',
+      italic: '斜体',
+      underline: '下划线',
+      superscript: '上标',
+      subscript: '下标',
+      highlight: '高亮',
+      inlineCode: '行内代码',
+      inlineMath: '行内公式',
+      strikethrough: '删除线',
+      hyperlink: '超链接',
+      image: '图片',
+      clearFormatting: '清除格式'
+    },
+    theme: {
+      root: '主题(&T)',
+      light: 'Cadmium 浅色',
+      dark: '深色',
+      graphite: 'Graphite 浅色',
+      materialDark: 'Material 深色',
+      oneDark: 'One Dark',
+      ulysses: 'Ulysses 浅色'
+    },
+    view: {
+      root: '视图(&V)',
+      commandPalette: '命令面板...',
+      sourceCodeMode: '源码模式',
+      typewriterMode: '打字机模式',
+      focusMode: '专注模式',
+      showSidebar: '显示侧边栏',
+      showTabBar: '显示标签栏',
+      toggleToc: '切换目录',
+      reloadImages: '重新加载图片',
+      showDevTools: '显示开发者工具',
+      reloadWindow: '重新加载窗口'
+    },
+    window: {
+      root: '窗口(&W)',
+      minimize: '最小化',
+      alwaysOnTop: '始终置顶',
+      zoomIn: '放大',
+      zoomOut: '缩小',
+      showInFullScreen: '进入全屏',
+      bringAllToFront: '全部移到前台'
+    },
+    help: {
+      root: '帮助(&H)',
+      quickStart: '快速开始...',
+      markdownReference: 'Markdown 参考...',
+      changelog: '更新日志...',
+      donate: '通过 Open Collective 捐赠...',
+      feedbackViaTwitter: '通过 Twitter 反馈...',
+      reportIssue: '报告问题或请求功能...',
+      website: '网站...',
+      watchOnGitHub: '在 GitHub 上关注...',
+      followOnGitHub: '在 Github 上关注我们...',
+      followOnTwitter: '在 Twitter 上关注我们...',
+      license: '许可证...',
+      checkForUpdates: '检查更新...',
+      about: '关于 Macaron...'
+    },
+    dock: {
+      open: '打开...',
+      clearRecent: '清除最近使用'
+    }
+  }
+}

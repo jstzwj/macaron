@@ -1,28 +1,28 @@
 <template>
   <div class="pref-keybindings">
-    <h4>Key Bindings</h4>
+    <h4>{{ $t('preferences.keybindings.title') }}</h4>
     <section class="keybindings">
       <div class="text">
-        Customize Macaron shortcuts and click on the save button below to apply all changes (requires a restart).
-        All available and default key binding can be found <a class="link" @click="openKeybindingWiki">online</a>.
+        {{ $t('preferences.keybindings.description', { link: $t('preferences.keybindings.onlineLink') }) }}
+        <a class="link" @click="openKeybindingWiki">{{ $t('preferences.keybindings.onlineLink') }}</a>
       </div>
       <el-table
         :data="keybindingList"
         style="width: 100%"
       >
-        <el-table-column prop="description" label="Description">
+        <el-table-column prop="description" :label="$t('preferences.keybindings.columnDescription')">
         </el-table-column>
-        <el-table-column prop="accelerator" label="Key Combination" width="220">
+        <el-table-column prop="accelerator" :label="$t('preferences.keybindings.columnKeyCombination')" width="220">
         </el-table-column>
-        <el-table-column fixed="right" label="Options" width="90">
+        <el-table-column fixed="right" :label="$t('preferences.keybindings.columnOptions')" width="90">
           <template #default="scope">
-            <el-button @click="handleEditClick(scope.$index, scope.row)" link size="small" title="Edit">
+            <el-button @click="handleEditClick(scope.$index, scope.row)" link size="small" :title="$t('preferences.keybindings.buttonEdit')">
               <el-icon><Edit /></el-icon>
             </el-button>
-            <el-button @click="handleResetClick(scope.$index, scope.row)" link size="small" title="Reset">
+            <el-button @click="handleResetClick(scope.$index, scope.row)" link size="small" :title="$t('preferences.keybindings.buttonReset')">
               <el-icon><RefreshRight /></el-icon>
             </el-button>
-            <el-button @click="handleUnbindClick(scope.$index, scope.row)" link size="small" title="Unbind">
+            <el-button @click="handleUnbindClick(scope.$index, scope.row)" link size="small" :title="$t('preferences.keybindings.buttonUnbind')">
               <el-icon><Delete /></el-icon>
             </el-button>
           </template>
@@ -31,8 +31,8 @@
     </section>
     <section class="footer">
       <separator></separator>
-      <el-button size="medium" @click="saveKeybindings">Save</el-button>
-      <el-button size="medium" @click="restoreDefaults">Restore default key bindings</el-button>
+      <el-button size="medium" @click="saveKeybindings">{{ $t('preferences.keybindings.buttonSave') }}</el-button>
+      <el-button size="medium" @click="restoreDefaults">{{ $t('preferences.keybindings.buttonRestoreDefaults') }}</el-button>
     </section>
     <section v-if="showDebugTools" class="keyboard-debug">
       <separator></separator>
@@ -55,6 +55,7 @@ import Separator from '../common/separator'
 import KeyInputDialog from './key-input-dialog.vue'
 import KeybindingConfigurator from './KeybindingConfigurator'
 import notice from '@/services/notification'
+import { translate } from '../../i18n'
 
 export default {
   components: {
@@ -106,9 +107,9 @@ export default {
           .then(success => {
             if (!success) {
               notice.notify({
-                title: 'Failed to save',
+                title: translate('preferences.keybindings.saveFailedTitle'),
                 type: 'error',
-                message: 'An unexpected error occurred while saving.'
+                message: translate('preferences.keybindings.saveFailedMessage')
               })
             }
           })
@@ -120,9 +121,9 @@ export default {
         .then(success => {
           if (!success) {
             notice.notify({
-              title: 'Failed to save',
+              title: translate('preferences.keybindings.saveFailedTitle'),
               type: 'error',
-              message: 'An unexpected error occurred while saving.'
+              message: translate('preferences.keybindings.saveFailedMessage')
             })
           }
         })
@@ -156,9 +157,9 @@ export default {
     },
     handleDuplicateShortcut (id, accelerator) {
       notice.notify({
-        title: 'Shortcut already in use',
+        title: translate('preferences.keybindings.shortcutInUseTitle'),
         type: 'warning',
-        message: `The shortcut "${accelerator}" is already in use. Please unset the shortcut and try again.`
+        message: translate('preferences.keybindings.shortcutInUseMessage', { accelerator })
       })
     },
     dumpKeyboardInformation () {

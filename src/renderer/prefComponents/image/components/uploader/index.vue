@@ -1,67 +1,64 @@
 <template>
   <div class="pref-image-uploader">
-    <h5>Uploader</h5>
+    <h5>{{ $t('preferences.image.uploader.title') }}</h5>
     <section class="current-uploader">
-      <div v-if="isValidUploaderService(currentUploader)">The current image uploader is
-        {{ getServiceNameById(currentUploader) }}.</div>
-      <span v-else>Currently no uploader is selected. Please select an uploader and config
-        it.</span>
+      <div v-if="isValidUploaderService(currentUploader)">{{ $t('preferences.image.uploader.currentUploader', { name: getServiceNameById(currentUploader) }) }}</div>
+      <span v-else>{{ $t('preferences.image.uploader.noUploader') }}</span>
     </section>
     <section class="configration">
       <cur-select :value="currentUploader" :options="uploaderOptions"
         :onChange="value => setCurrentUploader(value)"></cur-select>
       <div class="picgo" v-if="currentUploader === 'picgo'">
         <div v-if="!picgoExists" class="warning">
-          Your system does not have <span class="link"
-            @click="open('https://github.com/PicGo/PicGo-Core')">picgo</span> installed, please
-          install it before use.
+          {{ $t('preferences.image.uploader.picgoNotInstalled', { link: $t('preferences.image.uploader.picgoLink') }) }}
+          <span class="link"
+            @click="open('https://github.com/PicGo/PicGo-Core')">{{ $t('preferences.image.uploader.picgoLink') }}</span>
         </div>
       </div>
       <div class="github" v-if="currentUploader === 'github'">
-        <div class="warning">Github will be removed in a future version, please use picgo</div>
+        <div class="warning">{{ $t('preferences.image.uploader.githubWarning') }}</div>
         <div class="form-group">
           <div class="label">
-            GitHub token:
+            {{ $t('preferences.image.uploader.githubToken') }}
             <span
               class="item github-token-help"
-              title="The token is saved by Keychain on macOS, Secret Service API/libsecret on Linux and Credential Vault on Windows"
+              :title="$t('preferences.image.uploader.githubTokenHint')"
             >
               <el-icon><InfoFilled /></el-icon>
             </span>
           </div>
-          <el-input v-model="githubToken" placeholder="Input token" size="mini"></el-input>
+          <el-input v-model="githubToken" :placeholder="$t('preferences.image.uploader.tokenPlaceholder')" size="mini"></el-input>
         </div>
         <div class="form-group">
-          <div class="label">Owner name:</div>
-          <el-input v-model="github.owner" placeholder="owner" size="mini"></el-input>
+          <div class="label">{{ $t('preferences.image.uploader.ownerName') }}</div>
+          <el-input v-model="github.owner" :placeholder="$t('preferences.image.uploader.ownerPlaceholder')" size="mini"></el-input>
         </div>
         <div class="form-group">
-          <div class="label">Repo name:</div>
-          <el-input v-model="github.repo" placeholder="repo" size="mini"></el-input>
+          <div class="label">{{ $t('preferences.image.uploader.repoName') }}</div>
+          <el-input v-model="github.repo" :placeholder="$t('preferences.image.uploader.repoPlaceholder')" size="mini"></el-input>
         </div>
         <div class="form-group">
-          <div class="label">Branch name (optional):</div>
-          <el-input v-model="github.branch" placeholder="branch" size="mini"></el-input>
+          <div class="label">{{ $t('preferences.image.uploader.branchName') }}</div>
+          <el-input v-model="github.branch" :placeholder="$t('preferences.image.uploader.branchPlaceholder')" size="mini"></el-input>
         </div>
         <legal-notices-checkbox class="github"
           :class="[{ 'error': legalNoticesErrorStates.github }]"
           :uploaderService="uploadServices.github"></legal-notices-checkbox>
         <div class="form-group">
-          <el-button size="mini" :disabled="githubDisable" @click="save('github')">Save
+          <el-button size="mini" :disabled="githubDisable" @click="save('github')">{{ $t('preferences.image.uploader.saveConfigTitle') }}
           </el-button>
         </div>
       </div>
       <div class="script" v-else-if="currentUploader === 'cliScript'">
-        <div class="description">The script will be executed with the image file path as its only
-          argument and it should output any valid value for the <code>src</code> attribute of a
-          <em>HTMLImageElement</em>.
+        <div class="description">{{ $t('preferences.image.uploader.scriptDesc') }}
+          <code>src</code> {{ $t('preferences.image.uploader.scriptDescHtml') }}.
         </div>
         <div class="form-group">
-          <div class="label">Shell script location:</div>
-          <el-input v-model="cliScript" placeholder="Script absolute path" size="mini"></el-input>
+          <div class="label">{{ $t('preferences.image.uploader.scriptLocation') }}</div>
+          <el-input v-model="cliScript" :placeholder="$t('preferences.image.uploader.scriptPathPlaceholder')" size="mini"></el-input>
         </div>
         <div class="form-group">
-          <el-button size="mini" :disabled="cliScriptDisable" @click="save('cliScript')">Save
+          <el-button size="mini" :disabled="cliScriptDisable" @click="save('cliScript')">{{ $t('preferences.image.uploader.saveConfigTitle') }}
           </el-button>
         </div>
       </div>
@@ -77,6 +74,7 @@ import { isFileExecutableSync } from '@/util/fileSystem'
 import CurSelect from '@/prefComponents/common/select'
 import commandExists from 'command-exists'
 import notice from '@/services/notification'
+import { translate } from '../../../../i18n'
 
 export default {
   components: {
@@ -192,8 +190,8 @@ export default {
         })
       }
       notice.notify({
-        title: 'Save Config',
-        message: type === 'github' ? 'The Github configration has been saved.' : 'The command line script configuration has been saved',
+        title: translate('preferences.image.uploader.saveConfigTitle'),
+        message: type === 'github' ? translate('preferences.image.uploader.githubSaved') : translate('preferences.image.uploader.scriptSaved'),
         type: 'primary'
       })
     },

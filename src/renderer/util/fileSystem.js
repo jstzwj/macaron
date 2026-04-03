@@ -8,6 +8,7 @@ import dayjs from 'dayjs'
 import { Octokit } from '@octokit/rest'
 import { isImageFile } from 'common/filesystem/paths'
 import { isWindows } from './index'
+import { translate } from '../i18n'
 
 export const create = async (pathname, type) => {
   return type === 'directory'
@@ -120,7 +121,7 @@ export const uploadImage = async (pathname, image, preferences) => {
   })
 
   if (currentUploader === 'none') {
-    rj('No image uploader provided.')
+    rj(translate('editor.imageUpload.noUploader'))
   }
 
   const uploadByGithub = (content, filename) => {
@@ -145,7 +146,7 @@ export const uploadImage = async (pathname, image, preferences) => {
         re(result.data.content.download_url)
       })
       .catch(_ => {
-        rj('Upload failed, the image will be copied to the image folder')
+        rj(translate('editor.imageUpload.uploadFailed'))
       })
   }
 
@@ -186,7 +187,7 @@ export const uploadImage = async (pathname, image, preferences) => {
   }
 
   const notification = () => {
-    rj('Cannot upload more than 5M image, the image will be copied to the image folder')
+    rj(translate('editor.imageUpload.sizeExceeded'))
   }
 
   if (isPath) {

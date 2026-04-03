@@ -1,12 +1,12 @@
 <template>
   <div class="pref-sidebar">
-    <h3 class="title">Preferences</h3>
+    <h3 class="title">{{ $t('app.preferences') }}</h3>
     <section class="search-wrapper">
       <el-autocomplete
         popper-class="pref-autocomplete"
         v-model="state"
         :fetch-suggestions="querySearch"
-        placeholder="Search preferences"
+        :placeholder="$t('settings.searchPlaceholder')"
         :trigger-on-focus="false"
         @select="handleSelect">
         <template #prefix><el-icon><Search /></el-icon></template>
@@ -17,14 +17,14 @@
       </el-autocomplete>
     </section>
     <section class="category">
-      <div v-for="c of category" :key="c.name" class="item"
+      <div v-for="c of translatedCategory" :key="c.label" class="item"
         @click="handleCategoryItemClick(c)"
         :class="{active: c.label === currentCategory}"
       >
         <svg :viewBox="c.icon.viewBox">
           <use :xlink:href="c.icon.url"></use>
         </svg>
-        <span>{{c.name}}</span>
+        <span>{{ c.name }}</span>
       </div>
     </section>
   </div>
@@ -42,6 +42,14 @@ export default {
       state: ''
     }
   },
+  computed: {
+    translatedCategory () {
+      return this.category.map(item => ({
+        ...item,
+        name: this.$t(item.nameKey)
+      }))
+    }
+  },
   watch: {
     '$route' (to, from) {
       if (to.name !== from.name) {
@@ -53,7 +61,6 @@ export default {
     querySearch (queryString, cb) {
       const restaurants = this.restaurants
       const results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants
-      // call callback return this results
       cb(results)
     },
     createFilter (queryString) {
@@ -72,7 +79,7 @@ export default {
     },
     handleCategoryItemClick (item) {
       const { currentCategory } = this
-      if (item.name.toLowerCase() !== currentCategory) {
+      if (item.label !== currentCategory) {
         this.$router.push({
           path: item.path
         })

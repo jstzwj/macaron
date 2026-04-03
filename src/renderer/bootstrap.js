@@ -1,6 +1,7 @@
 import { ipcRenderer } from 'electron'
 import log from 'electron-log/renderer'
 import RendererPaths from './node/paths'
+import { SYSTEM_LANGUAGE } from '../common/i18n'
 
 let exceptionLogger = s => console.error(s)
 
@@ -18,6 +19,8 @@ const parseUrlArgs = () => {
   const hideScrollbar = params.get('hsb') === '1'
   const theme = params.get('theme')
   const titleBarStyle = params.get('tbs')
+  const language = params.get('lang') || SYSTEM_LANGUAGE
+  const systemLocale = params.get('sl') || ''
   const userDataPath = params.get('udp')
   const windowId = Number(params.get('wid'))
   const type = params.get('type')
@@ -36,7 +39,9 @@ const parseUrlArgs = () => {
       codeFontSize,
       hideScrollbar,
       theme,
-      titleBarStyle
+      titleBarStyle,
+      language,
+      systemLocale
     }
   }
 }

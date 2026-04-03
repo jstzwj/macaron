@@ -18,7 +18,7 @@
         :key="item.value"
         :value="item.value"
       >
-        {{ item.label }}
+        {{ item.labelKey ? $t(item.labelKey) : item.label }}
       </option>
     </select>
     <div v-if="notes" class="notes">

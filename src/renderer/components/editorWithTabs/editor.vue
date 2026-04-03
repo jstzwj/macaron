@@ -37,11 +37,11 @@
     >
       <template #title>
         <div class="dialog-title">
-          Insert Table
+          {{ $t('editor.insertTable.title') }}
         </div>
       </template>
       <el-form :model="tableChecker" :inline="true">
-        <el-form-item label="Rows">
+        <el-form-item :label="$t('editor.insertTable.rows')">
           <el-input-number
             ref="rowInput"
             size="mini"
@@ -51,7 +51,7 @@
             :max="30"
           ></el-input-number>
         </el-form-item>
-        <el-form-item label="Columns">
+        <el-form-item :label="$t('editor.insertTable.columns')">
           <el-input-number
             size="mini"
             v-model="tableChecker.columns"
@@ -64,10 +64,10 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="dialogTableVisible = false">
-            Cancel
+            {{ $t('editor.insertTable.cancel') }}
           </el-button>
           <el-button type="primary" @click="handleDialogTableConfirm">
-            OK
+            {{ $t('editor.insertTable.ok') }}
           </el-button>
         </div>
       </template>
@@ -735,7 +735,7 @@ export default {
             destImagePath = await uploadImage(pathname, image, preferences)
           } catch (err) {
             notice.notify({
-              title: 'Upload Image',
+              title: this.$t('editor.imageUpload.title'),
               type: 'warning',
               message: err
             })
@@ -960,9 +960,9 @@ export default {
           } catch (err) {
             log.error('Failed to export document:', err)
             notice.notify({
-              title: `Printing/Exporting ${htmlTitle || 'html'} failed`,
+              title: this.$t('fileOperation.export.failTitle'),
               type: 'error',
-              message: err.message || 'There is something wrong when exporting.'
+              message: this.$t('fileOperation.export.failMessage', { filename: htmlTitle || 'html' })
             })
           }
           break
@@ -989,9 +989,9 @@ export default {
           } catch (err) {
             log.error('Failed to export document:', err)
             notice.notify({
-              title: 'Printing/Exporting failed',
+              title: this.$t('fileOperation.export.failTitle'),
               type: 'error',
-              message: `There is something wrong when export ${htmlTitle || 'PDF'}.`
+              message: this.$t('fileOperation.export.failMessage', { filename: htmlTitle || 'PDF' })
             })
             this.handlePrintServiceClearup()
           }
@@ -1014,9 +1014,9 @@ export default {
           } catch (err) {
             log.error('Failed to export document:', err)
             notice.notify({
-              title: 'Printing/Exporting failed',
+              title: this.$t('fileOperation.export.failTitle'),
               type: 'error',
-              message: `There is something wrong when print ${htmlTitle || ''}.`
+              message: this.$t('fileOperation.export.failMessage', { filename: htmlTitle || '' })
             })
             this.handlePrintServiceClearup()
           }

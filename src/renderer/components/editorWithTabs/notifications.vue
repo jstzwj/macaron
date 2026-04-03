@@ -15,7 +15,7 @@
           v-if="currentNotification.showConfirm"
           @click.stop="handleClick(true)"
         >
-          Ok
+          {{ $t('editor.notification.ok') }}
         </span>
         <span
           class="inline-button"

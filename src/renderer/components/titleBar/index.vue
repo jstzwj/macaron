@@ -9,7 +9,7 @@
       :class="[{ 'active': active }, { 'tabs-visible': showTabBar }, { 'frameless': titleBarStyle === 'custom' }, { 'isOsx': isOsx }]"
     >
       <div class="title" @dblclick.stop="toggleMaxmizeOnMacOS">
-        <span v-if="!filename">Macaron</span>
+        <span v-if="!filename">{{ $t('app.name') }}</span>
         <span v-else>
           <span
             v-for="(path, index) of paths"
@@ -42,10 +42,10 @@
           v-if="wordCount"
           class="item word-count"
           :class="[{ 'title-no-drag': platform !== 'darwin' }]"
-          :title="`Words: ${wordCount['word']} | Characters: ${wordCount['character']} | Paragraphs: ${wordCount['paragraph']}`"
+          :title="wordCountTitle"
           @click.stop="handleWordClick"
         >
-          <span class="text-center-vertical">{{ `${HASH[show].short} ${wordCount[show]}` }}</span>
+          <span class="text-center-vertical">{{ `${statsMap[show].short} ${wordCount[show]}` }}</span>
         </div>
       </div>
       <div
@@ -90,24 +90,6 @@ import { isOsx } from '@/util'
 export default {
   data () {
     this.isOsx = isOsx
-    this.HASH = {
-      word: {
-        short: 'W',
-        full: 'word'
-      },
-      character: {
-        short: 'C',
-        full: 'character'
-      },
-      paragraph: {
-        short: 'P',
-        full: 'paragraph'
-      },
-      all: {
-        short: 'A',
-        full: '(with space)character'
-      }
-    }
     this.windowIconMinimize = minimizePath
     this.windowIconRestore = restorePath
     this.windowIconMaximize = maximizePath
@@ -141,6 +123,17 @@ export default {
       titleBarStyle: state => state.preferences.titleBarStyle,
       showTabBar: state => state.layout.showTabBar
     }),
+    statsMap () {
+      return {
+        word: this.$tm('titleBar.stats.word'),
+        character: this.$tm('titleBar.stats.character'),
+        paragraph: this.$tm('titleBar.stats.paragraph'),
+        all: this.$tm('titleBar.stats.all')
+      }
+    },
+    wordCountTitle () {
+      return `${this.$t('titleBar.words')}: ${this.wordCount.word} | ${this.$t('titleBar.characters')}: ${this.wordCount.character} | ${this.$t('titleBar.paragraphs')}: ${this.wordCount.paragraph}`
+    },
     paths () {
       if (!this.pathname) return []
       const pathnameToken = this.pathname.split(PATH_SEPARATOR).filter(i => i)
@@ -156,9 +149,9 @@ export default {
       const hasOpenFolder = this.project && this.project.name
       let title = ''
       if (value) {
-        title = hasOpenFolder ? `${value} - ${this.project.name}` : `${value} - Macaron`
+        title = hasOpenFolder ? `${value} - ${this.project.name}` : `${value} - ${this.$t('app.name')}`
       } else {
-        title = hasOpenFolder ? this.project.name : 'Macaron'
+        title = hasOpenFolder ? this.project.name : this.$t('app.name')
       }
 
       document.title = title

@@ -2,10 +2,11 @@ import fs from 'fs'
 import path from 'path'
 import EventEmitter from 'events'
 import Store from 'electron-store'
-import { BrowserWindow, ipcMain, nativeTheme } from 'electron'
+import { BrowserWindow, ipcMain, nativeTheme, app } from 'electron'
 import log from 'electron-log/main'
 import { isWindows } from '../config'
 import { hasSameKeys } from '../utils'
+import { SYSTEM_LANGUAGE } from '../../common/i18n'
 import schema from './schema'
 
 const PREFERENCES_FILE_NAME = 'preferences'
@@ -50,24 +51,15 @@ class Preference extends EventEmitter {
       throw new Error('Can not load static preference.json file')
     }
 
-    // I don't know why `this.store.size` is 3 when first load, so I just check file existed.
     if (!this.hasPreferencesFile) {
       this.store.set(defaultSettings)
     } else {
-      // Because `this.getAll()` will return a plainObject, so we can not use `hasOwnProperty` method
-      // const plainObject = () => Object.create(null)
-      const userSetting = this.getAll()
-      // Update outdated settings
+      const userSetting = this.store.store
       const requiresUpdate = !hasSameKeys(defaultSettings, userSetting)
       const userSettingKeys = Object.keys(userSetting)
       const defaultSettingKeys = Object.keys(defaultSettings)
 
       if (requiresUpdate) {
-        // TODO(fxha): For performance reasons, we should try to replace 'electron-store' because
-        //   it does multiple blocking I/O calls when changing entries. There is no transaction or
-        //   async I/O available. The core reason we changed to it was JSON scheme validation.
-
-        // Remove outdated settings
         for (const key of userSettingKeys) {
           if (!defaultSettingKeys.includes(key)) {
             delete userSetting[key]
@@ -75,7 +67,6 @@ class Preference extends EventEmitter {
           }
         }
 
-        // Add new setting options
         let addedNewEntries = false
         for (const key in defaultSettings) {
           if (!userSettingKeys.includes(key)) {
@@ -93,15 +84,26 @@ class Preference extends EventEmitter {
   }
 
   getAll () {
-    return this.store.store
+    return {
+      ...this.store.store,
+      systemLocale: app.getLocale(),
+      language: this.store.get('language') || SYSTEM_LANGUAGE
+    }
   }
 
   setItem (key, value) {
-    ipcMain.emit('broadcast-preferences-changed', { [key]: value })
+    const payload = { [key]: value }
+    if (key === 'language') {
+      payload.systemLocale = app.getLocale()
+    }
+    ipcMain.emit('broadcast-preferences-changed', payload)
     return this.store.set(key, value)
   }
 
   getItem (key) {
+    if (key === 'systemLocale') {
+      return app.getLocale()
+    }
     return this.store.get(key)
   }
 

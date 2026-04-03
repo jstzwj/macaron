@@ -9,18 +9,19 @@ import paragraph from './paragraph'
 import format from './format'
 import theme from './theme'
 
-export dockMenu from './dock'
+export { createDockMenu } from './dock'
 
 /**
  * Create the setting window menu.
  *
  * @param {Keybindings} keybindings The keybindings instance
+ * @param {I18n} i18n The i18n instance
  */
-export const configSettingMenu = (keybindings) => {
+export const configSettingMenu = (keybindings, i18n) => {
   return [
-    ...(process.platform === 'darwin' ? [marktext(keybindings)] : []),
-    prefEdit(keybindings),
-    help()
+    ...(process.platform === 'darwin' ? [marktext(keybindings, i18n)] : []),
+    prefEdit(keybindings, i18n),
+    help(i18n)
   ]
 }
 
@@ -30,17 +31,18 @@ export const configSettingMenu = (keybindings) => {
  * @param {Keybindings} keybindings The keybindings instance.
  * @param {Preference} preferences The preference instance.
  * @param {string[]} recentlyUsedFiles The recently used files.
+ * @param {I18n} i18n The i18n instance.
  */
-export default function (keybindings, preferences, recentlyUsedFiles) {
+export default function (keybindings, preferences, recentlyUsedFiles, i18n) {
   return [
-    ...(process.platform === 'darwin' ? [marktext(keybindings)] : []),
-    file(keybindings, preferences, recentlyUsedFiles),
-    edit(keybindings),
+    ...(process.platform === 'darwin' ? [marktext(keybindings, i18n)] : []),
+    file(keybindings, preferences, recentlyUsedFiles, i18n),
+    edit(keybindings, i18n),
     paragraph(keybindings),
     format(keybindings),
-    window(keybindings),
+    window(keybindings, i18n),
     theme(preferences),
-    view(keybindings),
-    help()
+    view(keybindings, i18n),
+    help(i18n)
   ]
 }

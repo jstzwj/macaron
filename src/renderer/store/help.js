@@ -1,4 +1,5 @@
 import { getUniqueId, cloneObj } from '../util'
+import { translate } from '../i18n'
 
 /**
  * Default internel markdown document with editor options.
@@ -10,7 +11,7 @@ export const defaultFileState = {
   isSaved: true,
   // Full path to the file or empty. If the value is empty the file doesn't exist on disk.
   pathname: '',
-  filename: 'Untitled-1',
+  filename: translate('fileOperation.untitled', { id: 1 }),
   markdown: '',
   encoding: {
     encoding: 'utf8',
@@ -93,7 +94,7 @@ export const getBlankFileState = (tabs, defaultEncoding = 'utf8', lineEnding = '
     lineEnding,
     adjustLineEndingOnSave: lineEnding.toLowerCase() === 'crlf',
     id,
-    filename: `Untitled-${++untitleId}`,
+    filename: translate('fileOperation.untitled', { id: ++untitleId }),
     markdown
   })
 }

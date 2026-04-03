@@ -1,11 +1,11 @@
 <template>
   <div class="pref-image">
-    <h4>Image</h4>
+    <h4>{{ $t('preferences.image.title') }}</h4>
     <section class="image-ctrl">
-      <div>Default action after an image is inserted from local folder or clipboard
+      <div>{{ $t('preferences.image.insertActionDesc') }}
         <span
           class='item image-help'
-          title='Clipboard handling is only fully supported on macOS and Windows.'
+          :title="$t('preferences.image.clipboardHint')"
         >
           <el-icon><InfoFilled /></el-icon>
         </span>

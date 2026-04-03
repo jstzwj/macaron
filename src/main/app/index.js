@@ -12,7 +12,7 @@ import { normalizeAndResolvePath } from '../filesystem'
 import { normalizeMarkdownPath } from '../filesystem/markdown'
 import { registerKeyboardListeners } from '../keyboard'
 import { selectTheme } from '../menu/actions/theme'
-import { dockMenu } from '../menu/templates'
+import { createDockMenu } from '../menu/templates'
 import registerSpellcheckerListeners from '../spellchecker'
 import { watchers } from '../utils/imagePathAutoComplement'
 import { WindowType } from '../windows/base'
@@ -30,8 +30,6 @@ class App {
     this._openFilesCache = []
     this._openFilesTimer = null
     this._windowManager = this._accessor.windowManager
-    // this.launchScreenshotWin = null // The window which call the screenshot.
-    // this.shortcutCapture = null
 
     this._listenForIpcMain()
   }
@@ -41,9 +39,7 @@ class App {
    */
   init () {
     // Enable these features to use `backdrop-filter` css rules!
-    if (isOsx) {
-      app.commandLine.appendSwitch('enable-experimental-web-platform-features', 'true')
-    }
+    app.commandLine.appendSwitch('enable-experimental-web-platform-features', 'true')
 
     app.on('second-instance', (event, argv, workingDirectory) => {
       const { _openFilesCache, _windowManager } = this
@@ -51,7 +47,6 @@ class App {
 
       const buf = []
       for (const pathname of args._) {
-        // Ignore all unknown flags
         if (pathname.startsWith('--')) {
           continue
         }
@@ -79,11 +74,9 @@ class App {
     })
 
     app.on('open-file', this.openFile) // macOS only
-
     app.on('ready', this.ready)
 
     app.on('window-all-closed', () => {
-      // Close all the image path watcher
       for (const watcher of watchers.values()) {
         watcher.close()
       }
@@ -109,7 +102,7 @@ class App {
       contents.on('will-navigate', event => {
         event.preventDefault()
       })
-      contents.setWindowOpenHandler(details => {
+      contents.setWindowOpenHandler(() => {
         return { action: 'deny' }
       })
     })
@@ -123,11 +116,10 @@ class App {
 
   ready = () => {
     const { _args: args, _openFilesCache } = this
-    const { preferences } = this._accessor
+    const { preferences, i18n } = this._accessor
 
     if (args._.length) {
       for (const pathname of args._) {
-        // Ignore all unknown flags
         if (pathname.startsWith('--')) {
           continue
         }
@@ -153,7 +145,6 @@ class App {
       }
     }
 
-    // Set initial native theme for theme in preferences.
     const isDarkTheme = /dark/i.test(theme)
     if (autoSwitchTheme === 0 && isDarkTheme !== nativeTheme.shouldUseDarkColors) {
       selectTheme(nativeTheme.shouldUseDarkColors ? 'dark' : 'light')
@@ -164,21 +155,26 @@ class App {
 
     let isDarkMode = nativeTheme.shouldUseDarkColors
     ipcMain.on('broadcast-preferences-changed', change => {
-      // Set Chromium's color for native elements after theme change.
       if (change.theme) {
-        const isDarkTheme = /dark/i.test(change.theme)
-        if (isDarkMode !== isDarkTheme) {
-          isDarkMode = isDarkTheme
-          nativeTheme.themeSource = isDarkTheme ? 'dark' : 'light'
+        const changedIsDarkTheme = /dark/i.test(change.theme)
+        if (isDarkMode !== changedIsDarkTheme) {
+          isDarkMode = changedIsDarkTheme
+          nativeTheme.themeSource = changedIsDarkTheme ? 'dark' : 'light'
         } else if (nativeTheme.themeSource === 'system') {
-          // Need to set dark or light theme because we set `system` to get the current system theme.
           nativeTheme.themeSource = isDarkMode ? 'dark' : 'light'
+        }
+      }
+
+      if (change.language !== undefined || change.systemLocale !== undefined) {
+        i18n.setLanguage(preferences.getItem('language'), preferences.getItem('systemLocale'))
+        if (isOsx) {
+          app.dock.setMenu(createDockMenu(i18n))
         }
       }
     })
 
     if (isOsx) {
-      app.dock.setMenu(dockMenu)
+      app.dock.setMenu(createDockMenu(i18n))
     } else if (isWindows) {
       app.setJumpList([{
         type: 'recent'
@@ -201,28 +197,6 @@ class App {
     } else {
       this._createEditorWindow()
     }
-
-    // this.shortcutCapture = new ShortcutCapture()
-    // if (process.env.NODE_ENV === 'development') {
-    //   this.shortcutCapture.dirname = path.resolve(path.join(__dirname, '../../../node_modules/shortcut-capture'))
-    // }
-    // this.shortcutCapture.on('capture', async ({ dataURL }) => {
-    //   const { screenshotFileName } = this
-    //   const image = nativeImage.createFromDataURL(dataURL)
-    //   const bufferImage = image.toPNG()
-
-    //   if (this.launchScreenshotWin) {
-    //     this.launchScreenshotWin.webContents.send('mt::screenshot-captured')
-    //     this.launchScreenshotWin = null
-    //   }
-
-    //   try {
-    //     // write screenshot image into screenshot folder.
-    //     await fse.writeFile(screenshotFileName, bufferImage)
-    //   } catch (err) {
-    //     log.error(err)
-    //   }
-    // })
   }
 
   openFile = (event, pathname) => {
@@ -232,7 +206,6 @@ class App {
       this._openFilesCache.push(info)
 
       if (app.isReady()) {
-        // It might come more files
         if (this._openFilesTimer) {
           clearTimeout(this._openFilesTimer)
         }
@@ -244,17 +217,6 @@ class App {
     }
   }
 
-  // --- private --------------------------------
-
-  /**
-   * Creates a new editor window.
-   *
-   * @param {string} [rootDirectory] The root directory to open.
-   * @param {string[]} [fileList] A list of markdown files to open.
-   * @param {string[]} [markdownList] Array of markdown data to open.
-   * @param {*} [options] The BrowserWindow options.
-   * @returns {EditorWindow} The created editor window.
-   */
   _createEditorWindow (rootDirectory = null, fileList = [], markdownList = [], options = {}) {
     const editor = new EditorWindow(this._accessor)
     editor.createWindow(rootDirectory, fileList, markdownList, options)
@@ -265,9 +227,6 @@ class App {
     return editor
   }
 
-  /**
-   * Create a new setting window.
-   */
   _createSettingWindow (category) {
     const setting = new SettingWindow(this._accessor)
     setting.createWindow(category)

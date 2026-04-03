@@ -26,12 +26,12 @@
             v-model="searchValue"
             @keyup="search($event)"
             ref="search"
-            placeholder="Search"
+            :placeholder="$t('search.placeholder')"
           >
           <div class="controls">
             <span class="search-result">{{`${highlightIndex + 1} / ${highlightCount}`}}</span>
             <span
-              title="Case Sensitive"
+              :title="$t('search.caseSensitive')"
               class="is-case-sensitive"
               :class="{'active': isCaseSensitive}"
               @click.stop="toggleCtrl('isCaseSensitive')"
@@ -41,7 +41,7 @@
               </svg>
             </span>
             <span
-              title="Select whole word"
+              :title="$t('search.wholeWord')"
               class="is-whole-word"
               :class="{'active': isWholeWord}"
               @click.stop="toggleCtrl('isWholeWord')"
@@ -51,7 +51,7 @@
               </svg>
             </span>
             <span
-              title="Use query as RegEx"
+              :title="$t('search.regex')"
               class="is-regex"
               :class="{'active': isRegexp}"
               @click.stop="toggleCtrl('isRegexp')"
@@ -80,17 +80,17 @@
       </section>
       <section class="replace" v-if="type === 'replace'">
         <div class="input-wrapper replace-input">
-          <input type="text" v-model="replaceValue" placeholder="Replacement">
+          <input type="text" v-model="replaceValue" :placeholder="$t('search.replacementPlaceholder')">
         </div>
         <div class="button-group">
-          <div class="item" title="Replace All">
+          <div class="item" :title="$t('search.replaceAll')">
             <button class="button right" @click="replace(false)">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-all-inclusive"></use>
               </svg>
             </button>
           </div>
-          <div class="item" title="Replace Single">
+          <div class="item" :title="$t('search.replaceSingle')">
             <button class="button" @click="replace(true)">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-replace"></use>
@@ -252,7 +252,7 @@ export default {
           new RegExp(searchValue)
           this.searchErrorMsg = ''
         } catch (err) {
-          this.searchErrorMsg = `Invalid regular expression: /${searchValue}/.`
+          this.searchErrorMsg = this.$t('search.invalidRegex', { value: searchValue })
           return
         }
         // Handle match empty string, no need to search.
@@ -263,7 +263,7 @@ export default {
           }
           this.searchErrorMsg = ''
         } catch (err) {
-          this.searchErrorMsg = `RegExp: /${searchValue}/ match empty string.`
+          this.searchErrorMsg = this.$t('search.regexMatchesEmpty', { value: searchValue })
           return
         }
       }

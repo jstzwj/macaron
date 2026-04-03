@@ -69,8 +69,12 @@
   },
   "language": {
     "description": "General--The language Macaron use.",
-    "type": "string",
-    "default": "en"
+    "enum": [
+      "system",
+      "en",
+      "zh-CN"
+    ],
+    "default": "system"
   },
   "editorFontFamily": {
     "description": "Editor--editor font family",

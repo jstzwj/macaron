@@ -7,6 +7,7 @@ import store from './store'
 import services from './services'
 import routes from './router'
 import { installUiLibrary } from './ui'
+import { elementLocale, setupI18n } from './i18n'
 
 import './assets/symbolIcon'
 import './assets/styles/index.css'
@@ -27,11 +28,20 @@ bootstrapRenderer()
 // -----------------------------------------------
 // Be careful when changing code before this line!
 
-const app = createApp({
-  render: () => h(RouterView, { class: 'view' })
+const Root = {
+  setup () {
+    return () => h(RouterView, { class: 'view' })
+  }
+}
+
+const app = createApp(Root)
+
+const i18n = setupI18n({
+  preferredLanguage: global.marktext.initialState.language,
+  systemLocale: global.marktext.initialState.systemLocale
 })
 
-installUiLibrary(app)
+installUiLibrary(app, elementLocale.value)
 
 app.config.globalProperties.$http = axios
 
@@ -45,6 +55,7 @@ const router = createRouter({
 })
 
 app.use(store)
+app.use(i18n)
 app.use(router)
 
 router.isReady().then(() => {

@@ -23,11 +23,13 @@ class AppMenu {
    * @param {Preference} preferences The preferences instances.
    * @param {Keybindings} keybindings The keybindings instances.
    * @param {string} userDataPath The user data path.
+   * @param {I18n} i18n The i18n instance.
    */
-  constructor (preferences, keybindings, userDataPath) {
+  constructor (preferences, keybindings, userDataPath, i18n) {
     this._preferences = preferences
     this._keybindings = keybindings
     this._userDataPath = userDataPath
+    this._i18n = i18n
 
     this.RECENTS_PATH = path.join(userDataPath, RECENTLY_USED_DOCUMENTS_FILE_NAME)
     this.isOsxOrWindows = isOsx || isWindows
@@ -119,7 +121,7 @@ class AppMenu {
    */
   addDefaultMenu (windowId) {
     const { windowMenus } = this
-    const menu = this._buildSettingMenu() // Setting menu is also the fallback menu.
+    const menu = this._buildSettingMenu()
     windowMenus.set(windowId, menu)
   }
 
@@ -147,23 +149,22 @@ class AppMenu {
 
     const { menu } = windowMenus.get(window.id)
 
-    // Set source-code editor if preferred.
     const sourceCodeModeMenuItem = menu.getMenuItemById('sourceCodeModeMenuItem')
-    sourceCodeModeMenuItem.checked = isSourceMode
+    if (sourceCodeModeMenuItem) {
+      sourceCodeModeMenuItem.checked = isSourceMode
+    }
 
     if (isSourceMode) {
       const typewriterModeMenuItem = menu.getMenuItemById('typewriterModeMenuItem')
       const focusModeMenuItem = menu.getMenuItemById('focusModeMenuItem')
-      typewriterModeMenuItem.enabled = false
-      focusModeMenuItem.enabled = false
+      if (typewriterModeMenuItem) typewriterModeMenuItem.enabled = false
+      if (focusModeMenuItem) focusModeMenuItem.enabled = false
     }
 
     const { _keybindings } = this
     _keybindings.registerEditorKeyHandlers(window)
 
     if (isWindows) {
-      // WORKAROUND: Window close event isn't triggered on Windows if `setIgnoreMenuShortcuts(true)` is used (Electron#32674).
-      // NB: Remove this immediately if upstream is fixed because the event may be emitted twice.
       _keybindings.registerAccelerator(window, 'Alt+F4', win => {
         if (win && !win.isDestroyed()) {
           win.close()
@@ -178,7 +179,6 @@ class AppMenu {
    * @param {number} windowId The window id.
    */
   removeWindowMenu (windowId) {
-    // NOTE: Shortcut handler is automatically unregistered when window is closed.
     const { activeWindowId } = this
     this.windowMenus.delete(windowId)
     if (activeWindowId === windowId) {
@@ -217,7 +217,6 @@ class AppMenu {
    */
   setActiveWindow (windowId) {
     if (this.activeWindowId !== windowId) {
-      // Change application menu to the current window menu.
       this._setApplicationMenu(this.getWindowMenuById(windowId))
       this.activeWindowId = windowId
     }
@@ -235,28 +234,20 @@ class AppMenu {
       recentUsedDocuments = this.getRecentlyUsedDocuments()
     }
 
-    // "we don't support changing menu object after calling setMenu, the behavior
-    // is undefined if user does that." That mean we have to recreate the editor
-    // application menu each time.
-
-    // rebuild all window menus
     this.windowMenus.forEach((value, key) => {
       const { menu: oldMenu, type } = value
       if (type !== MenuType.EDITOR) return
 
       const { menu: newMenu } = this._buildEditorMenu(recentUsedDocuments)
 
-      // all other menu items are set automatically
       updateMenuItem(oldMenu, newMenu, 'sourceCodeModeMenuItem')
       updateMenuItem(oldMenu, newMenu, 'typewriterModeMenuItem')
       updateMenuItem(oldMenu, newMenu, 'focusModeMenuItem')
       updateMenuItem(oldMenu, newMenu, 'sideBarMenuItem')
       updateMenuItem(oldMenu, newMenu, 'tabBarMenuItem')
 
-      // update window menu
       value.menu = newMenu
 
-      // update application menu if necessary
       const { activeWindowId } = this
       if (activeWindowId === key) {
         this._setApplicationMenu(newMenu)
@@ -285,17 +276,16 @@ class AppMenu {
    * Update always on top menu item.
    *
    * @param {number} windowId The window id.
-   * @param {boolean} lineEnding Always on top.
+   * @param {boolean} flag Always on top.
    */
   updateAlwaysOnTopMenu (windowId, flag) {
     const menus = this.getWindowMenuById(windowId)
     const menu = menus.getMenuItemById('alwaysOnTopMenuItem')
-    menu.checked = flag
+    if (menu) {
+      menu.checked = flag
+    }
   }
 
-  /**
-   * Update all theme entries from editor menus to the selected one.
-   */
   updateThemeMenu = theme => {
     this.windowMenus.forEach(value => {
       const { menu, type } = value
@@ -318,9 +308,6 @@ class AppMenu {
     })
   }
 
-  /**
-   * Update all auto save entries from editor menus to the given state.
-   */
   updateAutoSaveMenu = autoSave => {
     this.windowMenus.forEach(value => {
       const { menu, type } = value
@@ -341,14 +328,14 @@ class AppMenu {
       recentUsedDocuments = this.getRecentlyUsedDocuments()
     }
 
-    const menuTemplate = configureMenu(this._keybindings, this._preferences, recentUsedDocuments)
+    const menuTemplate = configureMenu(this._keybindings, this._preferences, recentUsedDocuments, this._i18n)
     const menu = Menu.buildFromTemplate(menuTemplate)
     return { menu, type: MenuType.EDITOR }
   }
 
   _buildSettingMenu () {
     if (isOsx) {
-      const menuTemplate = configSettingMenu(this._keybindings)
+      const menuTemplate = configSettingMenu(this._keybindings, this._i18n)
       const menu = Menu.buildFromTemplate(menuTemplate)
       return { menu, type: MenuType.SETTINGS }
     }
@@ -357,7 +344,6 @@ class AppMenu {
 
   _setApplicationMenu (menu) {
     if (isLinux && !menu) {
-      // WORKAROUND for Electron#16521: We cannot hide the (application) menu on Linux.
       const dummyMenu = Menu.buildFromTemplate([])
       Menu.setApplicationMenu(dummyMenu)
     } else {
@@ -409,6 +395,10 @@ class AppMenu {
     })
 
     ipcMain.on('broadcast-preferences-changed', prefs => {
+      if (prefs.language !== undefined || prefs.systemLocale !== undefined) {
+        this._i18n.setLanguage(this._preferences.getItem('language'), this._preferences.getItem('systemLocale'))
+        this.updateAppMenu()
+      }
       if (prefs.theme !== undefined) {
         this.updateThemeMenu(prefs.theme)
       }
@@ -422,20 +412,11 @@ class AppMenu {
 const updateMenuItem = (oldMenus, newMenus, id) => {
   const oldItem = oldMenus.getMenuItemById(id)
   const newItem = newMenus.getMenuItemById(id)
-  newItem.checked = oldItem.checked
+  if (oldItem && newItem) {
+    newItem.checked = oldItem.checked
+  }
 }
 
-// ----------------------------------------------
-
-// HACKY: We have one application menu per window and switch the menu when
-// switching windows, so we can access and change the menu items via Electron.
-
-/**
- * Return the menu from the application menu.
- *
- * @param {string} menuId Menu ID
- * @returns {Electron.Menu} Returns the menu or null.
- */
 export const getMenuItemById = menuId => {
   const menus = Menu.getApplicationMenu()
   return menus.getMenuItemById(menuId)

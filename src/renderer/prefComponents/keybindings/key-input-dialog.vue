@@ -25,12 +25,12 @@
             >
           </div>
           <div class="footer">
-            <div class="descriptions">Press Enter to continue or ESC to exit.</div>
+            <div class="descriptions">{{ $t('preferences.keybindings.keyInputDialog.hint') }}</div>
             <div
               v-show="!isKeybindingValid"
               class="invalid-keybinding"
             >
-              Current key combination cannot be bound!
+              {{ $t('preferences.keybindings.keyInputDialog.invalidKey') }}
             </div>
           </div>
         </div>
@@ -50,10 +50,9 @@ export default {
   data () {
     this.needCommitOnClose = true
     this.currentKeybinding = null
-    this.defaultPlaceholderText = 'Press a key combination'
     return {
       showKeyInputDialog: false,
-      placeholderText: this.defaultPlaceholderText,
+      placeholderText: this.$t('preferences.keybindings.keyInputDialog.placeholder'),
       isKeybindingValid: true,
       keybindingInputValue: ''
     }
@@ -83,6 +82,7 @@ export default {
     handleShow () {
       this.needCommitOnClose = true
       this.showKeyInputDialog = true
+      this.placeholderText = this.$t('preferences.keybindings.keyInputDialog.placeholder')
       this.$nextTick(() => {
         this.$refs.intputTextbox.focus()
       })

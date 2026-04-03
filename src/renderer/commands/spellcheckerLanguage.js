@@ -3,6 +3,7 @@ import notice from '@/services/notification'
 import { delay } from '@/util'
 import { SpellChecker } from '@/spellchecker'
 import { getLanguageName } from '@/spellchecker/languageMap'
+import { translate } from '../i18n'
 
 // Command to switch the spellchecker language
 class SpellcheckerLanguageCommand {
@@ -43,9 +44,9 @@ class SpellcheckerLanguageCommand {
       bus.$emit('switch-spellchecker-language', command.value)
     } else {
       notice.notify({
-        title: 'Spelling',
+        title: translate('notification.spelling'),
         type: 'warning',
-        message: 'Cannot change language because spellchecker is disabled.'
+        message: translate('notification.spellcheckerDisabled')
       })
     }
   }
