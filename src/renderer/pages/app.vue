@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { addStyles, addThemeStyle } from '@/util/theme'
+import { addStyles } from '@/util/theme'
 import Recent from '@/components/recent'
 import EditorWithTabs from '@/components/editorWithTabs'
 import TitleBar from '@/components/titleBar'
@@ -72,7 +72,8 @@ export default {
   data () {
     return {
       uiInit: false,
-      currentFile: {}
+      currentFile: {},
+      unsubscribeStore: null
     }
   },
   computed: {
@@ -91,11 +92,6 @@ export default {
     }
   },
   watch: {
-    theme: function (value, oldValue) {
-      if (value !== oldValue) {
-        addThemeStyle(value)
-      }
-    },
     zoom: function (zoom) {
       ipcRenderer.emit('mt::window-zoom', null, zoom)
     }

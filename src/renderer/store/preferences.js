@@ -2,6 +2,7 @@ import { ipcRenderer } from 'electron'
 import bus from '../bus'
 import { SYSTEM_LANGUAGE } from '../../common/i18n'
 import { setRendererLanguage } from '../i18n'
+import { addThemeStyle } from '@/util/theme'
 
 // user preference
 const state = {
@@ -103,11 +104,17 @@ const getters = {}
 
 const mutations = {
   SET_USER_PREFERENCE (state, preference) {
+    const themeChanged = preference.theme !== undefined && preference.theme !== state.theme
+
     Object.keys(preference).forEach(key => {
       if (typeof preference[key] !== 'undefined' && typeof state[key] !== 'undefined') {
         state[key] = preference[key]
       }
     })
+
+    if (themeChanged) {
+      addThemeStyle(preference.theme)
+    }
 
     setRendererLanguage(state.language, state.systemLocale)
   },

@@ -240,7 +240,7 @@ if (!isProduction) {
 }
 
 if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test' &&
-  !process.env.MARKTEXT_DEV_HIDE_BROWSER_ANALYZER) {
+  process.env.MARKTEXT_DEV_SHOW_BROWSER_ANALYZER === '1') {
   rendererConfig.plugins.push(
     new BundleAnalyzerPlugin({
       analyzerPort: Number(process.env.MARKTEXT_DEV_ANALYZER_PORT || 8899)
