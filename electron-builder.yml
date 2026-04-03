@@ -27,7 +27,6 @@ files:
 - "!node_modules/@vscode/ripgrep/download.js"
 - "!node_modules/@vscode/ripgrep/postinstall.js"
 # Don't bundle build files
-- "!node_modules/ced/bin"
 - "!node_modules/fontmanager-redux/bin"
 - "!node_modules/keyboard-layout/bin"
 - "!node_modules/native-keymap/bin"
@@ -40,13 +39,10 @@ files:
 - "!node_modules/katex/dist/katex.mjs"
 - "!node_modules/vega/build-es5/"
 - "!node_modules/vega-embed/build-es5/"
-# Don't bundle Linux build files
-- "!node_modules/ced/build/Release/compact_enc_det.a"
 # Don't bundle Windows build files
 - "!node_modules/**/{*.vcxproj,*.vcxproj.filters}"
 - "!node_modules/**/build/Release/{*.lib,*.exp,*.ilk,*.pdb,*.iobj,*.ipdb}"
 - "!node_modules/**/build/Release/obj"
-- "!node_modules/ced/build/vendor"
 extraFiles:
 - "LICENSE"
 - from: "resources/THIRD-PARTY-LICENSES.txt"

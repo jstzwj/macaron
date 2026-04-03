@@ -1,26 +1,48 @@
-const getCed = () => {
+const getChardet = () => {
   try {
-    return require('ced')
+    return require('chardet')
   } catch (error) {
-    console.warn('[encoding] Failed to load ced, fallback to utf8.', error)
+    console.warn('[encoding] Failed to load chardet, fallback to utf8.', error)
     return null
   }
 }
 
-const CED_ICONV_ENCODINGS = {
-  'BIG5-CP950': 'big5',
-  KSC: 'euckr',
-  'ISO-2022-KR': 'euckr',
-  GB: 'gb2312',
-  ISO_2022_CN: 'gb2312',
-  JIS: 'shiftjis',
-  SJS: 'shiftjis',
-  Unicode: 'utf8',
-
-  // Map ASCII to UTF-8
-  'ASCII-7-bit': 'utf8',
+const CHARDET_ICONV_ENCODINGS = {
+  UTF8: 'utf8',
+  UTF16BE: 'utf16be',
+  UTF16LE: 'utf16le',
+  UTF32BE: 'utf32be',
+  UTF32LE: 'utf32le',
   ASCII: 'utf8',
-  MACINTOSH: 'utf8'
+  ISO_8859_1: 'latin1',
+  ISO_8859_2: 'iso88592',
+  ISO_8859_5: 'iso88595',
+  ISO_8859_6: 'arabic',
+  ISO_8859_7: 'greek',
+  ISO_8859_8: 'hebrew',
+  ISO_8859_9: 'latin5',
+  ISO_8859_10: 'latin6',
+  ISO_8859_13: 'iso885913',
+  ISO_8859_15: 'iso885915',
+  WINDOWS_1250: 'windows1250',
+  WINDOWS_1251: 'cp1251',
+  WINDOWS_1252: 'cp1252',
+  WINDOWS_1253: 'cp1253',
+  WINDOWS_1254: 'cp1254',
+  WINDOWS_1255: 'cp1255',
+  WINDOWS_1256: 'cp1256',
+  WINDOWS_1257: 'cp1257',
+  KOI8_R: 'koi8r',
+  KOI8_U: 'koi8u',
+  IBM866: 'cp866',
+  MACINTOSH: 'utf8',
+  SHIFT_JIS: 'shiftjis',
+  EUC_JP: 'eucjp',
+  EUC_KR: 'euckr',
+  GB18030: 'gb18030',
+  GB2312: 'gb2312',
+  GBK: 'gbk',
+  BIG5: 'big5'
 }
 
 // Byte Order Mark's to detect endianness and encoding.
@@ -35,6 +57,20 @@ const checkSequence = (buffer, sequence) => {
     return false
   }
   return sequence.every((v, i) => v === buffer[i])
+}
+
+const normalizeEncoding = encoding => {
+  if (!encoding || typeof encoding !== 'string') {
+    return 'utf8'
+  }
+
+  const normalized = encoding.trim().replace(/[\r\n]/g, '')
+  const upper = normalized.toUpperCase().replace(/[-\s]/g, '_')
+  if (CHARDET_ICONV_ENCODINGS[upper]) {
+    return CHARDET_ICONV_ENCODINGS[upper]
+  }
+
+  return normalized.toLowerCase().replace(/[-_\s]/g, '')
 }
 
 /**
@@ -55,30 +91,17 @@ export const guessEncoding = (buffer, autoGuessEncoding) => {
     }
   }
 
-  // // Try to detect binary files. Text files should not containt four 0x00 characters.
-  // let zeroSeenCounter = 0
-  // for (let i = 0; i < Math.min(buffer.byteLength, 256); ++i) {
-  //   if (buffer[i] === 0x00) {
-  //     if (zeroSeenCounter >= 3) {
-  //       return { encoding: 'binary', isBom: false }
-  //     }
-  //     zeroSeenCounter++
-  //   } else {
-  //     zeroSeenCounter = 0
-  //   }
-  // }
-
   // Auto guess encoding, otherwise use UTF8.
   if (autoGuessEncoding) {
-    const ced = getCed()
-    if (ced) {
-      encoding = ced(buffer)
-      if (CED_ICONV_ENCODINGS[encoding]) {
-        encoding = CED_ICONV_ENCODINGS[encoding]
-      } else {
-        encoding = encoding.toLowerCase().replace(/-_/g, '')
+    const chardet = getChardet()
+    if (chardet && typeof chardet.detect === 'function') {
+      try {
+        encoding = normalizeEncoding(chardet.detect(buffer))
+      } catch (error) {
+        console.warn('[encoding] chardet detection failed, fallback to utf8.', error)
       }
     }
   }
+
   return { encoding, isBom }
 }

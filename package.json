@@ -44,7 +44,7 @@
     "@octokit/rest": "^22.0.1",
     "arg": "^5.0.1",
     "axios": "^1.14.0",
-    "ced": "^2.0.0",
+    "chardet": "^2.1.0",
     "chokidar": "^4.0.3",
     "codemirror": "^6.0.1",
     "@codemirror/state": "^6.5.2",

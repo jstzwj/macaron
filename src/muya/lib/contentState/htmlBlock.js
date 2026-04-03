@@ -17,12 +17,13 @@ const htmlBlock = ContentState => {
     let htmlContent = ''
     const text = block.children[0].text
     const matches = inlineRules.html_tag.exec(text)
+    const voidHtmlTags = Array.isArray(VOID_HTML_TAGS) ? VOID_HTML_TAGS : []
     if (matches) {
       const tag = matches[3]
       const content = matches[4] || ''
       const openTag = matches[2]
       const closeTag = matches[5]
-      const isVoidTag = VOID_HTML_TAGS.indexOf(tag) > -1
+      const isVoidTag = voidHtmlTags.indexOf(tag) > -1
       if (closeTag) {
         htmlContent = text
       } else if (isVoidTag) {
@@ -53,9 +54,11 @@ const htmlBlock = ContentState => {
     const { type } = block
     if (type !== 'li' && type !== 'p') return false
     const { text } = block.children[0]
+    const htmlTags = Array.isArray(HTML_TAGS) ? HTML_TAGS : []
+    const voidHtmlTags = Array.isArray(VOID_HTML_TAGS) ? VOID_HTML_TAGS : []
     const match = HTML_BLOCK_REG.exec(text)
-    const tagName = match && match[1] && HTML_TAGS.find(t => t === match[1])
-    return VOID_HTML_TAGS.indexOf(tagName) === -1 && tagName ? this.initHtmlBlock(block) : false
+    const tagName = match && match[1] && htmlTags.find(t => t === match[1])
+    return voidHtmlTags.indexOf(tagName) === -1 && tagName ? this.initHtmlBlock(block) : false
   }
 }
 
