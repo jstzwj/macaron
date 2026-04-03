@@ -1,10 +1,11 @@
 <template>
-  <div class="print-settings-dialog">
+  <div class="print-settings-dialog" v-if="showExportSettingsDialog">
     <el-dialog
-      :visible.sync="showExportSettingsDialog"
+      v-model="showExportSettingsDialog"
+      :teleported="false"
       :show-close="false"
       :modal="true"
-      custom-class="ag-dialog-table"
+      class="ag-dialog-table"
       width="500px"
     >
       <h3>Export Options</h3>
@@ -294,7 +295,7 @@ export default {
   created () {
     bus.$on('showExportDialog', this.showDialog)
   },
-  beforeDestroy () {
+  beforeUnmount () {
     bus.$off('showExportDialog', this.showDialog)
   },
   methods: {

@@ -334,6 +334,12 @@ const mutations = {
   }
 }
 
+const createSerializableSavePayload = file => {
+  const { id, filename, pathname, markdown } = file
+  const options = getOptionsFromState(file)
+  return JSON.parse(JSON.stringify({ id, filename, pathname, markdown, options }))
+}
+
 const actions = {
   FORMAT_LINK_CLICK ({ commit }, { data, dirname }) {
     ipcRenderer.send('mt::format-link-click', { data, dirname })
@@ -503,11 +509,7 @@ const actions = {
     ipcRenderer.on('mt::ask-for-close', e => {
       const unsavedFiles = state.tabs
         .filter(file => !file.isSaved)
-        .map(file => {
-          const { id, filename, pathname, markdown } = file
-          const options = getOptionsFromState(file)
-          return { id, filename, pathname, markdown, options }
-        })
+        .map(createSerializableSavePayload)
 
       if (unsavedFiles.length) {
         ipcRenderer.send('mt::close-window-confirm', unsavedFiles)
@@ -529,11 +531,7 @@ const actions = {
     const { tabs } = state
     const unsavedFiles = tabs
       .filter(file => !(file.isSaved && /[^\n]/.test(file.markdown)))
-      .map(file => {
-        const { id, filename, pathname, markdown } = file
-        const options = getOptionsFromState(file)
-        return { id, filename, pathname, markdown, options }
-      })
+      .map(createSerializableSavePayload)
 
     if (closeTabs) {
       if (unsavedFiles.length) {
@@ -658,11 +656,19 @@ const actions = {
       } else if (markdownList.length) {
         let isFirst = true
         for (const markdown of markdownList) {
-          isFirst = false
           dispatch('NEW_UNTITLED_TAB', { markdown, selected: isFirst })
+          isFirst = false
         }
       }
     })
+
+    // Fallback: request bootstrap from main process in case the original
+    // message was lost due to HMR reload or timing issues.
+    setTimeout(() => {
+      if (!rootState.init) {
+        ipcRenderer.send('mt::request-bootstrap')
+      }
+    }, 1000)
   },
 
   // Open a new tab, optionally with content.

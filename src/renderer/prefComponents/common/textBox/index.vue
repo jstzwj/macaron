@@ -2,19 +2,29 @@
   <section class="pref-text-box-item" :class="{'ag-underdevelop': disable}">
     <div class="description">
       <span>{{description}}:</span>
-      <i class="el-icon-info" v-if="more"
+      <el-icon v-if="more"
         @click="handleMoreClick"
-      ></i>
+      ><InfoFilled /></el-icon>
     </div>
-    <el-input
-      class="input"
-      :class="{error: invalidInput}"
-      :placeholder="defaultValue"
-      v-model="inputText"
-      @input="handleInput"
-      size="small"
-      clearable>
-    </el-input>
+    <div class="input" :class="{ error: invalidInput }">
+      <input
+        class="input-inner"
+        :placeholder="defaultValue"
+        v-model="inputText"
+        @input="handleInput($event.target.value)"
+        :disabled="disable"
+      >
+      <button
+        v-if="inputText"
+        class="clear-button"
+        type="button"
+        @click="clearInput"
+        :disabled="disable"
+        aria-label="Clear input"
+      >
+        ×
+      </button>
+    </div>
     <div v-if="notes" class="notes">
       {{notes}}
     </div>
@@ -70,12 +80,15 @@ export default {
         shell.openExternal(this.more)
       }
     },
+    clearInput () {
+      this.inputText = ''
+      this.handleInput('')
+    },
     handleInput (value) {
       const result = this.regexValidator.test(value)
       this.invalidInput = !result
 
       if (result) {
-        // Only clear timer when input is valid, otherwise write the last value.
         if (this.inputTimer) {
           clearTimeout(this.inputTimer)
         }
@@ -86,7 +99,6 @@ export default {
           return
         }
 
-        // Setting delay a little bit higher to prevent continuously file writes when typing.
         this.inputTimer = setTimeout(() => {
           this.inputTimer = null
           this.onChange(value)
@@ -104,16 +116,6 @@ export default {
     margin: 20px 0;
     color: var(--editorColor);
     width: 100%;
-    & input.el-input__inner {
-      height: 30px;
-      background: transparent;
-      color: var(--editorColor);
-      border-color: var(--editorColor10);
-      padding-right: 15px;
-      &::placeholder {
-        color: var(--editorColor30);
-      }
-    }
     & .notes {
       margin-top: 10px;
       font-style: italic;
@@ -121,14 +123,42 @@ export default {
     }
     & .input {
       width: 100%;
+      display: flex;
+      align-items: center;
+      background: transparent;
+      color: var(--editorColor);
+      border: 1px solid var(--editorColor10);
+      border-radius: 4px;
+      box-sizing: border-box;
+      padding-right: 8px;
     }
-    & .el-input.is-active .el-input__inner,
-    & .el-input__inner:focus {
+    & .input.error .input-inner {
+      color: #f56c6c;
+    }
+    & .input:focus-within {
       border-color: var(--themeColor);
     }
-    & .el-input__icon,
-    & .el-input__inner {
-      line-height: 30px;
+    & .input-inner {
+      flex: 1;
+      height: 30px;
+      background: transparent;
+      color: var(--editorColor);
+      border: none;
+      padding: 0 12px;
+      outline: none;
+      box-sizing: border-box;
+    }
+    & .input-inner::placeholder {
+      color: var(--editorColor30);
+    }
+    & .clear-button {
+      border: none;
+      background: transparent;
+      color: var(--editorColor30);
+      cursor: pointer;
+      font-size: 18px;
+      line-height: 1;
+      padding: 0;
     }
     & .description {
       margin-bottom: 10px;
@@ -141,8 +171,5 @@ export default {
     & i:hover {
       color: var(--themeColor);
     }
-  }
-  .pref-text-box-item .el-input.error input {
-    color: #f56c6c;
   }
 </style>

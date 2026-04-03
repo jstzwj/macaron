@@ -38,32 +38,15 @@
         >
           <span class="text-center-vertical">&#9776;</span>
         </div>
-        <el-tooltip
+        <div
           v-if="wordCount"
-          class="item"
-          :content="`${wordCount[show]} ${HASH[show].full + (wordCount[show] > 1 ? 's' : '')}`"
-          placement="bottom-end"
+          class="item word-count"
+          :class="[{ 'title-no-drag': platform !== 'darwin' }]"
+          :title="`Words: ${wordCount['word']} | Characters: ${wordCount['character']} | Paragraphs: ${wordCount['paragraph']}`"
+          @click.stop="handleWordClick"
         >
-          <div slot="content">
-            <div class="title-item">
-              <span class="front">Words:</span><span class="text">{{wordCount['word']}}</span>
-            </div>
-            <div class="title-item">
-              <span class="front">Characters:</span><span class="text">{{wordCount['character']}}</span>
-            </div>
-            <div class="title-item">
-              <span class="front">Paragraphs:</span><span class="text">{{wordCount['paragraph']}}</span>
-            </div>
-          </div>
-          <div
-            v-if="wordCount"
-            class="word-count"
-            :class="[{ 'title-no-drag': platform !== 'darwin' }]"
-            @click.stop="handleWordClick"
-          >
-            <span class="text-center-vertical">{{ `${HASH[show].short} ${wordCount[show]}` }}</span>
-          </div>
-        </el-tooltip>
+          <span class="text-center-vertical">{{ `${HASH[show].short} ${wordCount[show]}` }}</span>
+        </div>
       </div>
       <div
         v-if="titleBarStyle === 'custom' && !isFullScreen && !isOsx"
@@ -232,7 +215,7 @@ export default {
       this.isFullScreen = false
     }
   },
-  beforeDestroy () {
+  beforeUnmount () {
     ipcRenderer.off('mt::window-maximize', this.onMaximize)
     ipcRenderer.off('mt::window-unmaximize', this.onUnmaximize)
     ipcRenderer.off('mt::window-enter-full-screen', this.onEnterFullScreen)

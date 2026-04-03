@@ -1,43 +1,14 @@
-import Vue from 'vue'
-import VueElectron from 'vue-electron'
+import { createApp, h } from 'vue'
 import sourceMapSupport from 'source-map-support'
 import bootstrapRenderer from './bootstrap'
-import VueRouter from 'vue-router'
-import lang from 'element-ui/lib/locale/lang/en'
-import locale from 'element-ui/lib/locale'
+import { createRouter, createWebHashHistory, RouterView } from 'vue-router'
 import axios from './axios'
 import store from './store'
-import './assets/symbolIcon'
-import {
-  Dialog,
-  Form,
-  FormItem,
-  InputNumber,
-  Button,
-  Tooltip,
-  Upload,
-  Slider,
-  Checkbox,
-  ColorPicker,
-  Col,
-  Row,
-  Tree,
-  Autocomplete,
-  Switch,
-  Select,
-  Option,
-  Radio,
-  RadioGroup,
-  Table,
-  TableColumn,
-  Tabs,
-  TabPane,
-  Input
-} from 'element-ui'
 import services from './services'
 import routes from './router'
-import { addElementStyle } from '@/util/theme'
+import { installUiLibrary } from './ui'
 
+import './assets/symbolIcon'
 import './assets/styles/index.css'
 import './assets/styles/printService.css'
 
@@ -53,56 +24,29 @@ sourceMapSupport.install({
 global.marktext = {}
 bootstrapRenderer()
 
-addElementStyle()
-
 // -----------------------------------------------
 // Be careful when changing code before this line!
 
-// Configure Vue
-locale.use(lang)
-
-Vue.use(Dialog)
-Vue.use(Form)
-Vue.use(FormItem)
-Vue.use(InputNumber)
-Vue.use(Button)
-Vue.use(Tooltip)
-Vue.use(Upload)
-Vue.use(Slider)
-Vue.use(Checkbox)
-Vue.use(ColorPicker)
-Vue.use(Col)
-Vue.use(Row)
-Vue.use(Tree)
-Vue.use(Autocomplete)
-Vue.use(Switch)
-Vue.use(Select)
-Vue.use(Option)
-Vue.use(Radio)
-Vue.use(RadioGroup)
-Vue.use(Table)
-Vue.use(TableColumn)
-Vue.use(Tabs)
-Vue.use(TabPane)
-Vue.use(Input)
-
-Vue.use(VueRouter)
-
-Vue.use(VueElectron)
-Vue.http = Vue.prototype.$http = axios
-Vue.config.productionTip = false
-
-services.forEach(s => {
-  Vue.prototype['$' + s.name] = s[s.name]
+const app = createApp({
+  render: () => h(RouterView, { class: 'view' })
 })
 
-const router = new VueRouter({
+installUiLibrary(app)
+
+app.config.globalProperties.$http = axios
+
+services.forEach(s => {
+  app.config.globalProperties['$' + s.name] = s[s.name]
+})
+
+const router = createRouter({
+  history: createWebHashHistory(),
   routes: routes(global.marktext.env.type)
 })
 
-/* eslint-disable no-new */
-new Vue({
-  store,
-  router,
-  template: '<router-view class="view"></router-view>'
-}).$mount('#app')
+app.use(store)
+app.use(router)
+
+router.isReady().then(() => {
+  app.mount('#app')
+})

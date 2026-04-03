@@ -1,10 +1,11 @@
 <template>
-  <div class="about-dialog">
+  <div class="about-dialog" v-if="showAboutDialog">
     <el-dialog
-      :visible.sync="showAboutDialog"
+      v-model="showAboutDialog"
+      :teleported="false"
       :show-close="false"
       :modal="true"
-      custom-class="ag-dialog-table"
+      class="ag-dialog-table"
       width="400px"
     >
       <img class="logo" :src="logo" />
@@ -49,7 +50,7 @@ export default {
   created () {
     bus.$on('aboutDialog', this.showDialog)
   },
-  beforeDestroy () {
+  beforeUnmount () {
     bus.$off('aboutDialog', this.showDialog)
   },
   methods: {

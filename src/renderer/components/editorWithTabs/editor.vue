@@ -25,17 +25,21 @@
       </div>
     </div>
     <el-dialog
-      :visible.sync="dialogTableVisible"
+      v-if="dialogTableVisible"
+      v-model="dialogTableVisible"
+      :teleported="false"
       :show-close="isShowClose"
       :modal="true"
-      custom-class="ag-dialog-table"
+      class="ag-dialog-table"
       width="454px"
       center
       dir='ltr'
     >
-      <div slot="title" class="dialog-title">
-        Insert Table
-      </div>
+      <template #title>
+        <div class="dialog-title">
+          Insert Table
+        </div>
+      </template>
       <el-form :model="tableChecker" :inline="true">
         <el-form-item label="Rows">
           <el-input-number
@@ -57,14 +61,16 @@
           ></el-input-number>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogTableVisible = false">
-          Cancel
-        </el-button>
-        <el-button type="primary" @click="handleDialogTableConfirm">
-          OK
-        </el-button>
-      </div>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="dialogTableVisible = false">
+            Cancel
+          </el-button>
+          <el-button type="primary" @click="handleDialogTableConfirm">
+            OK
+          </el-button>
+        </div>
+      </template>
     </el-dialog>
     <search
       v-if="!sourceCode"
@@ -451,7 +457,7 @@ export default {
     }
   },
 
-  created () {
+  mounted () {
     this.$nextTick(() => {
       this.printer = new Printer()
       const ele = this.$refs.editor
@@ -1116,7 +1122,7 @@ export default {
       }
     }
   },
-  beforeDestroy () {
+  beforeUnmount () {
     bus.$off('file-loaded', this.setMarkdownToEditor)
     bus.$off('invalidate-image-cache', this.handleInvalidateImageCache)
     bus.$off('undo', this.handleUndo)

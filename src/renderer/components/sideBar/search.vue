@@ -57,7 +57,7 @@
           size="mini"
           @click="cancelSearcher"
         >
-          Cancel <i class="el-icon-video-pause"></i>
+          Cancel <el-icon><VideoPause /></el-icon>
         </el-button>
       </div>
       <div v-if="searchResult.length" class="search-result-info">{{searchResultInfo}}</div>
@@ -320,7 +320,7 @@ export default {
       this.keyword = this.searchMatches.value
     }
   },
-  destroyed () {
+  beforeUnmount () {
     bus.$off('findInFolder', this.handleFindInFolder)
   }
 }

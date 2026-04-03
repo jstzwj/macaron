@@ -2,16 +2,57 @@ import { ipcMain, shell } from 'electron'
 import log from 'electron-log/main'
 import EventEmitter from 'events'
 import fsPromises from 'fs/promises'
-import { getCurrentKeyboardLayout, getKeyMap, onDidChangeKeyboardLayout } from 'native-keymap'
 import os from 'os'
 import path from 'path'
 
-let currentKeyboardInfo = null
-const loadKeyboardInfo = () => {
-  currentKeyboardInfo = {
-    layout: getCurrentKeyboardLayout(),
-    keymap: getKeyMap()
+let nativeKeymapAvailable = false
+let nativeKeymap = null
+try {
+  nativeKeymap = require('native-keymap')
+  // Probe whether the native binding actually works without triggering console.error
+  // by checking if the internal _init has a valid native module path
+  const fs = require('fs')
+  const bindingDir = path.join(
+    path.dirname(require.resolve('native-keymap/package.json')),
+    'build'
+  )
+  const hasRelease = fs.existsSync(path.join(bindingDir, 'Release', 'keymapping.node'))
+  const hasDebug = fs.existsSync(path.join(bindingDir, 'Debug', 'keymapping.node'))
+  if (hasRelease || hasDebug) {
+    // Let native-keymap initialize — it should succeed
+    nativeKeymapAvailable = typeof nativeKeymap.getKeyMap() !== 'undefined'
+  } else {
+    log.warn('native-keymap native binding not found. Falling back to default keyboard layout.')
   }
+} catch (error) {
+  log.warn('native-keymap is unavailable. Falling back to default keyboard layout.', error)
+}
+
+const safeNativeCall = (fn, fallbackValue) => {
+  if (!nativeKeymap || !nativeKeymapAvailable) {
+    return fallbackValue
+  }
+  try {
+    const result = fn()
+    return result == null ? fallbackValue : result
+  } catch (error) {
+    log.warn('Failed to access native keyboard layout information.', error)
+    return fallbackValue
+  }
+}
+
+let currentKeyboardInfo = null
+const getSafeKeyboardInfo = () => {
+  const layout = safeNativeCall(() => nativeKeymap.getCurrentKeyboardLayout(), 'en-US')
+  const keymap = safeNativeCall(() => nativeKeymap.getKeyMap(), [])
+  return {
+    layout,
+    keymap: Array.isArray(keymap) ? keymap : []
+  }
+}
+
+const loadKeyboardInfo = () => {
+  currentKeyboardInfo = getSafeKeyboardInfo()
   return currentKeyboardInfo
 }
 
@@ -41,20 +82,21 @@ class KeyboardLayoutMonitor extends EventEmitter {
 
   _ensureNativeListener () {
     if (!this._isSubscribed) {
-      this._isSubscribed = true
-      onDidChangeKeyboardLayout(() => {
-        // The keyboard layout change event may be emitted multiple times.
-        clearTimeout(this._emitTimer)
-        this._emitTimer = setTimeout(() => {
-          this.emit(KEYBOARD_LAYOUT_MONITOR_CHANNEL_ID, loadKeyboardInfo())
-          this._emitTimer = null
-        }, 150)
-      })
+      const subscribed = safeNativeCall(() => {
+        nativeKeymap.onDidChangeKeyboardLayout(() => {
+          clearTimeout(this._emitTimer)
+          this._emitTimer = setTimeout(() => {
+            this.emit(KEYBOARD_LAYOUT_MONITOR_CHANNEL_ID, loadKeyboardInfo())
+            this._emitTimer = null
+          }, 150)
+        })
+        return true
+      }, false)
+      this._isSubscribed = subscribed
     }
   }
 }
 
-// Export a single-instance of the monitor.
 export const keyboardLayoutMonitor = new KeyboardLayoutMonitor()
 
 export const registerKeyboardListeners = () => {

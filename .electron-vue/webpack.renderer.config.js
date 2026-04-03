@@ -7,7 +7,7 @@ const webpack = require('webpack')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const { VueLoaderPlugin } = require('vue-loader')
 const SpritePlugin = require('svg-sprite-loader/plugin')
 const postcssPresetEnv = require('postcss-preset-env')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
@@ -23,7 +23,7 @@ const isProduction = process.env.NODE_ENV === 'production'
  * that provide pure *.vue files that need compiling
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/webpack-configurations.html#white-listing-externals
  */
-const whiteListedModules = ['vue']
+const whiteListedModules = ['vue', 'vue-router']
 
 /** @type {import('webpack').Configuration} */
 const rendererConfig = {
@@ -63,7 +63,7 @@ const rendererConfig = {
         }
       },
       {
-        test: /(theme\-chalk(?:\/|\\)index|exportStyle|katex|github\-markdown|prism[\-a-z]*|\.theme|headerFooterStyle)\.css$/,
+        test: /(element\-plus(?:\/|\\)dist(?:\/|\\)index|exportStyle|katex|github\-markdown|prism[\-a-z]*|\.theme|headerFooterStyle)\.css$/,
         use: [
           'to-string-loader',
           'css-loader'
@@ -71,7 +71,7 @@ const rendererConfig = {
       },
       {
         test: /\.css$/,
-        exclude: /(theme\-chalk(?:\/|\\)index|exportStyle|katex|github\-markdown|prism[\-a-z]*|\.theme|headerFooterStyle)\.css$/,
+        exclude: /(element\-plus(?:\/|\\)dist(?:\/|\\)index|exportStyle|katex|github\-markdown|prism[\-a-z]*|\.theme|headerFooterStyle)\.css$/,
         use: [
           isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
           {
@@ -160,7 +160,7 @@ const rendererConfig = {
   plugins: [
     new ESLintPlugin({
       configType: 'eslintrc',
-      cache: !isProduction,
+      cache: false,
       extensions: ['js', 'vue'],
       files: [
         'src',
@@ -212,7 +212,10 @@ const rendererConfig = {
       'common': path.join(__dirname, '../src/common'),
       'muya': path.join(__dirname, '../src/muya'),
       snapsvg: path.join(__dirname, '../src/muya/lib/assets/libs/snap.svg-min.js'),
-      'vue$': 'vue/dist/vue.esm.js'
+      'vue$': 'vue',
+      // Work around a vue-router 4.5.x dev-only RouterView crash in Electron/HMR.
+      // The production build removes the faulty devtools marker path.
+      'vue-router$': path.join(__dirname, '../node_modules/vue-router/dist/vue-router.prod.cjs')
     },
     extensions: ['.js', '.vue', '.json', '.css', '.node']
   },
@@ -239,7 +242,9 @@ if (!isProduction) {
 if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test' &&
   !process.env.MARKTEXT_DEV_HIDE_BROWSER_ANALYZER) {
   rendererConfig.plugins.push(
-    new BundleAnalyzerPlugin()
+    new BundleAnalyzerPlugin({
+      analyzerPort: Number(process.env.MARKTEXT_DEV_ANALYZER_PORT || 8899)
+    })
   )
 }
 
@@ -274,10 +279,6 @@ if (isProduction) {
           globOptions: {
             ignore: ['.*']
           }
-        },
-        {
-          from: path.resolve(__dirname, '../node_modules/codemirror/mode/*/*').replace(/\\/g, '/'),
-          to: path.join(__dirname, '../dist/electron/codemirror/mode/[name]/[name][ext]')
         }
       ]
     })

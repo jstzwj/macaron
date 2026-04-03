@@ -49,9 +49,9 @@
         </el-table-column>
 
         <el-table-column fixed="right" label="Options" width="90">
-          <template slot-scope="scope">
-            <el-button @click="handleDeleteClick(scope.row)" type="text" size="small" title="Delete">
-              <i class="el-icon-delete"></i>
+          <template #default="scope">
+            <el-button @click="handleDeleteClick(scope.row)" link size="small" title="Delete">
+              <el-icon><Delete /></el-icon>
             </el-button>
           </template>
         </el-table-column>
@@ -244,7 +244,7 @@ export default {
   .pref-spellchecker div.el-select-dropdown {
     background: var(--floatBgColor);
     border-color: var(--floatBorderColor);
-    & .popper__arrow {
+    & .el-popper__arrow {
       display: none;
     }
   }

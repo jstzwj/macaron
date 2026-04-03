@@ -80,8 +80,10 @@ class BaseWindow extends EventEmitter {
     } = userPreference.getAll()
 
     /* eslint-disable */
+    const devServerHost = process.env.MARKTEXT_DEV_SERVER_HOST || '127.0.0.1'
+    const devServerPort = process.env.MARKTEXT_DEV_SERVER_PORT || '9081'
     const baseUrl = process.env.NODE_ENV === 'development'
-      ? 'http://localhost:9091'
+      ? `http://${devServerHost}:${devServerPort}`
       : `file://${__dirname}/index.html`
     /* eslint-enable */
 

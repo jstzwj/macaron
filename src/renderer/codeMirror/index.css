@@ -1,7 +1,7 @@
-.CodeMirror {
+.cm-editor {
   background: transparent;
   height: auto;
 }
-.CodeMirror-line::selection, .CodeMirror-line > span::selection, .CodeMirror-line > span > span::selection {
+.cm-line::selection, .cm-line > span::selection, .cm-line > span > span::selection {
   background: rgb(178, 215, 254);
 }

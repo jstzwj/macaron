@@ -64,6 +64,7 @@ module.exports = {
     'no-prototype-builtins': 'off'
   },
   settings: {
+    'import/core-modules': ['@vscode/ripgrep'],
     'import/resolver': {
       alias: {
         map: [

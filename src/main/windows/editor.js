@@ -94,6 +94,9 @@ class EditorWindow extends BaseWindow {
     })
 
     win.webContents.once('did-finish-load', () => {
+      if (process.env.NODE_ENV === 'development') {
+        win.webContents.openDevTools()
+      }
       this.lifecycle = WindowLifecycle.READY
       this.emit('window-ready')
 
@@ -103,13 +106,20 @@ class EditorWindow extends BaseWindow {
       const lineEnding = preferences.getPreferredEol()
       appMenu.updateLineEndingMenu(this.id, lineEnding)
 
-      win.webContents.send('mt::bootstrap-editor', {
+      const bootstrapData = {
         addBlankTab,
         markdownList: this._markdownToOpen,
         lineEnding,
         sideBarVisibility,
         tabBarVisibility,
         sourceCodeModeEnabled
+      }
+
+      win.webContents.send('mt::bootstrap-editor', bootstrapData)
+
+      // Also respond when renderer requests bootstrap (e.g. after HMR reload)
+      ipcMain.on('mt::request-bootstrap', () => {
+        win.webContents.send('mt::bootstrap-editor', bootstrapData)
       })
 
       this._doOpenFilesToOpen()

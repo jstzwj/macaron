@@ -2,23 +2,25 @@
   <section class="pref-select-item" :class="{'ag-underdevelop': disable}">
     <div class="description" v-if="description">
       <span>{{description}}:</span>
-      <i class="el-icon-info"
+      <el-icon
         v-if="more"
         @click="handleMoreClick"
-      ></i>
+      ><InfoFilled /></el-icon>
     </div>
-    <el-select
+    <select
+      class="select-input"
       v-model="selectValue"
-      @change="select"
+      @change="select($event.target.value)"
       :disabled="disable"
     >
-      <el-option
+      <option
         v-for="item in options"
         :key="item.value"
-        :label="item.label"
-        :value="item.value">
-      </el-option>
-    </el-select>
+        :value="item.value"
+      >
+        {{ item.label }}
+      </option>
+    </select>
     <div v-if="notes" class="notes">
       {{notes}}
     </div>
@@ -76,18 +78,19 @@ export default {
     font-style: italic;
     font-size: 12px;
   }
-  & .el-select {
+  & .select-input {
     width: 100%;
-  }
-  & input.el-input__inner {
     height: 30px;
     background: transparent;
     color: var(--editorColor);
-    border-color: var(--editorColor10);
+    border: 1px solid var(--editorColor10);
+    border-radius: 4px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    outline: none;
   }
-  & .el-input__icon,
-  & .el-input__inner {
-    line-height: 30px;
+  & .select-input:focus {
+    border-color: var(--themeColor);
   }
 }
 .pref-select-item .description {
@@ -99,20 +102,6 @@ export default {
   }
   & i:hover {
     color: var(--themeColor);
-  }
-}
-li.el-select-dropdown__item {
-  color: var(--editorColor);
-  height: 30px;
-}
-li.el-select-dropdown__item.hover, li.el-select-dropdown__item:hover {
-  background: var(--floatHoverColor);
-}
-div.el-select-dropdown {
-  background: var(--floatBgColor);
-  border-color: var(--floatBorderColor);
-  & .popper__arrow {
-    display: none;
   }
 }
 </style>

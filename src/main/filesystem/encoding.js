@@ -1,4 +1,11 @@
-import ced from 'ced'
+const getCed = () => {
+  try {
+    return require('ced')
+  } catch (error) {
+    console.warn('[encoding] Failed to load ced, fallback to utf8.', error)
+    return null
+  }
+}
 
 const CED_ICONV_ENCODINGS = {
   'BIG5-CP950': 'big5',
@@ -63,11 +70,14 @@ export const guessEncoding = (buffer, autoGuessEncoding) => {
 
   // Auto guess encoding, otherwise use UTF8.
   if (autoGuessEncoding) {
-    encoding = ced(buffer)
-    if (CED_ICONV_ENCODINGS[encoding]) {
-      encoding = CED_ICONV_ENCODINGS[encoding]
-    } else {
-      encoding = encoding.toLowerCase().replace(/-_/g, '')
+    const ced = getCed()
+    if (ced) {
+      encoding = ced(buffer)
+      if (CED_ICONV_ENCODINGS[encoding]) {
+        encoding = CED_ICONV_ENCODINGS[encoding]
+      } else {
+        encoding = encoding.toLowerCase().replace(/-_/g, '')
+      }
     }
   }
   return { encoding, isBom }

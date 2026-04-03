@@ -83,32 +83,20 @@
           <input type="text" v-model="replaceValue" placeholder="Replacement">
         </div>
         <div class="button-group">
-          <el-tooltip class="item"
-            effect="dark"
-            content="Replace All"
-            placement="top"
-            :visible-arrow="false"
-            :open-delay="1000"
-          >
+          <div class="item" title="Replace All">
             <button class="button right" @click="replace(false)">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-all-inclusive"></use>
               </svg>
             </button>
-          </el-tooltip>
-          <el-tooltip class="item"
-            effect="dark"
-            content="Replace Single"
-            placement="top"
-            :visible-arrow="false"
-            :open-delay="1000"
-          >
+          </div>
+          <div class="item" title="Replace Single">
             <button class="button" @click="replace(true)">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-replace"></use>
               </svg>
             </button>
-          </el-tooltip>
+          </div>
         </div>
       </section>
     </div>
@@ -178,7 +166,7 @@ export default {
     document.addEventListener('keyup', this.docKeyup)
   },
 
-  beforeDestroy () {
+  beforeUnmount () {
     bus.$off('find', this.listenFind)
     bus.$off('replace', this.listenReplace)
     bus.$off('findNext', this.listenFindNext)

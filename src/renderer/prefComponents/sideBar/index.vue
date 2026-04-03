@@ -9,12 +9,8 @@
         placeholder="Search preferences"
         :trigger-on-focus="false"
         @select="handleSelect">
-        <i
-          class="el-icon-search el-input__icon"
-          slot="suffix"
-        >
-        </i>
-        <template slot-scope="{ item }">
+        <template #prefix><el-icon><Search /></el-icon></template>
+        <template #default="{ item }">
           <div class="name">{{ item.category }}</div>
           <span class="addr">{{ item.preference }}</span>
         </template>
@@ -141,7 +137,7 @@ export default {
     & .el-autocomplete-suggestion__wrap li:hover {
       background: var(--floatHoverColor);
     }
-    & .popper__arrow {
+    & .el-popper__arrow {
       display: none;
     }
     & li {

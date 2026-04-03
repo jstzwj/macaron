@@ -1,49 +1,52 @@
 <template>
-  <div class="command-palette">
+  <div class="command-palette" v-if="showCommandPalette">
     <el-dialog
-      :visible.sync="showCommandPalette"
+      v-model="showCommandPalette"
+      :teleported="false"
       :show-close="false"
       :modal="true"
       @close="handleDialogClose"
-      custom-class="ag-dialog-table"
+      class="ag-dialog-table"
       width="500px"
     >
-      <div slot="title" class="search-wrapper">
-        <div class="input-wrapper">
-          <input
-            ref="search"
-            type="text"
-            v-model="query"
-            class="search"
-            @keydown="handleBeforeInput"
-            @keyup="handleInput"
-            :placeholder="placeholderText"
-          >
-        </div>
-        <loading v-if="searcherBusy"></loading>
-        <transition name="fade" v-else-if="availableCommands.length">
-          <ul class="commands">
-            <li
-              v-for="(item, index) of availableCommands"
-              :key="index"
-              ref="command-items"
-              @click="search(item.id)"
-              :class="{'active': index === selectedCommandIndex}"
+      <template #title>
+        <div class="search-wrapper">
+          <div class="input-wrapper">
+            <input
+              ref="search"
+              type="text"
+              v-model="query"
+              class="search"
+              @keydown="handleBeforeInput"
+              @keyup="handleInput"
+              :placeholder="placeholderText"
             >
-              <span class="title" :title="item.title">{{item.description}}</span>
-              <span class="shortcut">
-                <span
-                  class="shortcut"
-                  v-for="(accelerator, index) of item.shortcut"
-                  :key="index"
-                >
-                    <kbd>{{accelerator}}</kbd>
+          </div>
+          <loading v-if="searcherBusy"></loading>
+          <transition name="fade" v-else-if="availableCommands.length">
+            <ul class="commands">
+              <li
+                v-for="(item, index) of availableCommands"
+                :key="index"
+                ref="command-items"
+                @click="search(item.id)"
+                :class="{'active': index === selectedCommandIndex}"
+              >
+                <span class="title" :title="item.title">{{ item.description }}</span>
+                <span class="shortcut">
+                  <span
+                    class="shortcut"
+                    v-for="(accelerator, shortcutIndex) of item.shortcut"
+                    :key="shortcutIndex"
+                  >
+                    <kbd>{{ accelerator }}</kbd>
+                  </span>
                 </span>
-              </span>
-            </li>
-          </ul>
-        </transition>
-      </div>
+              </li>
+            </ul>
+          </transition>
+        </div>
+      </template>
     </el-dialog>
   </div>
 </template>
@@ -80,7 +83,7 @@ export default {
       bus.$on('show-command-palette', this.handleShow)
     })
   },
-  beforeDestroy () {
+  beforeUnmount () {
     bus.$off('show-command-palette', this.handleShow)
   },
   methods: {
@@ -95,7 +98,6 @@ export default {
           this.showCommandPalette = true
           bus.$emit('editor-blur')
           this.$nextTick(() => {
-            // Scroll selected entry into view.
             const items = this.$refs['command-items']
             const { selectedCommandIndex } = this
             if (items && items.length > 0 && selectedCommandIndex >= 0) {
@@ -108,18 +110,16 @@ export default {
           })
         })
         .catch(error => {
-          // Allow to throw new Error(null) to indicate an invalid state.
           if (error && error.message) {
             log.error('Unable to initialize command:', error)
           }
         })
     },
     handleDialogClose () {
-      // Reset all settings
       this.selectedCommandIndex = -1
       this.query = ''
       this.availableCommands = []
-      if (this.currentCommand.unload) {
+      if (this.currentCommand?.unload) {
         this.currentCommand.unload()
       }
       this.currentCommand = null
@@ -163,7 +163,6 @@ export default {
       if (event.isComposing) {
         return
       }
-      // NOTE: We're using keyup to catch "enter" key but `ctrlKey` etc doesn't work here.
       switch (event.key) {
         case 'Control':
         case 'Alt':
@@ -176,7 +175,6 @@ export default {
         case 'ArrowDown':
         case 'ArrowLeft':
         case 'ArrowRight': {
-          // No-op
           break
         }
         case 'Enter': {
@@ -192,23 +190,19 @@ export default {
     search (commandId = null) {
       const { availableCommands, selectedCommandIndex } = this
       if (commandId) {
-        // Command selected from dropdown.
         this.executeCommand(commandId)
         return
       } else if (selectedCommandIndex >= 0 && selectedCommandIndex < availableCommands.length) {
-        // Pressed enter on selected command.
         this.executeCommand(availableCommands[selectedCommandIndex].id)
         return
       }
 
-      // Otherwise update list
       this.updateCommands()
     },
     updateCommands () {
       const { currentCommand, query } = this
       const queryString = query.trim()
 
-      // Allow to handle search result by command (e.g. quick search).
       if (currentCommand.search) {
         this.searcherBusy = true
         currentCommand.search(queryString)
@@ -218,7 +212,6 @@ export default {
             this.selectedCommandIndex = this.availableCommands.length ? 0 : -1
           })
           .catch(error => {
-            // The query was cancel or restarted if `message` is null.
             if (error && error.message) {
               this.searcherBusy = false
               this.availableCommands = []
@@ -229,7 +222,6 @@ export default {
         return
       }
 
-      // Default handler
       if (!queryString) {
         this.availableCommands = currentCommand.subcommands
       } else {
@@ -253,11 +245,8 @@ export default {
       } else {
         const { execute, subcommands, run } = command
 
-        // Allow to load static commands without reloading command palette.
         if (execute === undefined && run === undefined && subcommands) {
-          // Load subcommands
           this.currentCommand = command
-          // NOTE: selected index is always -1 by static state loaded this way.
           this.selectedCommandIndex = -1
           this.query = ''
           this.updateCommands()
@@ -272,7 +261,6 @@ export default {
 </script>
 
 <style scoped>
-  /* Hide scrollbar for this dialog */
   ::-webkit-scrollbar {
     display: none;
   }
@@ -374,7 +362,7 @@ export default {
   .fade-enter-active, .fade-leave-active {
     transition: opacity .2s;
   }
-  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  .fade-enter, .fade-leave-to {
     opacity: 0;
   }
 </style>

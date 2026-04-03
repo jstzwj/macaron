@@ -9,13 +9,42 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const WebpackDevServer = require('webpack-dev-server')
 const webpackHotMiddleware = require('webpack-hot-middleware')
+const net = require('net')
 
 const mainConfig = require('./webpack.main.config')
 const rendererConfig = require('./webpack.renderer.config')
 
+const devServerHost = process.env.MARKTEXT_DEV_SERVER_HOST || '127.0.0.1'
+const devServerBindHost = process.env.MARKTEXT_DEV_SERVER_BIND_HOST || '0.0.0.0'
+const preferredDevServerPort = Number(process.env.MARKTEXT_DEV_SERVER_PORT || 9081)
+let devServerPort = preferredDevServerPort
+
 let electronProcess = null
 let manualRestart = false
 let hotMiddleware
+
+function pickAvailablePort (host, startPort) {
+  return new Promise((resolve, reject) => {
+    const tryPort = port => {
+      const server = net.createServer()
+      server.unref()
+      server.on('error', err => {
+        if (err && (err.code === 'EADDRINUSE' || err.code === 'EACCES')) {
+          tryPort(port + 1)
+        } else {
+          reject(err)
+        }
+      })
+      server.listen(port, host, () => {
+        const address = server.address()
+        const freePort = address && typeof address === 'object' ? address.port : port
+        server.close(() => resolve(freePort))
+      })
+    }
+
+    tryPort(startPort)
+  })
+}
 
 function logStats (proc, data) {
   let log = ''
@@ -41,9 +70,11 @@ function logStats (proc, data) {
 
 function startRenderer () {
   return new Promise((resolve, reject) => {
+    process.env.MARKTEXT_DEV_HIDE_BROWSER_ANALYZER = '1'
     rendererConfig.entry.renderer = [path.join(__dirname, 'dev-client')].concat(rendererConfig.entry.renderer)
 
     const compiler = webpack(rendererConfig)
+    let resolved = false
     hotMiddleware = webpackHotMiddleware(compiler, {
       log: false,
       heartbeat: 2500
@@ -54,7 +85,6 @@ function startRenderer () {
         'AfterPlugin',
         (data, cb) => {
           hotMiddleware.publish({ action: 'reload' })
-          // Tell webpack to move on
           cb(null, data)
         }
       )
@@ -62,11 +92,15 @@ function startRenderer () {
 
     compiler.hooks.done.tap('AfterCompiler', stats => {
       logStats('Renderer', stats)
+      if (!resolved && !stats.hasErrors()) {
+        resolved = true
+        resolve()
+      }
     })
 
     const server = new WebpackDevServer({
-      host: '127.0.0.1',
-      port: 9091,
+      host: devServerBindHost,
+      port: devServerPort,
       hot: true,
       liveReload: true,
       compress: true,
@@ -79,14 +113,11 @@ function startRenderer () {
       ],
       setupMiddlewares (middlewares, devServer) {
         devServer.app.use(hotMiddleware)
-        devServer.middleware.waitUntilValid(() => {
-          resolve()
-        })
         return middlewares
       }
     }, compiler)
 
-    server.start()
+    server.start().catch(reject)
   })
 }
 
@@ -98,13 +129,16 @@ function startMain () {
 
     compiler.hooks.watchRun.tapAsync('Compiling', (_, done) => {
       logStats('Main', chalk.white.bold('compiling...'))
-      hotMiddleware.publish({ action: 'compiling' })
+      if (hotMiddleware) {
+        hotMiddleware.publish({ action: 'compiling' })
+      }
       done()
     })
 
     compiler.watch({}, (err, stats) => {
       if (err) {
         console.log(err)
+        reject(err)
         return
       }
 
@@ -132,7 +166,14 @@ function startElectron () {
     '--remote-debugging-port=8315',
     '--nolazy',
     path.join(__dirname, '../dist/electron/main.js')
-  ])
+  ], {
+    env: {
+      ...process.env,
+      MARKTEXT_DEV_SERVER_HOST: devServerHost,
+      MARKTEXT_DEV_SERVER_PORT: String(devServerPort),
+      MARKTEXT_DEV_HIDE_BROWSER_ANALYZER: '1'
+    }
+  })
 
   electronProcess.stdout.on('data', data => {
     electronLog(data, 'blue')
@@ -183,8 +224,11 @@ function greeting () {
   console.log(chalk.blue('  getting ready...') + '\n')
 }
 
-function init () {
+async function init () {
   greeting()
+  devServerPort = await pickAvailablePort(devServerBindHost, preferredDevServerPort)
+  process.env.MARKTEXT_DEV_SERVER_PORT = String(devServerPort)
+  process.env.MARKTEXT_DEV_HIDE_BROWSER_ANALYZER = '1'
 
   Promise.all([startRenderer(), startMain()])
     .then(() => {

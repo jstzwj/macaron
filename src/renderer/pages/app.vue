@@ -2,25 +2,25 @@
   <div
     class="editor-container"
   >
-    <side-bar v-if="init"></side-bar>
+    <side-bar v-if="uiInit"></side-bar>
     <div class="editor-middle">
       <title-bar
         :project="projectTree"
-        :pathname="pathname"
-        :filename="filename"
+        :pathname="currentFile.pathname"
+        :filename="currentFile.filename"
         :active="windowActive"
-        :word-count="wordCount"
+        :word-count="currentFile.wordCount"
         :platform="platform"
-        :is-saved="isSaved"
+        :is-saved="currentFile.isSaved"
       ></title-bar>
-      <div class="editor-placeholder" v-if="!init"></div>
+      <div class="editor-placeholder" v-if="!uiInit"></div>
       <recent
-        v-if="!hasCurrentFile && init"
+        v-if="!hasCurrentFile && uiInit"
       ></recent>
       <editor-with-tabs
-        v-if="hasCurrentFile && init"
-        :markdown="markdown"
-        :cursor="cursor"
+        v-if="hasCurrentFile && uiInit"
+        :markdown="currentFile.markdown"
+        :cursor="currentFile.cursor"
         :source-code="sourceCode"
         :show-tab-bar="showTabBar"
         :text-direction="textDirection"
@@ -71,6 +71,8 @@ export default {
   mixins: [loadingPageMixins],
   data () {
     return {
+      uiInit: false,
+      currentFile: {}
     }
   },
   computed: {
@@ -78,25 +80,14 @@ export default {
       showTabBar: state => state.layout.showTabBar,
       sourceCode: state => state.preferences.sourceCode,
       theme: state => state.preferences.theme,
-      textDirection: state => state.preferences.textDirection
-    }),
-    ...mapState({
-      zoom: state => state.preferences.zoom
-    }),
-    ...mapState({
+      textDirection: state => state.preferences.textDirection,
+      zoom: state => state.preferences.zoom,
       projectTree: state => state.project.projectTree,
-      pathname: state => state.editor.currentFile.pathname,
-      filename: state => state.editor.currentFile.filename,
-      isSaved: state => state.editor.currentFile.isSaved,
-      markdown: state => state.editor.currentFile.markdown,
-      cursor: state => state.editor.currentFile.cursor,
-      wordCount: state => state.editor.currentFile.wordCount
+      windowActive: state => state.windowActive,
+      platform: state => state.platform
     }),
-    ...mapState([
-      'windowActive', 'platform', 'init'
-    ]),
     hasCurrentFile () {
-      return this.markdown !== undefined
+      return typeof this.currentFile.markdown !== 'undefined'
     }
   },
   watch: {
@@ -112,31 +103,29 @@ export default {
   created () {
     const { commit, dispatch } = this.$store
 
-    // Apply initial state (theme and titleBarStyle) and delay load other values.
     if (global.marktext.initialState) {
       commit('SET_USER_PREFERENCE', global.marktext.initialState)
     }
 
-    // store/index.js
+    this.uiInit = this.$store.state.init
+    this.currentFile = this.$store.state.editor.currentFile || {}
+    this.unsubscribeStore = this.$store.subscribe((mutation, state) => {
+      this.uiInit = state.init
+      this.currentFile = state.editor.currentFile || {}
+    })
+
     dispatch('LINTEN_WIN_STATUS')
-    // module: command center
     dispatch('LISTEN_COMMAND_CENTER_BUS')
-    // module: tweet
     dispatch('LISTEN_FOR_TWEET')
-    // module: layout
     dispatch('LISTEN_FOR_LAYOUT')
-    // module: listenForMain
     dispatch('LISTEN_FOR_EDIT')
     dispatch('LISTEN_FOR_VIEW')
     dispatch('LISTEN_FOR_SHOW_DIALOG')
     dispatch('LISTEN_FOR_PARAGRAPH_INLINE_STYLE')
-    // module: project
     dispatch('LISTEN_FOR_UPDATE_PROJECT')
     dispatch('LISTEN_FOR_LOAD_PROJECT')
     dispatch('LISTEN_FOR_SIDEBAR_CONTEXT_MENU')
-    // module: autoUpdates
     dispatch('LISTEN_FOR_UPDATE')
-    // module: editor
     dispatch('LISTEN_SCREEN_SHOT')
     dispatch('ASK_FOR_USER_PREFERENCE')
     dispatch('LISTEN_TOGGLE_VIEW')
@@ -161,19 +150,13 @@ export default {
     dispatch('LISTEN_WINDOW_ZOOM')
     dispatch('LISTEN_FOR_RELOAD_IMAGES')
     dispatch('LISTEN_FOR_CONTEXT_MENU')
-
-    // module: notification
     dispatch('LISTEN_FOR_NOTIFICATION')
 
-    // prevent Chromium's default behavior and try to open the first file
     window.addEventListener('dragover', e => {
-      // Cancel to allow tab drag&drop.
       if (!e.dataTransfer.types.length) return
 
       if (e.dataTransfer.types.indexOf('Files') >= 0) {
-        if (e.dataTransfer.items.length === 1 && e.dataTransfer.items[0].type.indexOf('image') > -1) {
-          // Do nothing, because we already drag/drop image in muya.
-        } else {
+        if (!(e.dataTransfer.items.length === 1 && e.dataTransfer.items[0].type.indexOf('image') > -1)) {
           e.preventDefault()
           if (this.timer) {
             clearTimeout(this.timer)
@@ -196,6 +179,11 @@ export default {
       addStyles(style)
       this.hideLoadingPage()
     })
+  },
+  beforeUnmount () {
+    if (this.unsubscribeStore) {
+      this.unsubscribeStore()
+    }
   }
 }
 </script>

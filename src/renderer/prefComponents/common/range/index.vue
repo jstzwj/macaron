@@ -1,19 +1,21 @@
 <template>
   <section class="pref-range-item" :class="{'ag-underdevelop': disable}">
     <div class="description">
-      <span>{{description}}:</span> <span class="value" v-if="selectValue">{{selectValue}} <span v-if="unit">{{unit}}</span></span>
-      <i class="el-icon-info" v-if="more"
+      <span>{{description}}:</span> <span class="value" v-if="selectValue !== undefined && selectValue !== null">{{selectValue}} <span v-if="unit">{{unit}}</span></span>
+      <el-icon v-if="more"
         @click="handleMoreClick"
-      ></i>
+      ><InfoFilled /></el-icon>
     </div>
-    <el-slider
+    <input
+      class="range-input"
+      type="range"
       v-model="selectValue"
-      @change="select"
+      @change="select(Number($event.target.value))"
       :min="min"
       :max="max"
-      :format-tooltip="value => value + (unit ? unit : '')"
-      :step="step">
-    </el-slider>
+      :step="step"
+      :disabled="disable"
+    >
   </section>
 </template>
 
@@ -69,31 +71,17 @@ export default {
   & .value {
     text-align: right;
     font-style: italic;
-    float: right
-  }
-  & .el-slider {
-    width: 100%;
-  }
-  & .el-slider__runway,
-  & .el-slider__bar {
-    height: 4px;
-  }
-  & .el-slider__button {
-    width: 12px;
-    height: 12px;
-  }
-  & .el-slider__button-wrapper {
-    width: 20px;
-    height: 20px;
-    top: -9px;
-  }
-}
-.pref-select-item .description {
-  margin-bottom: 10px;
-
-  & .value {
+    float: right;
     color: var(--editorColor80);
   }
+  & .range-input {
+    width: 100%;
+    accent-color: var(--themeColor);
+  }
+}
+.pref-range-item .description {
+  margin-bottom: 10px;
+
   & i {
     cursor: pointer;
     opacity: .7;

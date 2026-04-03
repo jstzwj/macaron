@@ -22,11 +22,12 @@
         <div class="form-group">
           <div class="label">
             GitHub token:
-            <el-tooltip class="item" effect="dark"
-              content="The token is saved by Keychain on macOS, Secret Service API/libsecret on Linux and Credential Vault on Windows"
-              placement="top-start">
-              <i class="el-icon-info"></i>
-            </el-tooltip>
+            <span
+              class="item github-token-help"
+              title="The token is saved by Keychain on macOS, Secret Service API/libsecret on Linux and Credential Vault on Windows"
+            >
+              <el-icon><InfoFilled /></el-icon>
+            </span>
           </div>
           <el-input v-model="githubToken" placeholder="Input token" size="mini"></el-input>
         </div>

@@ -2,55 +2,52 @@
   <section class="pref-font-input-item" :class="{'ag-underdevelop': disable}">
     <div class="description">
       <span>{{description}}:</span>
-      <i class="el-icon-info" v-if="more" @click="handleMoreClick"></i>
+      <el-icon v-if="more" @click="handleMoreClick"><InfoFilled /></el-icon>
     </div>
-    <el-autocomplete
-      class="font-autocomplete"
-      popper-class="font-autocomplete-popper"
-      v-model="selectValue"
-      :fetch-suggestions="querySearch"
-      placeholder="Select font..."
-      @select="handleSelect"
-    >
-      <i class="el-icon-arrow-down el-input__icon" slot="suffix"></i>
-      <template slot-scope="{ item }">
-        <div class="family">{{ item }}</div>
-      </template>
-    </el-autocomplete>
+    <div class="font-autocomplete">
+      <div class="input-wrapper">
+        <input
+          class="input-inner"
+          v-model="selectValue"
+          placeholder="Select font..."
+          :disabled="disable"
+          @focus="openList"
+          @input="openList"
+        >
+        <button
+          class="toggle-button"
+          type="button"
+          @click="toggleList"
+          :disabled="disable"
+          aria-label="Toggle font list"
+        >
+          ▾
+        </button>
+      </div>
+      <ul v-if="showList && filteredFonts.length" class="font-list">
+        <li
+          v-for="item in filteredFonts"
+          :key="item"
+          class="font-item"
+          @mousedown.prevent="handleSelect(item)"
+        >
+          <div class="family">{{ item }}</div>
+        </li>
+      </ul>
+    </div>
   </section>
 </template>
 
 <script>
 import { shell } from 'electron'
 
-// Example of fontmanager-redux objects:
-// {
-//     path: '/Library/Fonts/Arial.ttf',
-//     postscriptName: 'ArialMT',
-//     family: 'Arial',
-//     style: 'Regular',
-//     weight: 400,
-//     width: 5,
-//     italic: false,
-//     monospace: false
-// }
-// {
-//     path: '/Library/Fonts/Arial Bold.ttf',
-//     postscriptName: 'Arial-BoldMT',
-//     family: 'Arial',
-//     style: 'Bold',
-//     weight: 700,
-//     width: 5,
-//     italic: false,
-//     monospace: false
-// }
-
 export default {
   data () {
     this.defaultValue = this.value
     return {
       fontFamilies: [],
-      selectValue: this.value
+      selectValue: this.value,
+      showList: false
     }
   },
   props: {
@@ -68,6 +65,15 @@ export default {
     }
   },
 
+  computed: {
+    filteredFonts () {
+      const query = (this.selectValue || '').trim().toLowerCase()
+      return query && this.defaultValue !== this.selectValue
+        ? this.fontFamilies.filter(f => f.toLowerCase().indexOf(query) === 0)
+        : this.fontFamilies
+    }
+  },
+
   watch: {
     value: function (value, oldValue) {
       if (value !== oldValue) {
@@ -78,85 +84,85 @@ export default {
   },
 
   methods: {
-    querySearch (queryString, callback) {
-      const fontFamilies = this.fontFamilies
-      const results = queryString && this.defaultValue !== queryString
-        ? fontFamilies.filter(f => f.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
-        : fontFamilies
-      callback(results)
+    openList () {
+      if (!this.disable) {
+        this.showList = true
+      }
     },
-
+    toggleList () {
+      if (!this.disable) {
+        this.showList = !this.showList
+      }
+    },
     handleSelect (value) {
       if (/^[^\s]+((-|\s)*[^\s])*$/.test(value)) {
         this.selectValue = value
+        this.showList = false
         this.onChange(value)
       }
     },
-
     handleMoreClick () {
       if (typeof this.more === 'string') {
         shell.openExternal(this.more)
       }
+    },
+    handleDocumentClick (event) {
+      if (this.$el && !this.$el.contains(event.target)) {
+        this.showList = false
+      }
     }
   },
   mounted () {
-    // Delay load native library because it's not needed for the editor and causes a delay.
     const fontManager = require('fontmanager-redux')
     const { onlyMonospace } = this
     const buf = fontManager.getAvailableFontsSync()
       .filter(f => f.family && (!onlyMonospace || (onlyMonospace && f.monospace)))
       .map(f => f.family)
     this.fontFamilies = [...new Set(buf)].sort((a, b) => a.localeCompare(b))
+    document.addEventListener('click', this.handleDocumentClick)
+  },
+  beforeUnmount () {
+    document.removeEventListener('click', this.handleDocumentClick)
   }
 }
 </script>
 
 <style>
-.el-autocomplete-suggestion {
-  border: 1px solid var(--floatBorderColor);
-  background-color: var(--floatBgColor);
-}
-.el-popper[x-placement^=top] .popper__arrow {
-  border-top-color: var(--floatBorderColor);
-}
-.el-popper[x-placement^=bottom] .popper__arrow {
-  border-bottom-color: var(--floatBorderColor);
-}
-.el-popper[x-placement^=top] .popper__arrow::after {
-  border-top-color: var(--floatBgColor);
-}
-.el-popper[x-placement^=bottom] .popper__arrow::after {
-  border-bottom-color: var(--floatBgColor);
-}
-
-.el-autocomplete-suggestion li {
-  color: var(--editorColor);
-}
-.el-autocomplete-suggestion li.highlighted,
-.el-autocomplete-suggestion li:hover {
-  background: var(--floatHoverColor);
-}
-
 .pref-font-input-item {
   margin: 20px 0;
   font-size: 14px;
   color: var(--editorColor);
+  position: relative;
   & .font-autocomplete {
     width: 100%;
+    position: relative;
   }
-  & input.el-input__inner {
+  & .input-wrapper {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--editorColor10);
+    border-radius: 4px;
+    background: transparent;
+  }
+  & .input-wrapper:focus-within {
+    border-color: var(--themeColor);
+  }
+  & .input-inner {
+    flex: 1;
     height: 30px;
     background: transparent;
     color: var(--editorColor);
-    border-color: var(--editorColor10);
+    border: none;
+    padding: 0 10px;
+    outline: none;
   }
-  & .el-input.is-active .el-input__inner,
-  & .el-input__inner:focus {
-    border-color: var(--themeColor);
-  }
-  & .el-input__icon,
-  & .el-input__inner {
-    line-height: 30px;
+  & .toggle-button {
+    border: none;
+    background: transparent;
+    color: var(--iconColor);
+    cursor: pointer;
+    padding: 0 10px;
+    height: 30px;
   }
 }
 .pref-font-input-item .description {
@@ -170,18 +176,26 @@ export default {
     color: var(--themeColor);
   }
 }
-.pref-font-input-item .font-autocomplete-popper {
-  li {
-    line-height: normal;
-    padding: 7px;
-    .value {
-      text-overflow: ellipsis;
-      overflow: hidden;
-    }
-    .link {
-      font-size: 12px;
-      color: #b4b4b4;
-    }
-  }
+.font-list {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  margin: 4px 0 0 0;
+  padding: 4px 0;
+  list-style: none;
+  border: 1px solid var(--floatBorderColor);
+  background-color: var(--floatBgColor);
+  border-radius: 4px;
+  max-height: 240px;
+  overflow-y: auto;
+}
+.font-item {
+  color: var(--editorColor);
+  padding: 7px 10px;
+  cursor: pointer;
+}
+.font-item:hover {
+  background: var(--floatHoverColor);
 }
 </style>

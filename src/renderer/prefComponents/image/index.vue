@@ -3,11 +3,12 @@
     <h4>Image</h4>
     <section class="image-ctrl">
       <div>Default action after an image is inserted from local folder or clipboard
-        <el-tooltip class='item' effect='dark'
-          content='Clipboard handling is only fully supported on macOS and Windows.'
-          placement='top-start'>
-          <i class="el-icon-info"></i>
-        </el-tooltip>
+        <span
+          class='item image-help'
+          title='Clipboard handling is only fully supported on macOS and Windows.'
+        >
+          <el-icon><InfoFilled /></el-icon>
+        </span>
       </div>
       <CurSelect :value="imageInsertAction" :options="imageActions"
         :onChange="value => onSelectChange('imageInsertAction', value)"></CurSelect>

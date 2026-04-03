@@ -1,37 +1,40 @@
 <template>
-  <div class="key-input-dialog">
+  <div class="key-input-dialog" v-if="showKeyInputDialog">
     <div v-if="showKeyInputDialog" class="input-overlay"></div>
     <el-dialog
-      :visible.sync="showKeyInputDialog"
+      v-model="showKeyInputDialog"
+      :teleported="false"
       :show-close="false"
       :modal="false"
       @close="cancelKeybinding"
-      custom-class="ag-dialog-table"
+      class="ag-dialog-table"
       width="350px"
     >
-      <div slot="title" class="key-input-wrapper">
-        <div class="input-wrapper">
-          <input
-            tabindex="0"
-            type="text"
-            ref="intputTextbox"
-            v-model="keybindingInputValue"
-            class="input-textbox"
-            @keydown="handleKeyDown"
-            @keyup="handleKeyUp"
-            :placeholder="placeholderText"
-          >
-        </div>
-        <div class="footer">
-          <div class="descriptions">Press Enter to continue or ESC to exit.</div>
-          <div
-            v-show="!isKeybindingValid"
-            class="invalid-keybinding"
-          >
-            Current key combination cannot be bound!
+      <template #title>
+        <div class="key-input-wrapper">
+          <div class="input-wrapper">
+            <input
+              tabindex="0"
+              type="text"
+              ref="intputTextbox"
+              v-model="keybindingInputValue"
+              class="input-textbox"
+              @keydown="handleKeyDown"
+              @keyup="handleKeyUp"
+              :placeholder="placeholderText"
+            >
+          </div>
+          <div class="footer">
+            <div class="descriptions">Press Enter to continue or ESC to exit.</div>
+            <div
+              v-show="!isKeybindingValid"
+              class="invalid-keybinding"
+            >
+              Current key combination cannot be bound!
+            </div>
           </div>
         </div>
-      </div>
+      </template>
     </el-dialog>
   </div>
 </template>
@@ -94,7 +97,6 @@ export default {
       event.preventDefault()
       event.stopPropagation()
       if (isCompositionEvent(event)) {
-        // FIXME: You can still write in the textbox while composition.
         return
       } else if (this.isRawKeyCode(event, 'Escape')) {
         this.cancelKeybinding()
@@ -106,7 +108,6 @@ export default {
 
       const keybinding = getAcceleratorFromKeyboardEvent(event)
       this.currentKeybinding = keybinding
-      // Verify whether the given key binding is valid for Electron.
       this.isKeybindingValid = keybinding.isValid && isValidElectronAccelerator(keybinding.accelerator)
       this.keybindingInputValue = keybinding.accelerator
     },
@@ -115,7 +116,6 @@ export default {
       event.stopPropagation()
     },
     cancelKeybinding () {
-      // Don't commit twice if the user clicks on the background.
       if (this.needCommitOnClose) {
         this.needCommitOnClose = false
         this.onCommit(null)
@@ -130,7 +130,6 @@ export default {
 
       const { accelerator, isValid } = this.currentKeybinding
       if (!isValid) {
-        // TODO: Show shake animation on error text.
         return
       }
 
@@ -172,6 +171,12 @@ export default {
     box-shadow: 0 3px 8px 3px var(--floatShadow);
     z-index: 10000;
   }
+  .input-overlay {
+    position: fixed;
+    inset: 0;
+    background: transparent;
+    z-index: 9999;
+  }
   .input-wrapper {
     display: block;
     width: 100%;
@@ -179,7 +184,7 @@ export default {
     background: var(--inputBgColor);
     border-radius: 3px;
   }
-  input.input-textbox {
+  .input-textbox {
     width: 100%;
     height: 30px;
     margin: 0 10px;
@@ -190,36 +195,16 @@ export default {
     border: none;
   }
   .footer {
-    font-size: 13px;
-    text-align: center;
-    & .description {
-      margin-top: 2px;
-    }
-    & .invalid-keybinding {
-      font-weight: bold;
-    }
+    width: 100%;
+    margin-top: 8px;
   }
-
-  .fade-enter-active, .fade-leave-active {
-    transition: opacity .2s;
+  .descriptions,
+  .invalid-keybinding {
+    font-size: 12px;
   }
-  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-    opacity: 0;
-  }
-
-  .input-overlay {
-    position: fixed;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 100;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 13px;
-    color: var(--editorColor);
-    background: rgba(0, 0, 0, 0.5);
+  .invalid-keybinding {
+    color: var(--notificationErrorBg);
+    margin-top: 4px;
   }
 </style>
 <style>

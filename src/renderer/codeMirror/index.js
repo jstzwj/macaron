@@ -1,148 +1,243 @@
+import { EditorState, Compartment } from '@codemirror/state'
+import { EditorView, lineNumbers, highlightActiveLineGutter, highlightActiveLine, drawSelection, keymap } from '@codemirror/view'
+import { defaultKeymap, history, historyKeymap, selectAll as selectDoc } from '@codemirror/commands'
+import { syntaxHighlighting, defaultHighlightStyle, bracketMatching } from '@codemirror/language'
+import { closeBrackets, closeBracketsKeymap } from '@codemirror/autocomplete'
+import { oneDark } from '@codemirror/theme-one-dark'
+import { markdownLanguage } from '@codemirror/lang-markdown'
+import { searchKeymap } from '@codemirror/search'
 import { filter } from 'fuzzaldrin'
-import 'codemirror/addon/edit/closebrackets'
-import 'codemirror/addon/edit/closetag'
-import 'codemirror/addon/selection/active-line'
-import 'codemirror/mode/meta'
-import codeMirror from 'codemirror/lib/codemirror'
 
-import loadmode from './loadmode'
-import overlayMode from './overlayMode'
-import multiplexMode from './mltiplexMode'
-import languages from './modes'
-import 'codemirror/lib/codemirror.css'
+import languages, { getLanguageExtension } from './modes'
 import './index.css'
-import 'codemirror/theme/railscasts.css'
 
-loadmode(codeMirror)
-overlayMode(codeMirror)
-multiplexMode(codeMirror)
-window.CodeMirror = codeMirror
+import { oneDarkThemes, railscastsThemes } from '@/config'
+const themeCompartment = new Compartment()
+const languageCompartment = new Compartment()
 
-const modes = codeMirror.modeInfo
-codeMirror.modeURL = './codemirror/mode/%N/%N.js'
+// --- Position conversion helpers (CM5 {line,ch} <-> CM6 absolute offset) ---
 
-const getModeFromName = name => {
-  let result = null
-  const lang = languages.filter(lang => lang.name === name)[0]
-  if (lang) {
-    const { name, mode, mime } = lang
-    const matched = modes.filter(m => {
-      if (m.mime) {
-        if (Array.isArray(m.mime) && m.mime.indexOf(mime) > -1 && m.mode === mode) {
-          return true
-        } else if (typeof m.mime === 'string' && m.mime === mime && m.mode === mode) {
-          return true
-        }
-      }
-      if (Array.isArray(m.mimes) && m.mimes.indexOf(mime) > -1 && m.mode === mode) {
-        return true
-      }
-      return false
-    })
-    if (matched.length && typeof matched[0] === 'object') {
-      result = {
-        name,
-        mode: matched[0]
-      }
-    }
-  }
-  return result
+export const cm6ToCm5Pos = (view, pos) => {
+  const line = view.state.doc.lineAt(pos)
+  return { line: line.number - 1, ch: pos - line.from }
 }
 
-export const search = text => {
+export const cm5ToCm6Pos = (view, pos) => {
+  const { line, ch } = pos
+  const lineInfo = view.state.doc.line(Math.min(line + 1, view.state.doc.lines))
+  return Math.min(lineInfo.from + ch, lineInfo.to)
+}
+
+// --- Search ---
+
+const search = text => {
   const matchedLangs = filter(languages, text, { key: 'name' })
-  return matchedLangs
-    .map(({ name }) => getModeFromName(name))
-    .filter(lang => !!lang)
+  return matchedLangs.map(({ name }) => ({ name, mode: { name } })).filter(Boolean)
 }
 
-/**
- * set cursor at the end of last line.
- */
-export const setCursorAtLastLine = cm => {
-  const lastLine = cm.lastLine()
-  const lineHandle = cm.getLineHandle(lastLine)
+// --- Theme helpers ---
 
-  cm.focus()
-  cm.setCursor(lastLine, lineHandle.text.length)
+const getThemeExtension = themeName => {
+  if (oneDarkThemes.includes(themeName)) {
+    return oneDark
+  }
+  return []
 }
 
-// if cursor at firstLine return true
-export const isCursorAtFirstLine = cm => {
-  const cursor = cm.getCursor()
-  const { line, ch, outside } = cursor
+// --- Custom line number formatter: show every 10th line and line 1 ---
 
-  return line === 0 && ch === 0 && outside
+const customLineNumberGutter = lineNumbers({
+  formatNumber: line => {
+    if (line % 10 === 0 || line === 1) {
+      return line.toString()
+    }
+    return ''
+  }
+})
+
+// --- Editor creation ---
+
+export const createEditor = (container, options = {}) => {
+  const {
+    value = '',
+    theme = 'default',
+    direction = 'ltr',
+    onCursorActivity
+  } = options
+
+  const extensions = [
+    customLineNumberGutter,
+    highlightActiveLineGutter(),
+    highlightActiveLine(),
+    drawSelection(),
+    history(),
+    keymap.of([
+      ...closeBracketsKeymap,
+      ...defaultKeymap,
+      ...searchKeymap,
+      ...historyKeymap
+    ]),
+    bracketMatching(),
+    closeBrackets(),
+    syntaxHighlighting(defaultHighlightStyle, { fallback: true }),
+    languageCompartment.of(markdownLanguage.extension),
+    themeCompartment.of(getThemeExtension(theme)),
+    EditorView.lineWrapping
+  ]
+
+  if (onCursorActivity) {
+    extensions.push(EditorView.updateListener.of(update => {
+      if (update.selectionSet || update.docChanged) {
+        onCursorActivity(update)
+      }
+    }))
+  }
+
+  const state = EditorState.create({
+    doc: value,
+    extensions
+  })
+
+  const view = new EditorView({
+    state,
+    parent: container
+  })
+
+  // Apply text direction
+  if (direction === 'rtl') {
+    view.dom.style.direction = 'rtl'
+  }
+
+  // Apply CSS theme class for non-extension themes (railscasts, default)
+  applyThemeClass(view, theme)
+
+  return view
 }
 
-export const isCursorAtLastLine = cm => {
-  const lastLine = cm.lastLine()
-  const cursor = cm.getCursor()
-  const { line, outside, sticky } = cursor
-  return line === lastLine && (outside || !sticky)
-}
-
-export const isCursorAtBegin = cm => {
-  const cursor = cm.getCursor()
-  const { line, ch, hitSide } = cursor
-  return line === 0 && ch === 0 && !!hitSide
-}
-
-export const onlyHaveOneLine = cm => {
-  return cm.lineCount() === 1
-}
-
-export const isCursorAtEnd = cm => {
-  const lastLine = cm.lastLine()
-  const lastLineHandle = cm.getLineHandle(lastLine)
-  const cursor = cm.getCursor()
-  const { line, ch, hitSide } = cursor
-
-  return line === lastLine && ch === lastLineHandle.text.length && !!hitSide
-}
-
-export const getBeginPosition = () => {
-  return {
-    anchor: { line: 0, ch: 0 },
-    head: { line: 0, ch: 0 }
+// Apply CSS-based theme class to editor DOM for themes not handled by extensions
+const applyThemeClass = (view, theme) => {
+  view.dom.classList.remove('cm-s-default', 'cm-s-one-dark', 'cm-s-railscasts')
+  if (oneDarkThemes.includes(theme)) {
+    view.dom.classList.add('cm-s-one-dark')
+  } else if (railscastsThemes.includes(theme)) {
+    view.dom.classList.add('cm-s-railscasts')
+  } else {
+    view.dom.classList.add('cm-s-default')
   }
 }
 
-export const getEndPosition = cm => {
-  const lastLine = cm.lastLine()
-  const lastLineHandle = cm.getLineHandle(lastLine)
-  const line = lastLine
-  const ch = lastLineHandle.text.length
-  return { anchor: { line, ch }, head: { line, ch } }
+// --- Theme switching at runtime ---
+
+export const setTheme = (view, themeName) => {
+  view.dispatch({
+    effects: themeCompartment.reconfigure(getThemeExtension(themeName))
+  })
+  applyThemeClass(view, themeName)
 }
 
-export const setCursorAtFirstLine = cm => {
-  cm.focus()
-  cm.setCursor(0, 0)
+// --- Cursor utilities ---
+
+export const setCursorAtLastLine = view => {
+  const lastLine = view.state.doc.lines
+  const lineInfo = view.state.doc.line(lastLine)
+  view.dispatch({
+    selection: { anchor: lineInfo.to },
+    scrollIntoView: true
+  })
+  view.focus()
 }
 
-export const setMode = (doc, text) => {
-  const m = getModeFromName(text)
+export const setCursorAtFirstLine = view => {
+  view.dispatch({
+    selection: { anchor: 0 },
+    scrollIntoView: true
+  })
+  view.focus()
+}
 
-  if (!m) {
-    const errMsg = !text
-      ? 'You\'d better provided a language mode when you create code block'
-      : `${text} is not a valid language mode!`
-    return Promise.reject(errMsg) // eslint-disable-line prefer-promise-reject-errors
-  }
+export const isCursorAtFirstLine = view => {
+  const pos = view.state.selection.main.head
+  return pos === 0
+}
 
-  const { mode, mime } = m.mode
-  return new Promise(resolve => {
-    codeMirror.requireMode(mode, () => {
-      doc.setOption('mode', mime || mode)
-      codeMirror.autoLoadMode(doc, mode)
-      resolve(m)
-    })
+export const isCursorAtLastLine = view => {
+  const pos = view.state.selection.main.head
+  const lastLine = view.state.doc.lines
+  const lineInfo = view.state.doc.line(lastLine)
+  return pos >= lineInfo.from
+}
+
+export const onlyHaveOneLine = view => {
+  return view.state.doc.lines === 1
+}
+
+// --- Selection helpers (CM5-compatible {line,ch} interface) ---
+
+export const setSelection = (view, anchor, focus) => {
+  const anchorPos = cm5ToCm6Pos(view, anchor)
+  const focusPos = focus ? cm5ToCm6Pos(view, focus) : anchorPos
+  view.dispatch({
+    selection: { anchor: anchorPos, head: focusPos },
+    scrollIntoView: true
   })
 }
 
-export const setTextDirection = (cm, textDirection) => {
-  cm.setOption('direction', textDirection)
+export const getValue = view => {
+  return view.state.doc.toString()
 }
 
-export default codeMirror
+export const setValue = (view, text) => {
+  view.dispatch({
+    changes: { from: 0, to: view.state.doc.length, insert: text }
+  })
+}
+
+export const getCursor = (view, which = 'head') => {
+  const sel = view.state.selection.main
+  const pos = which === 'anchor' ? sel.anchor : sel.head
+  return cm6ToCm5Pos(view, pos)
+}
+
+export const getLine = (view, n) => {
+  // CM5 is 0-based, CM6 is 1-based
+  const lineNum = n + 1
+  if (lineNum < 1 || lineNum > view.state.doc.lines) return ''
+  return view.state.doc.line(lineNum).text
+}
+
+// --- Mode/language switching ---
+
+export const setMode = (view, languageName) => {
+  const ext = getLanguageExtension(languageName)
+  if (!ext) {
+    const errMsg = !languageName
+      ? 'You\'d better provided a language mode when you create code block'
+      : `${languageName} is not a valid language mode!`
+    return Promise.reject(errMsg)
+  }
+  view.dispatch({
+    effects: languageCompartment.reconfigure(ext)
+  })
+  return Promise.resolve({ name: languageName })
+}
+
+export const setTextDirection = (view, direction) => {
+  view.dom.style.direction = direction
+}
+
+// --- Commands ---
+
+export const execSelectAll = view => {
+  selectDoc(view)
+}
+
+export const hasFocus = view => {
+  return view.hasFocus
+}
+
+export const destroy = view => {
+  view.destroy()
+}
+
+export { search, selectDoc }
+export default { createEditor }
