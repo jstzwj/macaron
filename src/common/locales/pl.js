@@ -186,6 +186,41 @@ export default {
       sizeExceeded: 'Nie można przesłać obrazu większego niż 5MB, obraz zostanie skopiowany do folderu obrazów',
       noUploader: 'Nie dostarczono programu do przesyłania obrazów.',
       copyDeletionUrl: 'Kliknij, aby skopiować adres URL usunięcia przesłanego obrazu do schowka ({url}).'
+    },
+    frontMenu: {
+      duplicate: 'Duplikuj',
+      turnInto: 'Zmień w',
+      newParagraph: 'Nowy akapit',
+      delete: 'Usuń'
+    },
+    quickInsert: {
+      basicBlock: 'Blok podstawowy',
+      header: 'Nagłówek',
+      advancedBlock: 'Blok zaawansowany',
+      listBlock: 'Blok listy',
+      diagram: 'Diagram',
+      paragraph: 'Akapit',
+      horizontalLine: 'Linia pozioma',
+      frontMatter: 'Front Matter',
+      header1: 'Nagłówek 1',
+      header2: 'Nagłówek 2',
+      header3: 'Nagłówek 3',
+      header4: 'Nagłówek 4',
+      header5: 'Nagłówek 5',
+      header6: 'Nagłówek 6',
+      tableBlock: 'Blok tabeli',
+      displayMath: 'Blok matematyczny',
+      htmlBlock: 'Blok HTML',
+      codeBlock: 'Blok kodu',
+      quoteBlock: 'Blok cytatu',
+      orderList: 'Lista numerowana',
+      bulletList: 'Lista punktowa',
+      todoList: 'Lista zadań',
+      vegaChart: 'Wykres Vega',
+      flowChart: 'Schemat blokowy',
+      sequenceDiagram: 'Diagram sekwencji',
+      plantuml: 'Diagram PlantUML',
+      mermaid: 'Mermaid'
     }
   },
   fileOperation: {

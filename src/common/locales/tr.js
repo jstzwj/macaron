@@ -186,6 +186,41 @@ export default {
       sizeExceeded: '5M\'tan büyük resim yüklenemiyor, resim resim klasörüne kopyalanacak',
       noUploader: 'Resim yükleyici sağlanmadı.',
       copyDeletionUrl: 'Yüklenen resmin silme URL\'sini panoya kopyalamak için tıklayın ({url}).'
+    },
+    frontMenu: {
+      duplicate: 'Çoğalt',
+      turnInto: 'Dönüştür',
+      newParagraph: 'Yeni Paragraf',
+      delete: 'Sil'
+    },
+    quickInsert: {
+      basicBlock: 'Temel Blok',
+      header: 'Başlık',
+      advancedBlock: 'Gelişmiş Blok',
+      listBlock: 'Liste Bloğu',
+      diagram: 'Diyagram',
+      paragraph: 'Paragraf',
+      horizontalLine: 'Yatay Çizgi',
+      frontMatter: 'Front Matter',
+      header1: 'Başlık 1',
+      header2: 'Başlık 2',
+      header3: 'Başlık 3',
+      header4: 'Başlık 4',
+      header5: 'Başlık 5',
+      header6: 'Başlık 6',
+      tableBlock: 'Tablo Bloğu',
+      displayMath: 'Matematik Bloğu',
+      htmlBlock: 'HTML Bloğu',
+      codeBlock: 'Kod Bloğu',
+      quoteBlock: 'Alıntı Bloğu',
+      orderList: 'Sıralı Liste',
+      bulletList: 'Madde İşaretli Liste',
+      todoList: 'Görev Listesi',
+      vegaChart: 'Vega Grafiği',
+      flowChart: 'Akış Şeması',
+      sequenceDiagram: 'Sıralama Diyagramı',
+      plantuml: 'PlantUML Diyagramı',
+      mermaid: 'Mermaid'
     }
   },
   fileOperation: {

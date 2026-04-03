@@ -186,6 +186,41 @@ export default {
       sizeExceeded: '無法上傳超過 5M 的圖片，圖片將被複製到圖片資料夾',
       noUploader: '未提供圖片上傳器。',
       copyDeletionUrl: '點擊複製已上傳圖片的刪除連結到剪貼簿（{url}）。'
+    },
+    frontMenu: {
+      duplicate: '複製',
+      turnInto: '轉換為',
+      newParagraph: '新增段落',
+      delete: '刪除'
+    },
+    quickInsert: {
+      basicBlock: '基本區塊',
+      header: '標題',
+      advancedBlock: '進階區塊',
+      listBlock: '清單區塊',
+      diagram: '圖表',
+      paragraph: '段落',
+      horizontalLine: '水平線',
+      frontMatter: 'Front Matter',
+      header1: '標題 1',
+      header2: '標題 2',
+      header3: '標題 3',
+      header4: '標題 4',
+      header5: '標題 5',
+      header6: '標題 6',
+      tableBlock: '表格',
+      displayMath: '數學公式區塊',
+      htmlBlock: 'HTML 區塊',
+      codeBlock: '程式碼區塊',
+      quoteBlock: '引用區塊',
+      orderList: '有序清單',
+      bulletList: '無序清單',
+      todoList: '待辦清單',
+      vegaChart: 'Vega 圖表',
+      flowChart: '流程圖',
+      sequenceDiagram: '時序圖',
+      plantuml: 'PlantUML 圖',
+      mermaid: 'Mermaid 圖'
     }
   },
   fileOperation: {

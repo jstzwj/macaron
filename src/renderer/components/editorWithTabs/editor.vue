@@ -90,6 +90,9 @@ import LinkTools from 'muya/lib/ui/linkTools'
 import FootnoteTool from 'muya/lib/ui/footnoteTool'
 import TableBarTools from 'muya/lib/ui/tableTools'
 import FrontMenu from 'muya/lib/ui/frontMenu'
+import { setFrontMenuTranslator } from 'muya/lib/ui/frontMenu/config'
+import { setQuickInsertTranslator } from 'muya/lib/ui/quickInsert/config'
+import { translate } from '@/i18n'
 import Search from '../search'
 import bus from '@/bus'
 import { DEFAULT_EDITOR_FONT_FAMILY } from '@/config'
@@ -495,6 +498,11 @@ export default {
       Muya.use(Transformer)
       Muya.use(ImageToolbar)
       Muya.use(FormatPicker)
+
+      // Inject i18n into Muya UI plugins
+      setFrontMenuTranslator(translate)
+      setQuickInsertTranslator(translate)
+
       Muya.use(FrontMenu)
       Muya.use(LinkTools, {
         jumpClick: this.jumpClick

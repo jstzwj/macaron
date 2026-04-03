@@ -195,6 +195,41 @@ export default {
       sizeExceeded: 'Cannot upload more than 5M image, the image will be copied to the image folder',
       noUploader: 'No image uploader provided.',
       copyDeletionUrl: 'Click to copy the deletion URL of the uploaded image to the clipboard ({url}).'
+    },
+    frontMenu: {
+      duplicate: 'Duplicate',
+      turnInto: 'Turn Into',
+      newParagraph: 'New Paragraph',
+      delete: 'Delete'
+    },
+    quickInsert: {
+      basicBlock: 'Basic Block',
+      header: 'Header',
+      advancedBlock: 'Advanced Block',
+      listBlock: 'List Block',
+      diagram: 'Diagram',
+      paragraph: 'Paragraph',
+      horizontalLine: 'Horizontal Line',
+      frontMatter: 'Front Matter',
+      header1: 'Header 1',
+      header2: 'Header 2',
+      header3: 'Header 3',
+      header4: 'Header 4',
+      header5: 'Header 5',
+      header6: 'Header 6',
+      tableBlock: 'Table Block',
+      displayMath: 'Display Math',
+      htmlBlock: 'HTML Block',
+      codeBlock: 'Code Block',
+      quoteBlock: 'Quote Block',
+      orderList: 'Order List',
+      bulletList: 'Bullet List',
+      todoList: 'To-do List',
+      vegaChart: 'Vega Chart',
+      flowChart: 'Flow Chart',
+      sequenceDiagram: 'Sequence Diagram',
+      plantuml: 'PlantUML Diagram',
+      mermaid: 'Mermaid'
     }
   },
   fileOperation: {

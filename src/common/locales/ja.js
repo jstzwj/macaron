@@ -195,6 +195,41 @@ export default {
       sizeExceeded: '5Mを超える画像はアップロードできません。画像は画像フォルダにコピーされます',
       noUploader: '画像アップローダーが提供されていません。',
       copyDeletionUrl: 'クリックしてアップロードした画像の削除URLをクリップボードにコピーします ({url})。'
+    },
+    frontMenu: {
+      duplicate: '複製',
+      turnInto: '変換',
+      newParagraph: '新しい段落',
+      delete: '削除'
+    },
+    quickInsert: {
+      basicBlock: '基本ブロック',
+      header: '見出し',
+      advancedBlock: '高度なブロック',
+      listBlock: 'リストブロック',
+      diagram: '図表',
+      paragraph: '段落',
+      horizontalLine: '水平線',
+      frontMatter: 'Front Matter',
+      header1: '見出し 1',
+      header2: '見出し 2',
+      header3: '見出し 3',
+      header4: '見出し 4',
+      header5: '見出し 5',
+      header6: '見出し 6',
+      tableBlock: '表ブロック',
+      displayMath: '数式ブロック',
+      htmlBlock: 'HTML ブロック',
+      codeBlock: 'コードブロック',
+      quoteBlock: '引用ブロック',
+      orderList: '番号付きリスト',
+      bulletList: '箇条書きリスト',
+      todoList: 'タスクリスト',
+      vegaChart: 'Vega チャート',
+      flowChart: 'フローチャート',
+      sequenceDiagram: 'シーケンス図',
+      plantuml: 'PlantUML 図',
+      mermaid: 'Mermaid 図'
     }
   },
   fileOperation: {

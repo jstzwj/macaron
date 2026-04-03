@@ -3,35 +3,47 @@ import newIcon from '../../assets/pngicon/paragraph/2.png'
 import deleteIcon from '../../assets/pngicon/delete/2.png'
 import turnIcon from '../../assets/pngicon/turninto/2.png'
 import { isOsx } from '../../config'
-import { quickInsertObj } from '../quickInsert/config'
+import { getQuickInsertObj } from '../quickInsert/config'
 
-const wholeSubMenu = Object.keys(quickInsertObj).reduce((acc, key) => {
-  const items = quickInsertObj[key]
-  return [...acc, ...items]
-}, [])
+const getWholeSubMenu = () => {
+  const obj = getQuickInsertObj()
+  return Object.keys(obj).reduce((acc, key) => {
+    const items = obj[key]
+    return [...acc, ...items]
+  }, [])
+}
 
 const COMMAND_KEY = isOsx ? '⌘' : '⌃'
 
-export const menu = [{
+// i18n support: can be set from outside before rendering
+let _t = key => key
+
+export const setFrontMenuTranslator = fn => {
+  _t = fn
+}
+
+export const getMenu = () => [{
   icon: copyIcon,
   label: 'duplicate',
-  text: 'Duplicate',
+  text: _t('editor.frontMenu.duplicate'),
   shortCut: `⇧${COMMAND_KEY}P`
 }, {
   icon: turnIcon,
   label: 'turnInto',
-  text: 'Turn Into'
+  text: _t('editor.frontMenu.turnInto')
 }, {
   icon: newIcon,
   label: 'new',
-  text: 'New Paragraph',
+  text: _t('editor.frontMenu.newParagraph'),
   shortCut: `⇧${COMMAND_KEY}N`
 }, {
   icon: deleteIcon,
   label: 'delete',
-  text: 'Delete',
+  text: _t('editor.frontMenu.delete'),
   shortCut: `⇧${COMMAND_KEY}D`
 }]
+
+export const menu = getMenu()
 
 export const getLabel = block => {
   const { type, functionType, listType } = block
@@ -111,6 +123,7 @@ export const getLabel = block => {
 }
 
 export const getSubMenu = (block, startBlock, endBlock) => {
+  const wholeSubMenu = getWholeSubMenu()
   const { type } = block
   switch (type) {
     case 'p': {

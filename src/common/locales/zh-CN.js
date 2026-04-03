@@ -195,6 +195,41 @@ export default {
       sizeExceeded: '无法上传超过 5M 的图片，图片将被复制到图片文件夹',
       noUploader: '未提供图片上传器。',
       copyDeletionUrl: '点击复制已上传图片的删除链接到剪贴板（{url}）。'
+    },
+    frontMenu: {
+      duplicate: '复制',
+      turnInto: '转换为',
+      newParagraph: '新建段落',
+      delete: '删除'
+    },
+    quickInsert: {
+      basicBlock: '基本块',
+      header: '标题',
+      advancedBlock: '高级块',
+      listBlock: '列表块',
+      diagram: '图表',
+      paragraph: '段落',
+      horizontalLine: '水平线',
+      frontMatter: 'Front Matter',
+      header1: '标题 1',
+      header2: '标题 2',
+      header3: '标题 3',
+      header4: '标题 4',
+      header5: '标题 5',
+      header6: '标题 6',
+      tableBlock: '表格',
+      displayMath: '数学公式块',
+      htmlBlock: 'HTML 块',
+      codeBlock: '代码块',
+      quoteBlock: '引用块',
+      orderList: '有序列表',
+      bulletList: '无序列表',
+      todoList: '待办列表',
+      vegaChart: 'Vega 图表',
+      flowChart: '流程图',
+      sequenceDiagram: '时序图',
+      plantuml: 'PlantUML 图',
+      mermaid: 'Mermaid 图'
     }
   },
   fileOperation: {

@@ -186,6 +186,41 @@ export default {
       sizeExceeded: 'لا يمكن رفع صورة أكبر من 5 ميغابايت، سيتم نسخ الصورة إلى مجلد الصور',
       noUploader: 'لم يتم توفير رافع صور.',
       copyDeletionUrl: 'انقر لنسخ عنوان URL لحذف الصورة المرفوعة إلى الحافظة ({url}).'
+    },
+    frontMenu: {
+      duplicate: 'تكرار',
+      turnInto: 'تحويل إلى',
+      newParagraph: 'فقرة جديدة',
+      delete: 'حذف'
+    },
+    quickInsert: {
+      basicBlock: 'كتلة أساسية',
+      header: 'عنوان',
+      advancedBlock: 'كتلة متقدمة',
+      listBlock: 'كتلة قائمة',
+      diagram: 'مخطط',
+      paragraph: 'فقرة',
+      horizontalLine: 'مسطرة أفقية',
+      frontMatter: 'المقدمة',
+      header1: 'عنوان 1',
+      header2: 'عنوان 2',
+      header3: 'عنوان 3',
+      header4: 'عنوان 4',
+      header5: 'عنوان 5',
+      header6: 'عنوان 6',
+      tableBlock: 'كتلة جدول',
+      displayMath: 'كتلة رياضيات',
+      htmlBlock: 'كتلة HTML',
+      codeBlock: 'كتلة كود',
+      quoteBlock: 'كتلة اقتباس',
+      orderList: 'قائمة مرقمة',
+      bulletList: 'قائمة نقطية',
+      todoList: 'قائمة مهام',
+      vegaChart: 'مخطط Vega',
+      flowChart: 'مخطط انسيابي',
+      sequenceDiagram: 'مخطط تسلسلي',
+      plantuml: 'مخطط PlantUML',
+      mermaid: 'Mermaid'
     }
   },
   fileOperation: {

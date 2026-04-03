@@ -186,6 +186,41 @@ export default {
       sizeExceeded: 'No se puede subir una imagen de más de 5M, la imagen se copiará a la carpeta de imágenes',
       noUploader: 'No se proporcionó cargador de imágenes.',
       copyDeletionUrl: 'Haga clic para copiar la URL de eliminación de la imagen subida al portapapeles ({url}).'
+    },
+    frontMenu: {
+      duplicate: 'Duplicar',
+      turnInto: 'Convertir en',
+      newParagraph: 'Párrafo nuevo',
+      delete: 'Eliminar'
+    },
+    quickInsert: {
+      basicBlock: 'Bloque básico',
+      header: 'Encabezado',
+      advancedBlock: 'Bloque avanzado',
+      listBlock: 'Bloque de lista',
+      diagram: 'Diagrama',
+      paragraph: 'Párrafo',
+      horizontalLine: 'Línea horizontal',
+      frontMatter: 'Front Matter',
+      header1: 'Encabezado 1',
+      header2: 'Encabezado 2',
+      header3: 'Encabezado 3',
+      header4: 'Encabezado 4',
+      header5: 'Encabezado 5',
+      header6: 'Encabezado 6',
+      tableBlock: 'Bloque de tabla',
+      displayMath: 'Bloque matemático',
+      htmlBlock: 'Bloque HTML',
+      codeBlock: 'Bloque de código',
+      quoteBlock: 'Bloque de cita',
+      orderList: 'Lista ordenada',
+      bulletList: 'Lista con viñetas',
+      todoList: 'Lista de tareas',
+      vegaChart: 'Gráfico Vega',
+      flowChart: 'Diagrama de flujo',
+      sequenceDiagram: 'Diagrama de secuencia',
+      plantuml: 'Diagrama PlantUML',
+      mermaid: 'Mermaid'
     }
   },
   fileOperation: {

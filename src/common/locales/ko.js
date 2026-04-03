@@ -186,6 +186,41 @@ export default {
       sizeExceeded: '5MB 이상의 이미지는 업로드할 수 없습니다. 이미지가 이미지 폴더로 복사됩니다.',
       noUploader: '제공된 이미지 업로더가 없습니다.',
       copyDeletionUrl: '클릭하여 업로드된 이미지의 삭제 URL을 클립보드에 복사합니다 ({url}).'
+    },
+    frontMenu: {
+      duplicate: '복제',
+      turnInto: '변환',
+      newParagraph: '새 단락',
+      delete: '삭제'
+    },
+    quickInsert: {
+      basicBlock: '기본 블록',
+      header: '제목',
+      advancedBlock: '고급 블록',
+      listBlock: '목록 블록',
+      diagram: '다이어그램',
+      paragraph: '단락',
+      horizontalLine: '수평선',
+      frontMatter: 'Front Matter',
+      header1: '제목 1',
+      header2: '제목 2',
+      header3: '제목 3',
+      header4: '제목 4',
+      header5: '제목 5',
+      header6: '제목 6',
+      tableBlock: '표 블록',
+      displayMath: '수식 블록',
+      htmlBlock: 'HTML 블록',
+      codeBlock: '코드 블록',
+      quoteBlock: '인용 블록',
+      orderList: '순서가 있는 목록',
+      bulletList: '글머리 기호 목록',
+      todoList: '작업 목록',
+      vegaChart: 'Vega 차트',
+      flowChart: '순서도',
+      sequenceDiagram: '시퀀스 다이어그램',
+      plantuml: 'PlantUML 다이어그램',
+      mermaid: 'Mermaid 다이어그램'
     }
   },
   fileOperation: {

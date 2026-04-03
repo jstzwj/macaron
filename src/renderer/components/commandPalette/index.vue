@@ -1,53 +1,47 @@
 <template>
   <div class="command-palette" v-if="showCommandPalette">
-    <el-dialog
-      v-model="showCommandPalette"
-      :teleported="false"
-      :show-close="false"
-      :modal="true"
-      @close="handleDialogClose"
-      class="ag-dialog-table"
+    <dialog
+      class="command-palette-dialog"
+      open
       width="500px"
     >
-      <template #title>
-        <div class="search-wrapper">
-          <div class="input-wrapper">
-            <input
-              ref="search"
-              type="text"
-              v-model="query"
-              class="search"
-              @keydown="handleBeforeInput"
-              @keyup="handleInput"
-              :placeholder="placeholderText"
-            >
-          </div>
-          <loading v-if="searcherBusy"></loading>
-          <transition name="fade" v-else-if="availableCommands.length">
-            <ul class="commands">
-              <li
-                v-for="(item, index) of availableCommands"
-                :key="index"
-                ref="command-items"
-                @click="search(item.id)"
-                :class="{'active': index === selectedCommandIndex}"
-              >
-                <span class="title" :title="item.title">{{ item.description }}</span>
-                <span class="shortcut">
-                  <span
-                    class="shortcut"
-                    v-for="(accelerator, shortcutIndex) of item.shortcut"
-                    :key="shortcutIndex"
-                  >
-                    <kbd>{{ accelerator }}</kbd>
-                  </span>
-                </span>
-              </li>
-            </ul>
-          </transition>
+      <div class="search-wrapper">
+        <div class="input-wrapper">
+          <input
+            ref="search"
+            type="text"
+            v-model="query"
+            class="search"
+            @keydown="handleBeforeInput"
+            @keyup="handleInput"
+            :placeholder="placeholderText"
+          >
         </div>
-      </template>
-    </el-dialog>
+        <loading v-if="searcherBusy"></loading>
+        <transition name="fade" v-else-if="availableCommands.length">
+          <ul class="commands">
+            <li
+              v-for="(item, index) of availableCommands"
+              :key="index"
+              ref="command-items"
+              @click="search(item.id)"
+              :class="{'active': index === selectedCommandIndex}"
+            >
+              <span class="title" :title="item.title">{{ item.description }}</span>
+              <span class="shortcut">
+                <span
+                  class="shortcut"
+                  v-for="(accelerator, shortcutIndex) of item.shortcut"
+                  :key="shortcutIndex"
+                >
+                  <kbd>{{ accelerator }}</kbd>
+                </span>
+              </span>
+            </li>
+          </ul>
+        </transition>
+      </div>
+    </dialog>
   </div>
 </template>
 
@@ -370,17 +364,22 @@ export default {
     margin-top: 20px;
   }
 
-  .command-palette .el-dialog,
-  .command-palette .el-dialog.ag-dialog-table {
-    box-shadow: none !important;
-    border: none !important;
-    background: none !important;
-  }
-  .command-palette .el-dialog__header {
-    margin-bottom: 20px;
-    padding: 0 !important;
-  }
-  .command-palette .el-dialog__body {
-    display: none !important;
+  .command-palette-dialog {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 500px;
+    border: none;
+    background: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+    z-index: 10000;
+    overflow: visible;
+
+    &::backdrop {
+      background: rgba(0, 0, 0, .3);
+    }
   }
 </style>

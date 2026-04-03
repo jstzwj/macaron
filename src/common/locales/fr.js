@@ -186,6 +186,41 @@ export default {
       sizeExceeded: 'Impossible de télécharger une image de plus de 5 Mo, l\'image sera copiée dans le dossier d\'images',
       noUploader: 'Aucun service de téléchargement d\'image fourni.',
       copyDeletionUrl: 'Cliquez pour copier l\'URL de suppression de l\'image téléchargée dans le presse-papiers ({url}).'
+    },
+    frontMenu: {
+      duplicate: 'Dupliquer',
+      turnInto: 'Transformer en',
+      newParagraph: 'Nouveau paragraphe',
+      delete: 'Supprimer'
+    },
+    quickInsert: {
+      basicBlock: 'Bloc basique',
+      header: 'En-tête',
+      advancedBlock: 'Bloc avancé',
+      listBlock: 'Bloc de liste',
+      diagram: 'Diagramme',
+      paragraph: 'Paragraphe',
+      horizontalLine: 'Ligne horizontale',
+      frontMatter: 'Front Matter',
+      header1: 'En-tête 1',
+      header2: 'En-tête 2',
+      header3: 'En-tête 3',
+      header4: 'En-tête 4',
+      header5: 'En-tête 5',
+      header6: 'En-tête 6',
+      tableBlock: 'Bloc tableau',
+      displayMath: 'Bloc mathématique',
+      htmlBlock: 'Bloc HTML',
+      codeBlock: 'Bloc de code',
+      quoteBlock: 'Bloc de citation',
+      orderList: 'Liste ordonnée',
+      bulletList: 'Liste à puces',
+      todoList: 'Liste de tâches',
+      vegaChart: 'Graphique Vega',
+      flowChart: 'Organigramme',
+      sequenceDiagram: 'Diagramme de séquence',
+      plantuml: 'Diagramme PlantUML',
+      mermaid: 'Mermaid'
     }
   },
   fileOperation: {
