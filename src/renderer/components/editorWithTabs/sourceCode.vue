@@ -119,7 +119,8 @@ export default {
 
     const { editor } = this
     const { cursor, markdown } = this.getMarkdownAndCursor(editor)
-    bus.$emit('file-changed', { id: this.tabId, markdown, cursor, renderCursor: true })
+    const wordCount = getWordCount(markdown)
+    bus.$emit('file-changed', { id: this.tabId, markdown, cursor, renderCursor: true, wordCount })
     destroy(editor)
   },
   methods: {
@@ -214,7 +215,8 @@ export default {
       if (this.tabId) {
         const { editor } = this
         const { cursor, markdown } = this.getMarkdownAndCursor(editor)
-        this.$store.dispatch('LISTEN_FOR_CONTENT_CHANGE', { id: this.tabId, markdown, cursor })
+        const wordCount = getWordCount(markdown)
+        this.$store.dispatch('LISTEN_FOR_CONTENT_CHANGE', { id: this.tabId, markdown, wordCount, cursor })
         this.tabId = null
       }
     },

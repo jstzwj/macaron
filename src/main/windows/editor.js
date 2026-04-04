@@ -93,6 +93,8 @@ class EditorWindow extends BaseWindow {
       showEditorContextMenu(win, event, params, preferences.getItem('spellcheckerEnabled'))
     })
 
+    let cleanupBootstrapRequestListener = () => {}
+
     win.webContents.once('did-finish-load', () => {
       if (process.env.NODE_ENV === 'development') {
         win.webContents.openDevTools()
@@ -118,9 +120,19 @@ class EditorWindow extends BaseWindow {
       win.webContents.send('mt::bootstrap-editor', bootstrapData)
 
       // Also respond when renderer requests bootstrap (e.g. after HMR reload)
-      ipcMain.on('mt::request-bootstrap', () => {
+      const handleBootstrapRequest = event => {
+        if (!win || win.isDestroyed() || !win.webContents || win.webContents.isDestroyed()) {
+          return
+        }
+        if (event.sender.id !== win.webContents.id) {
+          return
+        }
         win.webContents.send('mt::bootstrap-editor', bootstrapData)
-      })
+      }
+      ipcMain.on('mt::request-bootstrap', handleBootstrapRequest)
+      cleanupBootstrapRequestListener = () => {
+        ipcMain.removeListener('mt::request-bootstrap', handleBootstrapRequest)
+      }
 
       this._doOpenFilesToOpen()
       this._markdownToOpen.length = 0
@@ -197,6 +209,7 @@ class EditorWindow extends BaseWindow {
 
     // The window is now destroyed.
     win.on('closed', () => {
+      cleanupBootstrapRequestListener()
       this.lifecycle = WindowLifecycle.QUITTED
       this.emit('window-closed')
 

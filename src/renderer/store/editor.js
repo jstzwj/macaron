@@ -238,6 +238,15 @@ const mutations = {
       state.currentFile.wordCount = wordCount
     }
   },
+  SET_WORD_COUNT_BY_ID (state, { id, wordCount }) {
+    if (!id) {
+      return
+    }
+    const tab = state.tabs.find(tab => tab.id === id)
+    if (tab) {
+      tab.wordCount = wordCount
+    }
+  },
   SET_CURSOR (state, cursor) {
     if (hasKeys(state.currentFile)) {
       state.currentFile.cursor = cursor
@@ -925,6 +934,9 @@ const actions = {
       for (const tab of state.tabs) {
         if (tab.id && tab.id === id) {
           tab.markdown = adjustTrailingNewlines(markdown, tab.trimTrailingNewline)
+          if (wordCount) {
+            tab.wordCount = wordCount
+          }
           // Set cursor
           if (cursor) {
             tab.cursor = cursor
@@ -950,6 +962,7 @@ const actions = {
     // Word count
     if (wordCount) {
       commit('SET_WORD_COUNT', wordCount)
+      commit('SET_WORD_COUNT_BY_ID', { id: currentId, wordCount })
     }
     // Set cursor
     if (cursor) {

@@ -1,5 +1,8 @@
 import { getUniqueId, cloneObj } from '../util'
 import { translate } from '../i18n'
+import { wordCount as getWordCount } from 'muya/lib/utils'
+
+const getWordCountForMarkdown = markdown => getWordCount(markdown || '')
 
 const getUntitledIndex = filename => {
   const match = filename.match(/(\d+)$/)
@@ -73,7 +76,8 @@ export const getFileStateFromData = data => {
     encoding,
     lineEnding,
     adjustLineEndingOnSave,
-    trimTrailingNewline
+    trimTrailingNewline,
+    wordCount: getWordCountForMarkdown(markdown)
   })
 }
 
@@ -100,7 +104,8 @@ export const getBlankFileState = (tabs, defaultEncoding = 'utf8', lineEnding = '
     adjustLineEndingOnSave: lineEnding.toLowerCase() === 'crlf',
     id,
     filename: translate('fileOperation.untitled', { id: ++untitleId }),
-    markdown
+    markdown,
+    wordCount: getWordCountForMarkdown(markdown)
   })
 }
 
@@ -120,7 +125,8 @@ export const getSingleFileState = ({ id = getUniqueId(), markdown, filename, pat
     encoding,
     lineEnding,
     adjustLineEndingOnSave,
-    trimTrailingNewline
+    trimTrailingNewline,
+    wordCount: getWordCountForMarkdown(markdown)
   })
 }
 
@@ -155,7 +161,8 @@ export const createDocumentState = (markdownDocument, id = getUniqueId()) => {
     lineEnding,
     cursor,
     adjustLineEndingOnSave,
-    trimTrailingNewline
+    trimTrailingNewline,
+    wordCount: getWordCountForMarkdown(markdown)
   })
 }
 

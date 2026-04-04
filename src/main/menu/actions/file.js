@@ -17,6 +17,16 @@ import pandoc from '../../utils/pandoc'
 // the renderer should communicate only with the editor window for file relevant stuff.
 // E.g. "mt::save-tabs" --> "mt::window-save-tabs$wid:<windowId>"
 
+const isWindowUsable = win => !!(win && !win.isDestroyed() && win.webContents && !win.webContents.isDestroyed())
+
+const sendToWindow = (win, channel, ...args) => {
+  if (isWindowUsable(win)) {
+    win.webContents.send(channel, ...args)
+    return true
+  }
+  return false
+}
+
 const getExportExtensionFilter = type => {
   if (type === 'pdf') {
     return [{
@@ -54,6 +64,10 @@ const getPdfPageOptions = options => {
 // Handle the export response from renderer process.
 const handleResponseForExport = async (e, { type, content, pathname, title, pageOptions }) => {
   const win = BrowserWindow.fromWebContents(e.sender)
+  if (!isWindowUsable(win)) {
+    return
+  }
+
   const extension = EXTENSION_HASN[type]
   const dirname = pathname ? path.dirname(pathname) : getPath('documents')
   let nakedFilename = pathname ? path.basename(pathname, '.md') : title
@@ -66,6 +80,10 @@ const handleResponseForExport = async (e, { type, content, pathname, title, page
     defaultPath,
     filters: getExportExtensionFilter(type)
   })
+
+  if (!isWindowUsable(win)) {
+    return
+  }
 
   if (filePath && !canceled) {
     try {
@@ -81,11 +99,11 @@ const handleResponseForExport = async (e, { type, content, pathname, title, page
         }
         await writeFile(filePath, content, extension, 'utf8')
       }
-      win.webContents.send('mt::export-success', { type, filePath })
+      sendToWindow(win, 'mt::export-success', { type, filePath })
     } catch (err) {
       log.error('Error while exporting:', err)
       const ERROR_MSG = err.message || `Error happened when export ${filePath}`
-      win.webContents.send('mt::show-notification', {
+      sendToWindow(win, 'mt::show-notification', {
         title: 'Export failure',
         type: 'error',
         message: ERROR_MSG
@@ -101,6 +119,10 @@ const handleResponseForExport = async (e, { type, content, pathname, title, page
 
 const handleResponseForPrint = e => {
   const win = BrowserWindow.fromWebContents(e.sender)
+  if (!isWindowUsable(win)) {
+    return
+  }
+
   win.webContents.print({ printBackground: true }, () => {
     removePrintServiceFromWindow(win)
   })
@@ -108,6 +130,10 @@ const handleResponseForPrint = e => {
 
 const handleResponseForSave = async (e, { id, filename, markdown, pathname, options, defaultPath }) => {
   const win = BrowserWindow.fromWebContents(e.sender)
+  if (!isWindowUsable(win)) {
+    return Promise.resolve()
+  }
+
   let recommendFilename = getRecommendTitleFromMarkdownString(markdown)
   if (!recommendFilename) {
     recommendFilename = filename || 'Untitled'
@@ -125,6 +151,10 @@ const handleResponseForSave = async (e, { id, filename, markdown, pathname, opti
       defaultPath: path.join(defaultPath || getPath('documents'), `${recommendFilename}.md`)
     })
 
+    if (!isWindowUsable(win)) {
+      return Promise.resolve()
+    }
+
     if (dialogPath && !canceled) {
       filePath = dialogPath
     }
@@ -140,21 +170,25 @@ const handleResponseForSave = async (e, { id, filename, markdown, pathname, opti
   filePath = !filePath.endsWith(extension) ? filePath += extension : filePath
   return writeMarkdownFile(filePath, markdown, options, win)
     .then(() => {
+      if (!isWindowUsable(win)) {
+        return id
+      }
+
       if (!alreadyExistOnDisk) {
         ipcMain.emit('window-add-file-path', win.id, filePath)
         ipcMain.emit('menu-add-recently-used', filePath)
 
         const filename = path.basename(filePath)
-        win.webContents.send('mt::set-pathname', { id, pathname: filePath, filename })
+        sendToWindow(win, 'mt::set-pathname', { id, pathname: filePath, filename })
       } else {
         ipcMain.emit('window-file-saved', win.id, filePath)
-        win.webContents.send('mt::tab-saved', id)
+        sendToWindow(win, 'mt::tab-saved', id)
       }
       return id
     })
     .catch(err => {
       log.error('Error while saving:', err)
-      win.webContents.send('mt::tab-save-failure', id, err.message)
+      sendToWindow(win, 'mt::tab-save-failure', id, err.message)
     })
 }
 
@@ -184,7 +218,7 @@ const showUnsavedFilesMessage = async (win, files) => {
 }
 
 const noticePandocNotFound = win => {
-  return win.webContents.send('mt::pandoc-not-exists', {
+  return sendToWindow(win, 'mt::pandoc-not-exists', {
     title: 'Import Warning',
     type: 'warning',
     message: 'Install pandoc before you want to import files.',
@@ -204,7 +238,7 @@ const openPandocFile = async (windowId, pathname) => {
 
 const removePrintServiceFromWindow = win => {
   // remove print service content and restore GUI
-  win.webContents.send('mt::print-service-clearup')
+  sendToWindow(win, 'mt::print-service-clearup')
 }
 
 // --- events -----------------------------------
@@ -226,19 +260,23 @@ ipcMain.on('mt::save-and-close-tabs', async (e, unsavedFiles) => {
     Promise.all(unsavedFiles.map(file => handleResponseForSave(e, file)))
       .then(arr => {
         const tabIds = arr.filter(id => id != null)
-        win.webContents.send('mt::force-close-tabs-by-id', tabIds)
+        sendToWindow(win, 'mt::force-close-tabs-by-id', tabIds)
       })
       .catch(err => {
         log.error('Error while save all:', err)
       })
   } else {
     const tabIds = unsavedFiles.map(f => f.id)
-    win.webContents.send('mt::force-close-tabs-by-id', tabIds)
+    sendToWindow(win, 'mt::force-close-tabs-by-id', tabIds)
   }
 })
 
 ipcMain.on('mt::response-file-save-as', async (e, { id, filename, markdown, pathname, options, defaultPath }) => {
   const win = BrowserWindow.fromWebContents(e.sender)
+  if (!isWindowUsable(win)) {
+    return
+  }
+
   let recommendFilename = getRecommendTitleFromMarkdownString(markdown)
   if (!recommendFilename) {
     recommendFilename = filename || 'Untitled'
@@ -253,30 +291,38 @@ ipcMain.on('mt::response-file-save-as', async (e, { id, filename, markdown, path
     defaultPath: pathname || path.join(defaultPath || getPath('documents'), `${recommendFilename}.md`)
   })
 
+  if (!isWindowUsable(win)) {
+    return
+  }
+
   if (filePath && !canceled) {
     filePath = path.resolve(filePath)
     writeMarkdownFile(filePath, markdown, options, win)
       .then(() => {
+        if (!isWindowUsable(win)) {
+          return
+        }
+
         if (!alreadyExistOnDisk) {
           ipcMain.emit('window-add-file-path', win.id, filePath)
           ipcMain.emit('menu-add-recently-used', filePath)
 
           const filename = path.basename(filePath)
-          win.webContents.send('mt::set-pathname', { id, pathname: filePath, filename })
+          sendToWindow(win, 'mt::set-pathname', { id, pathname: filePath, filename })
         } else if (pathname !== filePath) {
           // Update window file list and watcher.
           ipcMain.emit('window-change-file-path', win.id, filePath, pathname)
 
           const filename = path.basename(filePath)
-          win.webContents.send('mt::set-pathname', { id, pathname: filePath, filename })
+          sendToWindow(win, 'mt::set-pathname', { id, pathname: filePath, filename })
         } else {
           ipcMain.emit('window-file-saved', win.id, filePath)
-          win.webContents.send('mt::tab-saved', id)
+          sendToWindow(win, 'mt::tab-saved', id)
         }
       })
       .catch(err => {
         log.error('Error while save as:', err)
-        win.webContents.send('mt::tab-save-failure', id, err.message)
+        sendToWindow(win, 'mt::tab-save-failure', id, err.message)
       })
   }
 })
@@ -292,7 +338,9 @@ ipcMain.on('mt::close-window-confirm', async (e, unsavedFiles) => {
   if (needSave) {
     Promise.all(unsavedFiles.map(file => handleResponseForSave(e, file)))
       .then(() => {
-        ipcMain.emit('window-close-by-id', win.id)
+        if (win && !win.isDestroyed()) {
+          ipcMain.emit('window-close-by-id', win.id)
+        }
       })
       .catch(err => {
         log.error('Error while saving before quit:', err)
@@ -305,7 +353,7 @@ ipcMain.on('mt::close-window-confirm', async (e, unsavedFiles) => {
           detail: err.message
         })
           .then(({ response }) => {
-            if (win.id && response === 0) {
+            if (win && !win.isDestroyed() && win.id && response === 0) {
               ipcMain.emit('window-close-by-id', win.id)
             }
           })
