@@ -1,10 +1,12 @@
 <template>
-  <div class="about-dialog" v-if="showAboutDialog">
+  <div class="about-dialog">
     <el-dialog
+      v-if="renderAboutDialog"
       v-model="showAboutDialog"
       :teleported="false"
       :show-close="false"
       :modal="true"
+      @closed="afterDialogClosed"
       class="ag-dialog-table"
       width="400px"
     >
@@ -37,6 +39,7 @@ export default {
     this.logo = MarkTextLogo
     const currentYear = new Date().getFullYear()
     return {
+      renderAboutDialog: false,
       showAboutDialog: false,
       currentYear
     }
@@ -63,8 +66,14 @@ export default {
   },
   methods: {
     showDialog () {
-      this.showAboutDialog = true
+      this.renderAboutDialog = true
+      this.$nextTick(() => {
+        this.showAboutDialog = true
+      })
       bus.$emit('editor-blur')
+    },
+    afterDialogClosed () {
+      this.renderAboutDialog = false
     }
   }
 }

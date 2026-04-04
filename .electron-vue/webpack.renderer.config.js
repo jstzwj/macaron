@@ -23,7 +23,7 @@ const isProduction = process.env.NODE_ENV === 'production'
  * that provide pure *.vue files that need compiling
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/webpack-configurations.html#white-listing-externals
  */
-const whiteListedModules = ['vue', 'vue-router']
+const whiteListedModules = ['vue', 'vue-router', 'element-plus', '@element-plus/icons-vue', 'vega', 'vega-lite', 'vega-embed']
 
 /** @type {import('webpack').Configuration} */
 const rendererConfig = {
@@ -215,7 +215,8 @@ const rendererConfig = {
       'vue$': 'vue',
       // Work around a vue-router 4.5.x dev-only RouterView crash in Electron/HMR.
       // The production build removes the faulty devtools marker path.
-      'vue-router$': path.join(__dirname, '../node_modules/vue-router/dist/vue-router.prod.cjs')
+      'vue-router$': path.join(__dirname, '../node_modules/vue-router/dist/vue-router.prod.cjs'),
+      'vega-canvas$': path.join(__dirname, '../node_modules/vega-canvas/build/vega-canvas.browser.js')
     },
     extensions: ['.js', '.vue', '.json', '.css', '.node']
   },

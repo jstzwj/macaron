@@ -1,10 +1,12 @@
 <template>
-  <div class="tweet-dialog" v-if="showTweetDialog">
+  <div class="tweet-dialog">
     <el-dialog
+      v-if="renderTweetDialog"
       v-model="showTweetDialog"
       :teleported="false"
       :show-close="false"
       :modal="true"
+      @closed="afterDialogClosed"
       class="ag-dialog-table"
       width="450px"
     >
@@ -76,6 +78,7 @@ import bus from '../../bus'
 export default {
   data () {
     return {
+      renderTweetDialog: false,
       showTweetDialog: false,
       value: '',
       selectedFace: 'smile'
@@ -89,11 +92,14 @@ export default {
   },
   methods: {
     showDialog () {
-      this.showTweetDialog = true
+      this.renderTweetDialog = true
       this.value = ''
       bus.$emit('editor-blur')
       this.$nextTick(() => {
-        this.$refs.textarea.focus()
+        this.showTweetDialog = true
+        this.$nextTick(() => {
+          this.$refs.textarea.focus()
+        })
       })
     },
     faceClick (name) {
@@ -117,6 +123,9 @@ export default {
 
       shell.openExternal(`${origin}?${Object.keys(params).map(key => `${key}=${params[key]}`).join('&')}`)
       this.showTweetDialog = false
+    },
+    afterDialogClosed () {
+      this.renderTweetDialog = false
     }
   }
 }
@@ -129,8 +138,8 @@ export default {
       font-size: 24px;
     }
     & .el-dialog__header {
-      border-top-left-radius: 5px;
-      border-top-right-radius: 5px;
+      border-top-left-radius: inherit;
+      border-top-right-radius: inherit;
     }
     & .el-dialog__body {
       color: var(--sideBarColor);

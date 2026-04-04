@@ -24,7 +24,7 @@
           ▾
         </button>
       </div>
-      <ul v-if="showList && filteredFonts.length" class="font-list">
+      <ul v-if="shouldShowList" class="font-list">
         <li
           v-for="item in filteredFonts"
           :key="item"
@@ -47,7 +47,8 @@ export default {
     return {
       fontFamilies: [],
       selectValue: this.value,
-      showList: false
+      showList: false,
+      fontLoadFailed: false
     }
   },
   props: {
@@ -71,6 +72,9 @@ export default {
       return query && this.defaultValue !== this.selectValue
         ? this.fontFamilies.filter(f => f.toLowerCase().indexOf(query) === 0)
         : this.fontFamilies
+    },
+    shouldShowList () {
+      return !this.fontLoadFailed && this.showList && this.filteredFonts.length
     }
   },
 
@@ -84,13 +88,28 @@ export default {
   },
 
   methods: {
+    loadFontFamilies () {
+      try {
+        const fontManager = require('fontmanager-redux')
+        const { onlyMonospace } = this
+        const buf = fontManager.getAvailableFontsSync()
+          .filter(f => f.family && (!onlyMonospace || (onlyMonospace && f.monospace)))
+          .map(f => f.family)
+        this.fontFamilies = [...new Set(buf)].sort((a, b) => a.localeCompare(b))
+        this.fontLoadFailed = false
+      } catch (error) {
+        this.fontLoadFailed = true
+        this.fontFamilies = []
+        console.warn('fontmanager-redux unavailable, falling back to manual font input:', error)
+      }
+    },
     openList () {
-      if (!this.disable) {
+      if (!this.disable && !this.fontLoadFailed) {
         this.showList = true
       }
     },
     toggleList () {
-      if (!this.disable) {
+      if (!this.disable && !this.fontLoadFailed) {
         this.showList = !this.showList
       }
     },
@@ -113,12 +132,7 @@ export default {
     }
   },
   mounted () {
-    const fontManager = require('fontmanager-redux')
-    const { onlyMonospace } = this
-    const buf = fontManager.getAvailableFontsSync()
-      .filter(f => f.family && (!onlyMonospace || (onlyMonospace && f.monospace)))
-      .map(f => f.family)
-    this.fontFamilies = [...new Set(buf)].sort((a, b) => a.localeCompare(b))
+    this.loadFontFamilies()
     document.addEventListener('click', this.handleDocumentClick)
   },
   beforeUnmount () {

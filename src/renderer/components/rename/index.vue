@@ -1,10 +1,12 @@
 <template>
-  <div class="rename" v-if="showRename">
+  <div class="rename">
     <el-dialog
+      v-if="renderRename"
       v-model="showRename"
       :teleported="false"
       :show-close="false"
       :modal="true"
+      @closed="afterDialogClosed"
       class="ag-dialog-table"
       width="410px"
     >
@@ -33,6 +35,7 @@ import { mapState } from 'vuex'
 export default {
   data () {
     return {
+      renderRename: false,
       showRename: false,
       tempName: ''
     }
@@ -52,13 +55,21 @@ export default {
   },
   methods: {
     handleRename () {
-      this.showRename = true
+      this.renderRename = true
       this.tempName = this.filename
-      this.$refs.search.focus()
+      this.$nextTick(() => {
+        this.showRename = true
+        this.$nextTick(() => {
+          this.$refs.search.focus()
+        })
+      })
     },
     confirm () {
       this.$store.dispatch('RENAME', this.tempName)
       this.showRename = false
+    },
+    afterDialogClosed () {
+      this.renderRename = false
     }
   }
 }
@@ -67,6 +78,7 @@ export default {
 <style>
   .rename .el-dialog__header {
     box-sizing: border-box;
+    padding: 12px 8px;
   }
   .rename .el-dialog__body {
     display: none;
@@ -94,6 +106,10 @@ export default {
     & .input-wrapper {
       display: flex;
       width: 100%;
+      border: 1px solid var(--inputBgColor);
+      background: var(--inputBgColor);
+      border-radius: 4px;
+
       & input {
         background: transparent;
       }

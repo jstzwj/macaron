@@ -92,6 +92,12 @@ export default {
   },
   exportDialog: {
     title: 'خيارات التصدير',
+    overviewEyebrow: 'إعدادات التصدير',
+    htmlEyebrow: 'إعدادات تصدير HTML',
+    printableSubtitle: 'اضبط تخطيط الصفحة والمظهر والرأس والتذييل وجدول المحتويات قبل تصدير المستند.',
+    htmlSubtitle: 'اضبط العنوان والمظهر وجدول المحتويات قبل تصدير المستند.',
+    footerPrintable: 'راجع الإعدادات أعلاه ثم صدّر عندما تصبح جاهزاً.',
+    footerHtml: 'راجع الإعدادات أعلاه ثم صدّر ملف HTML عندما تصبح جاهزاً.',
     tabs: {
       info: 'معلومات',
       page: 'الصفحة',
@@ -140,6 +146,32 @@ export default {
       default: 'افتراضي',
       simple: 'بسيط',
       styled: 'منسق'
+    },
+    sections: {
+      htmlDocument: 'مستند HTML',
+      htmlDocumentDescription: 'اضبط العنوان المستخدم في مستند HTML المُصدَّر.',
+      pageSetup: 'إعداد الصفحة',
+      pageSetupDescription: 'اختر حجم الورق والاتجاه المستخدمين في ملف PDF المُصدَّر.',
+      margins: 'الهوامش',
+      marginsDescription: 'اضبط هوامش الصفحة المطبقة أثناء الطباعة وتصدير PDF.',
+      width: 'العرض',
+      height: 'الارتفاع',
+      marginTop: 'الهامش العلوي',
+      marginBottom: 'الهامش السفلي',
+      marginLeft: 'الهامش الأيسر',
+      marginRight: 'الهامش الأيمن',
+      typography: 'الطباعة',
+      typographyDescription: 'استبدل إعدادات الخط والتنسيق المستخدمة في ناتج التصدير.',
+      documentDetails: 'تفاصيل المستند',
+      documentDetailsDescription: 'اختر ما إذا كانت المعلومات البنيوية الإضافية ستُضمَّن في التصدير.',
+      theme: 'السمة',
+      header: 'الرأس',
+      footer: 'التذييل',
+      footerDescription: 'اختر تخطيط التذييل وخصص النص المعروض.',
+      headerFooterStyle: 'نمط الرأس والتذييل',
+      headerFooterStyleDescription: 'خصص الطباعة المستخدمة داخل منطقة الرأس والتذييل المطبوعة.',
+      toc: 'جدول المحتويات',
+      tocDescription: 'تحكم في العنوان المُنشأ ونطاق العناوين المضمَّنة في جدول المحتويات.'
     }
   },
   notification: {

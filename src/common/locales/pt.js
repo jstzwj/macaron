@@ -92,6 +92,12 @@ export default {
   },
   exportDialog: {
     title: 'Opções de Exportação',
+    overviewEyebrow: 'Configurações de exportação',
+    htmlEyebrow: 'Configurações de exportação HTML',
+    printableSubtitle: 'Ajuste o layout da página, a aparência, o cabeçalho e rodapé e o índice antes de exportar seu documento.',
+    htmlSubtitle: 'Ajuste o título, a aparência e o índice antes de exportar seu documento.',
+    footerPrintable: 'Revise as configurações acima e exporte quando estiver tudo pronto.',
+    footerHtml: 'Revise as configurações acima e exporte seu arquivo HTML quando estiver tudo pronto.',
     tabs: {
       info: 'Info',
       page: 'Página',
@@ -140,6 +146,32 @@ export default {
       default: 'Padrão',
       simple: 'Simples',
       styled: 'Estilizado'
+    },
+    sections: {
+      htmlDocument: 'Documento HTML',
+      htmlDocumentDescription: 'Configure o título usado no documento HTML exportado.',
+      pageSetup: 'Configuração da página',
+      pageSetupDescription: 'Escolha o tamanho do papel e a orientação usados no PDF exportado.',
+      margins: 'Margens',
+      marginsDescription: 'Defina as margens aplicadas durante a impressão e a exportação em PDF.',
+      width: 'Largura',
+      height: 'Altura',
+      marginTop: 'Margem superior',
+      marginBottom: 'Margem inferior',
+      marginLeft: 'Margem esquerda',
+      marginRight: 'Margem direita',
+      typography: 'Tipografia',
+      typographyDescription: 'Substitua as configurações de fonte e composição tipográfica usadas na exportação.',
+      documentDetails: 'Detalhes do documento',
+      documentDetailsDescription: 'Escolha se informações estruturais extras devem ser incluídas na exportação.',
+      theme: 'Tema',
+      header: 'Cabeçalho',
+      footer: 'Rodapé',
+      footerDescription: 'Escolha o layout do rodapé e personalize o texto exibido.',
+      headerFooterStyle: 'Estilo do cabeçalho e rodapé',
+      headerFooterStyleDescription: 'Personalize a tipografia usada na área impressa de cabeçalho e rodapé.',
+      toc: 'Índice',
+      tocDescription: 'Controle o título gerado e o intervalo de cabeçalhos incluído no índice.'
     }
   },
   notification: {

@@ -92,6 +92,12 @@ export default {
   },
   exportDialog: {
     title: 'Opcje eksportu',
+    overviewEyebrow: 'Ustawienia eksportu',
+    htmlEyebrow: 'Ustawienia eksportu HTML',
+    printableSubtitle: 'Dostosuj układ strony, wygląd, nagłówek i stopkę oraz spis treści przed wyeksportowaniem dokumentu.',
+    htmlSubtitle: 'Dostosuj tytuł, wygląd i spis treści przed wyeksportowaniem dokumentu.',
+    footerPrintable: 'Sprawdź powyższe ustawienia i eksportuj, gdy wszystko będzie gotowe.',
+    footerHtml: 'Sprawdź powyższe ustawienia i wyeksportuj plik HTML, gdy wszystko będzie gotowe.',
     tabs: {
       info: 'Informacje',
       page: 'Strona',
@@ -140,6 +146,32 @@ export default {
       default: 'Domyślny',
       simple: 'Prosty',
       styled: 'Stylizowany'
+    },
+    sections: {
+      htmlDocument: 'Dokument HTML',
+      htmlDocumentDescription: 'Skonfiguruj tytuł używany w eksportowanym dokumencie HTML.',
+      pageSetup: 'Ustawienia strony',
+      pageSetupDescription: 'Wybierz rozmiar papieru i orientację używane w eksportowanym PDF.',
+      margins: 'Marginesy',
+      marginsDescription: 'Ustaw marginesy stosowane podczas drukowania i eksportu do PDF.',
+      width: 'Szerokość',
+      height: 'Wysokość',
+      marginTop: 'Margines górny',
+      marginBottom: 'Margines dolny',
+      marginLeft: 'Margines lewy',
+      marginRight: 'Margines prawy',
+      typography: 'Typografia',
+      typographyDescription: 'Zastąp ustawienia czcionki i składu używane podczas eksportu.',
+      documentDetails: 'Szczegóły dokumentu',
+      documentDetailsDescription: 'Wybierz, czy w eksporcie mają zostać uwzględnione dodatkowe informacje strukturalne.',
+      theme: 'Motyw',
+      header: 'Nagłówek',
+      footer: 'Stopka',
+      footerDescription: 'Wybierz układ stopki i dostosuj wyświetlany tekst.',
+      headerFooterStyle: 'Styl nagłówka i stopki',
+      headerFooterStyleDescription: 'Dostosuj typografię używaną w drukowanym obszarze nagłówka i stopki.',
+      toc: 'Spis treści',
+      tocDescription: 'Steruj wygenerowanym tytułem i zakresem nagłówków uwzględnianych w spisie treści.'
     }
   },
   notification: {

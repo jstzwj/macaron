@@ -1,12 +1,14 @@
 <template>
-  <div class="key-input-dialog" v-if="showKeyInputDialog">
+  <div class="key-input-dialog">
     <div v-if="showKeyInputDialog" class="input-overlay"></div>
     <el-dialog
+      v-if="renderKeyInputDialog"
       v-model="showKeyInputDialog"
       :teleported="false"
       :show-close="false"
       :modal="false"
       @close="cancelKeybinding"
+      @closed="afterDialogClosed"
       class="ag-dialog-table"
       width="350px"
     >
@@ -51,6 +53,7 @@ export default {
     this.needCommitOnClose = true
     this.currentKeybinding = null
     return {
+      renderKeyInputDialog: false,
       showKeyInputDialog: false,
       placeholderText: this.$t('preferences.keybindings.keyInputDialog.placeholder'),
       isKeybindingValid: true,
@@ -81,10 +84,13 @@ export default {
   methods: {
     handleShow () {
       this.needCommitOnClose = true
-      this.showKeyInputDialog = true
+      this.renderKeyInputDialog = true
       this.placeholderText = this.$t('preferences.keybindings.keyInputDialog.placeholder')
       this.$nextTick(() => {
-        this.$refs.intputTextbox.focus()
+        this.showKeyInputDialog = true
+        this.$nextTick(() => {
+          this.$refs.intputTextbox.focus()
+        })
       })
     },
     handleDialogClose () {
@@ -140,6 +146,9 @@ export default {
     isRawKeyCode (event, keyCode) {
       const { code, ctrlKey, altKey, shiftKey, metaKey } = event
       return event && code === keyCode && !ctrlKey && !altKey && !shiftKey && !metaKey
+    },
+    afterDialogClosed () {
+      this.renderKeyInputDialog = false
     }
   }
 }
@@ -160,15 +169,15 @@ export default {
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    padding: 8px;
+    padding: 12px;
     margin: 0 auto;
     margin-top: 8px;
     box-sizing: border-box;
     color: var(--editorColor);
     background: var(--floatBgColor);
     border: 1px solid var(--floatBorderColor);
-    border-radius: 4px;
-    box-shadow: 0 3px 8px 3px var(--floatShadow);
+    border-radius: 8px;
+    box-shadow: var(--floatShadow);
     z-index: 10000;
   }
   .input-overlay {

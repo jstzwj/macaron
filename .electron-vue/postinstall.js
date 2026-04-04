@@ -14,6 +14,17 @@ const patchFile = (filePath, transform) => {
   }
 }
 
+const removePath = targetPath => {
+  if (!fs.existsSync(targetPath)) {
+    return
+  }
+
+  fs.rmSync(targetPath, {
+    recursive: true,
+    force: true
+  })
+}
+
 const patchNativeKeymapForWindows = () => {
   if (process.platform !== 'win32') {
     return
@@ -25,6 +36,19 @@ const patchNativeKeymapForWindows = () => {
     patched = patched.replace("'/ZH:SHA_256'", "'/ZH:SHA_256',\n            '/wd4996'")
     return patched
   })
+}
+
+const cleanFontmanagerReduxForWindows = () => {
+  if (process.platform !== 'win32') {
+    return
+  }
+
+  const fontmanagerPath = path.resolve(__dirname, '../node_modules/fontmanager-redux')
+  if (!fs.existsSync(fontmanagerPath)) {
+    return
+  }
+
+  removePath(path.join(fontmanagerPath, 'build'))
 }
 
 const patchWindowsRelease = () => {
@@ -48,4 +72,5 @@ const patchWindowsRelease = () => {
 }
 
 patchNativeKeymapForWindows()
+cleanFontmanagerReduxForWindows()
 patchWindowsRelease()

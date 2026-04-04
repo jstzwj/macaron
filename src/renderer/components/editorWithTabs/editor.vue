@@ -1172,16 +1172,7 @@ export default {
       transform: translate(-50%, -50%);
       z-index: 9999;
       width: 454px;
-      border: 1px solid var(--floatBorderColor);
-      border-radius: 8px;
-      background: var(--floatBgColor);
-      color: var(--editorColor);
       padding: 20px 24px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, .25);
-
-      &::backdrop {
-        background: rgba(0, 0, 0, .5);
-      }
 
       & .dialog-title {
         text-align: center;

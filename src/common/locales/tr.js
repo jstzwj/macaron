@@ -92,6 +92,12 @@ export default {
   },
   exportDialog: {
     title: 'Dışa Aktarma Seçenekleri',
+    overviewEyebrow: 'Dışa aktarma ayarları',
+    htmlEyebrow: 'HTML dışa aktarma ayarları',
+    printableSubtitle: 'Belgenizi dışa aktarmadan önce sayfa düzenini, görünümü, üst ve alt bilgileri ve içindekiler tablosunu ayarlayın.',
+    htmlSubtitle: 'Belgenizi dışa aktarmadan önce başlığı, görünümü ve içindekiler tablosunu ayarlayın.',
+    footerPrintable: 'Yukarıdaki ayarları gözden geçirin ve hazır olduğunuzda dışa aktarın.',
+    footerHtml: 'Yukarıdaki ayarları gözden geçirin ve hazır olduğunuzda HTML dosyanızı dışa aktarın.',
     tabs: {
       info: 'Bilgi',
       page: 'Sayfa',
@@ -140,6 +146,32 @@ export default {
       default: 'Varsayılan',
       simple: 'Basit',
       styled: 'Stilli'
+    },
+    sections: {
+      htmlDocument: 'HTML belgesi',
+      htmlDocumentDescription: 'Dışa aktarılan HTML belgesi için kullanılan başlığı yapılandırın.',
+      pageSetup: 'Sayfa ayarı',
+      pageSetupDescription: 'Dışa aktarılan PDF için kullanılan kağıt boyutunu ve yönünü seçin.',
+      margins: 'Kenar boşlukları',
+      marginsDescription: 'Yazdırma ve PDF dışa aktarma sırasında uygulanan sayfa kenar boşluklarını ayarlayın.',
+      width: 'Genişlik',
+      height: 'Yükseklik',
+      marginTop: 'Üst kenar boşluğu',
+      marginBottom: 'Alt kenar boşluğu',
+      marginLeft: 'Sol kenar boşluğu',
+      marginRight: 'Sağ kenar boşluğu',
+      typography: 'Tipografi',
+      typographyDescription: 'Dışa aktarma çıktısında kullanılan yazı tipi ve dizgi ayarlarının üzerine yazın.',
+      documentDetails: 'Belge ayrıntıları',
+      documentDetailsDescription: 'Dışa aktarmaya ek yapısal bilgiler dahil edilip edilmeyeceğini seçin.',
+      theme: 'Tema',
+      header: 'Üstbilgi',
+      footer: 'Altbilgi',
+      footerDescription: 'Altbilgi düzenini seçin ve görüntülenecek metni özelleştirin.',
+      headerFooterStyle: 'Üstbilgi ve altbilgi stili',
+      headerFooterStyleDescription: 'Yazdırılan üstbilgi ve altbilgi alanında kullanılan tipografiyi özelleştirin.',
+      toc: 'İçindekiler tablosu',
+      tocDescription: 'Oluşturulan başlığı ve içindekiler tablosuna dahil edilen başlık aralığını kontrol edin.'
     }
   },
   notification: {

@@ -1,10 +1,12 @@
 <template>
-  <div class="import-dialog" v-if="showImport">
+  <div class="import-dialog">
     <el-dialog
+      v-if="renderImport"
       v-model="showImport"
       :teleported="false"
       :show-close="false"
       :modal="true"
+      @closed="afterDialogClosed"
       class="ag-dialog-table"
       width="450px"
     >
@@ -43,6 +45,7 @@ export default {
   data () {
     this.importIcon = importIcon
     return {
+      renderImport: false,
       showImport: false,
       isOver: false
     }
@@ -55,8 +58,13 @@ export default {
   },
   methods: {
     showDialog (boolean) {
-      if (boolean !== this.showImport) {
-        this.showImport = boolean
+      if (boolean) {
+        this.renderImport = true
+        this.$nextTick(() => {
+          this.showImport = true
+        })
+      } else if (boolean !== this.showImport) {
+        this.showImport = false
       }
     },
     dragOverHandler (e) {
@@ -74,6 +82,10 @@ export default {
         }
         ipcRenderer.send('mt::window::drop', fileList)
       }
+    },
+    afterDialogClosed () {
+      this.renderImport = false
+      this.isOver = false
     }
   }
 }
