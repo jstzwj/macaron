@@ -4,8 +4,8 @@ import { SYSTEM_LANGUAGE } from '../../common/i18n'
 import { setRendererLanguage } from '../i18n'
 import { addThemeStyle } from '@/util/theme'
 
-// user preference
-const state = {
+// user preference - use factory function for Vue 3 reactivity
+const state = () => ({
   autoSave: false,
   autoSaveDelay: 5000,
   titleBarStyle: 'custom',
@@ -98,7 +98,7 @@ const state = {
     }
   },
   cliScript: ''
-}
+})
 
 const getters = {}
 
@@ -153,7 +153,7 @@ const actions = {
     ipcRenderer.send('mt::select-default-directory-to-open')
   },
 
-  LISTEN_FOR_VIEW ({ commit, dispatch }) {
+  LISTEN_FOR_VIEW ({ commit, dispatch, state }) {
     ipcRenderer.on('mt::show-command-palette', () => {
       bus.$emit('show-command-palette')
     })

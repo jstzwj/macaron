@@ -207,6 +207,14 @@ export default {
         rename: 'Yeniden Adlandır',
         moveToTrash: 'Çöpe Taşı',
         showInFolder: 'Klasörde Göster'
+      },
+      tree: {
+        openedFiles: 'Açık Dosyalar',
+        saveAll: 'Tümünü Kaydet',
+        closeAll: 'Tümünü Kapat',
+        emptyProject: 'Boş proje',
+        createFile: 'Dosya Oluştur',
+        openFolder: 'Klasör Aç'
       }
     },
     notification: {

@@ -23,7 +23,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import Tabs from './tabs.vue'
 import Editor from './editor.vue'
 import SourceCode from './sourceCode.vue'
@@ -58,17 +57,48 @@ export default {
       required: true
     }
   },
+  data () {
+    return {
+      _showSideBar: false,
+      _sideBarWidth: 280
+    }
+  },
+  computed: {
+    showSideBar () {
+      return this._showSideBar
+    },
+    sideBarWidth () {
+      return this._sideBarWidth
+    }
+  },
+  watch: {
+    // Watch store changes via bus events
+  },
+  created () {
+    // Initialize from store
+    this._showSideBar = this.$store.state.layout.showSideBar
+    this._sideBarWidth = this.$store.state.layout.sideBarWidth
+
+    // Subscribe to store changes
+    this._unsubscribe = this.$store.subscribe((mutation, state) => {
+      if (mutation.type === 'SET_LAYOUT' || mutation.type === 'TOGGLE_LAYOUT_ENTRY') {
+        this._showSideBar = state.layout.showSideBar
+      }
+      if (mutation.type === 'SET_SIDE_BAR_WIDTH') {
+        this._sideBarWidth = state.layout.sideBarWidth
+      }
+    })
+  },
+  beforeUnmount () {
+    if (this._unsubscribe) {
+      this._unsubscribe()
+    }
+  },
   components: {
     Tabs,
     Editor,
     SourceCode,
     TabNotifications
-  },
-  computed: {
-    ...mapState({
-      showSideBar: state => state.layout.showSideBar,
-      sideBarWidth: state => state.layout.sideBarWidth
-    })
   }
 }
 </script>

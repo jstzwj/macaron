@@ -129,6 +129,25 @@ export default {
   },
 
   computed: {
+    _sourceCode () {
+      return this.$store.state.preferences.sourceCode
+    },
+    _typewriter () {
+      return this.$store.state.preferences.typewriter
+    },
+    _focus () {
+      return this.$store.state.preferences.focus
+    },
+    // Use local mirrored state for reactivity
+    sourceCode () {
+      return this._localSourceCode
+    },
+    typewriter () {
+      return this._localTypewriter
+    },
+    focus () {
+      return this._localFocus
+    },
     ...mapState({
       preferences: state => state.preferences,
       preferLooseListItem: state => state.preferences.preferLooseListItem,
@@ -167,12 +186,7 @@ export default {
       spellcheckerLanguage: state => state.preferences.spellcheckerLanguage,
 
       currentFile: state => state.editor.currentFile,
-      projectTree: state => state.project.projectTree,
-
-      // edit modes
-      typewriter: state => state.preferences.typewriter,
-      focus: state => state.preferences.focus,
-      sourceCode: state => state.preferences.sourceCode
+      projectTree: state => state.project.projectTree
     })
   },
 
@@ -189,18 +203,22 @@ export default {
       tableChecker: {
         rows: 4,
         columns: 3
-      }
+      },
+      // Local mirrored state for edit modes
+      _localSourceCode: false,
+      _localTypewriter: false,
+      _localFocus: false
     }
   },
 
   watch: {
-    typewriter: function (value) {
+    _typewriter: function (value) {
       if (value) {
         this.scrollToCursor()
       }
     },
 
-    focus: function (value) {
+    _focus: function (value) {
       this.editor.setFocusMode(value)
     },
 
@@ -443,7 +461,7 @@ export default {
       }
     },
 
-    sourceCode: function (value, oldValue) {
+    _localSourceCode: function (value, oldValue) {
       if (value && value !== oldValue) {
         this.editor && this.editor.hideAllFloatTools()
       }
@@ -455,10 +473,8 @@ export default {
       this.printer = new Printer()
       const ele = this.$refs.editor
       const {
-        focus: focusMode,
         markdown,
         preferLooseListItem,
-        typewriter,
         autoPairBracket,
         autoPairMarkdownSyntax,
         autoPairQuote,
@@ -484,6 +500,20 @@ export default {
         hideLinkPopup,
         autoCheck
       } = this
+
+      // Initialize local mirrored state
+      this._localSourceCode = this.$store.state.preferences.sourceCode
+      this._localTypewriter = this.$store.state.preferences.typewriter
+      this._localFocus = this.$store.state.preferences.focus
+
+      // Subscribe to store changes for edit modes
+      this._unsubscribeStore = this.$store.subscribe((mutation, state) => {
+        if (mutation.type === 'TOGGLE_VIEW_MODE') {
+          this._localSourceCode = state.preferences.sourceCode
+          this._localTypewriter = state.preferences.typewriter
+          this._localFocus = state.preferences.focus
+        }
+      })
 
       // use muya UI plugins
       Muya.use(TablePicker)
@@ -511,7 +541,7 @@ export default {
       Muya.use(TableBarTools)
 
       const options = {
-        focusMode,
+        focusMode: this._localFocus,
         markdown,
         preferLooseListItem,
         autoPairBracket,
@@ -562,7 +592,7 @@ export default {
       this.switchLanguageCommand = new SpellcheckerLanguageCommand(this.spellchecker)
       setTimeout(() => bus.$emit('cmd::register-command', this.switchLanguageCommand), 100)
 
-      if (typewriter) {
+      if (this._localTypewriter) {
         this.scrollToCursor()
       }
 
@@ -637,7 +667,7 @@ export default {
 
       this.editor.on('selectionChange', changes => {
         const { y } = changes.cursorCoords
-        if (this.typewriter) {
+        if (this._localTypewriter) {
           const startPosition = container.scrollTop
           const toPosition = startPosition + y - STANDAR_Y
 
@@ -765,7 +795,7 @@ export default {
         }
       }
 
-      if (id && this.sourceCode) {
+      if (id && this._localSourceCode) {
         bus.$emit('image-action', {
           id,
           result: destImagePath,
@@ -852,7 +882,7 @@ export default {
     },
 
     handleSelectAll () {
-      if (this.sourceCode) {
+      if (this._localSourceCode) {
         return
       }
 
@@ -875,7 +905,7 @@ export default {
     },
 
     insertImage (src) {
-      if (!this.sourceCode) {
+      if (!this._localSourceCode) {
         this.editor && this.editor.insertImage({ src })
       }
     },
@@ -1121,6 +1151,10 @@ export default {
     }
   },
   beforeUnmount () {
+    if (this._unsubscribeStore) {
+      this._unsubscribeStore()
+    }
+
     bus.$off('file-loaded', this.setMarkdownToEditor)
     bus.$off('invalidate-image-cache', this.handleInvalidateImageCache)
     bus.$off('undo', this.handleUndo)

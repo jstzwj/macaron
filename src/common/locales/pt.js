@@ -207,6 +207,14 @@ export default {
         rename: 'Renomear',
         moveToTrash: 'Mover para Lixeira',
         showInFolder: 'Mostrar na Pasta'
+      },
+      tree: {
+        openedFiles: 'Arquivos abertos',
+        saveAll: 'Salvar Tudo',
+        closeAll: 'Fechar Tudo',
+        emptyProject: 'Projeto vazio',
+        createFile: 'Criar Arquivo',
+        openFolder: 'Abrir Pasta'
       }
     },
     notification: {

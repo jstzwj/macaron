@@ -207,6 +207,14 @@ export default {
         rename: 'إعادة تسمية',
         moveToTrash: 'نقل إلى سلة المهملات',
         showInFolder: 'إظهار في المجلد'
+      },
+      tree: {
+        openedFiles: 'الملفات المفتوحة',
+        saveAll: 'حفظ الكل',
+        closeAll: 'إغلاق الكل',
+        emptyProject: 'مشروع فارغ',
+        createFile: 'إنشاء ملف',
+        openFolder: 'فتح مجلد'
       }
     },
     notification: {

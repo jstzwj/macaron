@@ -53,7 +53,6 @@ import { sideBarIcons, sideBarBottomIcons } from './help'
 import Tree from './tree.vue'
 import SideBarSearch from './search.vue'
 import Toc from './toc.vue'
-import { mapState } from 'vuex'
 
 export default {
   data () {
@@ -61,7 +60,13 @@ export default {
     this.sideBarBottomIcons = sideBarBottomIcons
     return {
       openedFiles: [],
-      sideBarViewWidth: 280
+      sideBarViewWidth: 280,
+      // Local mirrored state
+      _rightColumn: 'files',
+      _showSideBar: false,
+      _projectTree: null,
+      _sideBarWidth: 280,
+      _tabs: []
     }
   },
   components: {
@@ -70,13 +75,21 @@ export default {
     Toc
   },
   computed: {
-    ...mapState({
-      rightColumn: state => state.layout.rightColumn,
-      showSideBar: state => state.layout.showSideBar,
-      projectTree: state => state.project.projectTree,
-      sideBarWidth: state => state.layout.sideBarWidth,
-      tabs: state => state.editor.tabs
-    }),
+    rightColumn () {
+      return this._rightColumn
+    },
+    showSideBar () {
+      return this._showSideBar
+    },
+    projectTree () {
+      return this._projectTree
+    },
+    sideBarWidth () {
+      return this._sideBarWidth
+    },
+    tabs () {
+      return this._tabs
+    },
     finalSideBarWidth () {
       const { showSideBar, rightColumn, sideBarViewWidth } = this
       if (!showSideBar) return 0
@@ -85,6 +98,28 @@ export default {
     }
   },
   created () {
+    // Initialize from store
+    this._rightColumn = this.$store.state.layout.rightColumn
+    this._showSideBar = this.$store.state.layout.showSideBar
+    this._projectTree = this.$store.state.project.projectTree
+    this._sideBarWidth = this.$store.state.layout.sideBarWidth
+    this._tabs = this.$store.state.editor.tabs
+
+    // Subscribe to store changes
+    this._unsubscribe = this.$store.subscribe((mutation, state) => {
+      if (mutation.type === 'SET_LAYOUT' || mutation.type === 'TOGGLE_LAYOUT_ENTRY') {
+        this._rightColumn = state.layout.rightColumn
+        this._showSideBar = state.layout.showSideBar
+        this._sideBarWidth = state.layout.sideBarWidth
+      }
+      if (mutation.type === 'SET_PROJECT_TREE') {
+        this._projectTree = state.project.projectTree
+      }
+      if (mutation.type.includes('TAB') || mutation.type.includes('FILE')) {
+        this._tabs = state.editor.tabs
+      }
+    })
+
     this.$nextTick(() => {
       const dragBar = this.$refs.dragBar
       let startX = 0
@@ -114,6 +149,11 @@ export default {
 
       dragBar.addEventListener('mousedown', mouseDownHandler, false)
     })
+  },
+  beforeUnmount () {
+    if (this._unsubscribe) {
+      this._unsubscribe()
+    }
   },
   methods: {
     handleLeftIconClick (name) {

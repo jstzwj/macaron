@@ -207,6 +207,14 @@ export default {
         rename: '이름 바꾸기',
         moveToTrash: '휴지통으로 이동',
         showInFolder: '폴더에서 보기'
+      },
+      tree: {
+        openedFiles: '열린 파일',
+        saveAll: '모두 저장',
+        closeAll: '모두 닫기',
+        emptyProject: '빈 프로젝트',
+        createFile: '파일 만들기',
+        openFolder: '폴더 열기'
       }
     },
     notification: {

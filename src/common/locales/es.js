@@ -207,6 +207,14 @@ export default {
         rename: 'Renombrar',
         moveToTrash: 'Mover a la papelera',
         showInFolder: 'Mostrar en carpeta'
+      },
+      tree: {
+        openedFiles: 'Archivos abiertos',
+        saveAll: 'Guardar todo',
+        closeAll: 'Cerrar todo',
+        emptyProject: 'Proyecto vacío',
+        createFile: 'Crear archivo',
+        openFolder: 'Abrir carpeta'
       }
     },
     notification: {

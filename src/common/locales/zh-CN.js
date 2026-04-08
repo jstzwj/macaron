@@ -216,6 +216,14 @@ export default {
         rename: '重命名',
         moveToTrash: '移至回收站',
         showInFolder: '在文件夹中显示'
+      },
+      tree: {
+        openedFiles: '已打开的文件',
+        saveAll: '全部保存',
+        closeAll: '全部关闭',
+        emptyProject: '空项目',
+        createFile: '新建文件',
+        openFolder: '打开文件夹'
       }
     },
     notification: {

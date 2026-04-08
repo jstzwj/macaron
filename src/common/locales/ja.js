@@ -216,6 +216,14 @@ export default {
         rename: '名前を変更',
         moveToTrash: 'ゴミ箱に移動',
         showInFolder: 'フォルダで表示'
+      },
+      tree: {
+        openedFiles: '開いているファイル',
+        saveAll: 'すべて保存',
+        closeAll: 'すべて閉じる',
+        emptyProject: '空のプロジェクト',
+        createFile: 'ファイルを作成',
+        openFolder: 'フォルダを開く'
       }
     },
     notification: {

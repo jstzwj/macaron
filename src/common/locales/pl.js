@@ -207,6 +207,14 @@ export default {
         rename: 'Zmień nazwę',
         moveToTrash: 'Przenieś do kosza',
         showInFolder: 'Pokaż w folderze'
+      },
+      tree: {
+        openedFiles: 'Otwarte pliki',
+        saveAll: 'Zapisz Wszystko',
+        closeAll: 'Zamknij Wszystko',
+        emptyProject: 'Pusty projekt',
+        createFile: 'Utwórz Plik',
+        openFolder: 'Otwórz Folder'
       }
     },
     notification: {

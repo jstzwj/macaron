@@ -216,6 +216,14 @@ export default {
         rename: 'Rename',
         moveToTrash: 'Move To Trash',
         showInFolder: 'Show In Folder'
+      },
+      tree: {
+        openedFiles: 'Opened files',
+        saveAll: 'Save All',
+        closeAll: 'Close All',
+        emptyProject: 'Empty project',
+        createFile: 'Create File',
+        openFolder: 'Open Folder'
       }
     },
     notification: {

@@ -73,20 +73,46 @@ export default {
     return {
       uiInit: false,
       currentFile: {},
-      unsubscribeStore: null
+      unsubscribeStore: null,
+      // Manually mirror store state as data properties for reactivity
+      _sourceCode: false,
+      _showTabBar: false,
+      _showSideBar: false,
+      _theme: 'light',
+      _textDirection: 'ltr',
+      _zoom: 1.0,
+      _projectTree: null,
+      _windowActive: true
     }
   },
   computed: {
     ...mapState({
-      showTabBar: state => state.layout.showTabBar,
-      sourceCode: state => state.preferences.sourceCode,
-      theme: state => state.preferences.theme,
-      textDirection: state => state.preferences.textDirection,
-      zoom: state => state.preferences.zoom,
-      projectTree: state => state.project.projectTree,
-      windowActive: state => state.windowActive,
       platform: state => state.platform
     }),
+    sourceCode () {
+      return this._sourceCode
+    },
+    showTabBar () {
+      return this._showTabBar
+    },
+    showSideBar () {
+      return this._showSideBar
+    },
+    theme () {
+      return this._theme
+    },
+    textDirection () {
+      return this._textDirection
+    },
+    zoom () {
+      return this._zoom
+    },
+    projectTree () {
+      return this._projectTree
+    },
+    windowActive () {
+      return this._windowActive
+    },
     hasCurrentFile () {
       return typeof this.currentFile.markdown !== 'undefined'
     }
@@ -97,17 +123,36 @@ export default {
     }
   },
   created () {
-    const { commit, dispatch } = this.$store
+    const { commit, dispatch, state: storeState } = this.$store
 
     if (global.marktext.initialState) {
       commit('SET_USER_PREFERENCE', global.marktext.initialState)
     }
 
-    this.uiInit = this.$store.state.init
-    this.currentFile = this.$store.state.editor.currentFile || {}
+    this.uiInit = storeState.init
+    this.currentFile = storeState.editor.currentFile || {}
+    // Initialize mirrored state
+    this._sourceCode = storeState.preferences.sourceCode
+    this._showTabBar = storeState.layout.showTabBar
+    this._showSideBar = storeState.layout.showSideBar
+    this._theme = storeState.preferences.theme
+    this._textDirection = storeState.preferences.textDirection
+    this._zoom = storeState.preferences.zoom
+    this._projectTree = storeState.project.projectTree
+    this._windowActive = storeState.windowActive
+
     this.unsubscribeStore = this.$store.subscribe((mutation, state) => {
       this.uiInit = state.init
       this.currentFile = state.editor.currentFile || {}
+      // Mirror all relevant store state into data properties
+      this._sourceCode = state.preferences.sourceCode
+      this._showTabBar = state.layout.showTabBar
+      this._showSideBar = state.layout.showSideBar
+      this._theme = state.preferences.theme
+      this._textDirection = state.preferences.textDirection
+      this._zoom = state.preferences.zoom
+      this._projectTree = state.project.projectTree
+      this._windowActive = state.windowActive
     })
 
     dispatch('LINTEN_WIN_STATUS')

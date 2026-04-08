@@ -207,6 +207,14 @@ export default {
         rename: '重新命名',
         moveToTrash: '移至資源回收筒',
         showInFolder: '在資料夾中顯示'
+      },
+      tree: {
+        openedFiles: '已開啟的檔案',
+        saveAll: '全部儲存',
+        closeAll: '全部關閉',
+        emptyProject: '空專案',
+        createFile: '新增檔案',
+        openFolder: '開啟資料夾'
       }
     },
     notification: {

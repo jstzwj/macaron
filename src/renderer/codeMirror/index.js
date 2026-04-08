@@ -44,17 +44,6 @@ const getThemeExtension = themeName => {
   return []
 }
 
-// --- Custom line number formatter: show every 10th line and line 1 ---
-
-const customLineNumberGutter = lineNumbers({
-  formatNumber: line => {
-    if (line % 10 === 0 || line === 1) {
-      return line.toString()
-    }
-    return ''
-  }
-})
-
 // --- Editor creation ---
 
 export const createEditor = (container, options = {}) => {
@@ -66,7 +55,7 @@ export const createEditor = (container, options = {}) => {
   } = options
 
   const extensions = [
-    customLineNumberGutter,
+    lineNumbers(),
     highlightActiveLineGutter(),
     highlightActiveLine(),
     drawSelection(),
