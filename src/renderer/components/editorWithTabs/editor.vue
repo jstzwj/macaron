@@ -219,7 +219,9 @@ export default {
     },
 
     _focus: function (value) {
-      this.editor.setFocusMode(value)
+      if (this.editor) {
+        this.editor.setFocusMode(value)
+      }
     },
 
     fontSize: function (value, oldValue) {
@@ -512,6 +514,10 @@ export default {
           this._localSourceCode = state.preferences.sourceCode
           this._localTypewriter = state.preferences.typewriter
           this._localFocus = state.preferences.focus
+          // Directly apply focus mode since computed/watcher chain may not react in Vue 3
+          if (this.editor && mutation.payload === 'focus') {
+            this.editor.setFocusMode(state.preferences.focus)
+          }
         }
       })
 
