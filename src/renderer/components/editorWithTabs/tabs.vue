@@ -44,7 +44,6 @@ export default {
   methods: {
     isActive (file) {
       const cur = this.$store.state.editor.currentFile
-      console.log('[isActive] file:', file.id, 'currentFile:', cur?.id, 'match:', cur?.id === file.id)
       return cur && cur.id === file.id
     },
     selectFile (file) {

@@ -256,6 +256,7 @@ export default {
     font-size: 14px;
     text-align: center;
     transition: all .25s ease-in-out;
+    overflow: hidden;
     & .filename {
       transition: all .25s ease-in-out;
     }

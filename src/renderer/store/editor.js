@@ -35,16 +35,12 @@ const mutations = {
   },
   SET_CURRENT_FILE (state, currentFile) {
     const oldCurrentFile = state.currentFile
-    console.log('[SET_CURRENT_FILE] old:', oldCurrentFile?.id, 'new:', currentFile?.id)
     if (!oldCurrentFile.id || oldCurrentFile.id !== currentFile.id) {
       const { id, markdown, cursor, history, pathname } = currentFile
       window.DIRNAME = pathname ? path.dirname(pathname) : ''
       // set state first, then emit file changed event
       state.currentFile = currentFile
-      console.log('[SET_CURRENT_FILE] updated state.currentFile to:', state.currentFile?.id)
       bus.$emit('file-changed', { id, markdown, cursor, renderCursor: true, history })
-    } else {
-      console.log('[SET_CURRENT_FILE] SKIPPED - same id')
     }
   },
   ADD_FILE_TO_TABS (state, currentFile) {
