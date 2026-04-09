@@ -180,7 +180,7 @@ export default {
       if (typeof markdown === 'string') {
         setValue(editor, markdown)
       }
-      if (cursor) {
+      if (cursor && cursor.anchor && cursor.focus) {
         const { anchor, focus } = cursor
         setSelection(editor, anchor, focus)
       } else {

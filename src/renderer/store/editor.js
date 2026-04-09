@@ -35,12 +35,16 @@ const mutations = {
   },
   SET_CURRENT_FILE (state, currentFile) {
     const oldCurrentFile = state.currentFile
+    console.log('[SET_CURRENT_FILE] old:', oldCurrentFile?.id, 'new:', currentFile?.id)
     if (!oldCurrentFile.id || oldCurrentFile.id !== currentFile.id) {
       const { id, markdown, cursor, history, pathname } = currentFile
       window.DIRNAME = pathname ? path.dirname(pathname) : ''
       // set state first, then emit file changed event
       state.currentFile = currentFile
+      console.log('[SET_CURRENT_FILE] updated state.currentFile to:', state.currentFile?.id)
       bus.$emit('file-changed', { id, markdown, cursor, renderCursor: true, history })
+    } else {
+      console.log('[SET_CURRENT_FILE] SKIPPED - same id')
     }
   },
   ADD_FILE_TO_TABS (state, currentFile) {
@@ -420,11 +424,9 @@ const actions = {
   },
 
   CLOSE_UNSAVED_TAB ({ commit, state }, file) {
-    const { id, pathname, filename, markdown } = file
-    const options = getOptionsFromState(file)
-
+    const payload = createSerializableSavePayload(file)
     // Save the file content via main process and send a close tab response.
-    ipcRenderer.send('mt::save-and-close-tabs', [{ id, pathname, filename, markdown, options }])
+    ipcRenderer.send('mt::save-and-close-tabs', [payload])
   },
 
   // need pass some data to main process when `save` menu item clicked

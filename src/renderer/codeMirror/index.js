@@ -163,8 +163,12 @@ export const onlyHaveOneLine = view => {
 // --- Selection helpers (CM5-compatible {line,ch} interface) ---
 
 export const setSelection = (view, anchor, focus) => {
+  if (!anchor || !anchor.line) {
+    setCursorAtLastLine(view)
+    return
+  }
   const anchorPos = cm5ToCm6Pos(view, anchor)
-  const focusPos = focus ? cm5ToCm6Pos(view, focus) : anchorPos
+  const focusPos = focus && focus.line ? cm5ToCm6Pos(view, focus) : anchorPos
   view.dispatch({
     selection: { anchor: anchorPos, head: focusPos },
     scrollIntoView: true

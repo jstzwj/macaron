@@ -5,7 +5,11 @@ import bus from '../bus'
 export const tabsMixins = {
   methods: {
     selectFile (file) {
-      if (file.id !== this.currentFile.id) {
+      if (!file || !file.id) {
+        return
+      }
+      const currentFileId = this.currentFile?.id
+      if (file.id !== currentFileId) {
         this.$store.dispatch('UPDATE_CURRENT_FILE', file)
       }
     },
