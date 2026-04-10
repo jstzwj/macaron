@@ -99,6 +99,18 @@ export default {
   commandPalette: {
     placeholder: '输入命令以执行'
   },
+  statusBar: {
+    toggleSidebar: '切换侧边栏',
+    sourceCodeMode: '源码模式',
+    spellcheck: '拼写检查开关',
+    systemDefault: '跟随系统',
+    spellcheckLanguage: '拼写检查语言',
+    wordCount: '字数统计',
+    words: '词数',
+    characters: '字符',
+    paragraphs: '段落',
+    allCharacters: '全部字符'
+  },
   exportDialog: {
     title: '导出选项',
     overviewEyebrow: '导出设置',

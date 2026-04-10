@@ -49,12 +49,32 @@ export default {
       language: {
         system: '跟隨系統',
         en: 'English',
-        'zh-CN': '简体中文'
+        'zh-CN': '简体中文',
+        'zh-TW': '繁體中文',
+        ja: '日本語',
+        ko: '한국어',
+        fr: 'Français',
+        es: 'Español',
+        pt: 'Português',
+        pl: 'Polski',
+        tr: 'Türkçe',
+        ar: 'العربية'
       }
     }
   },
+  statusBar: {
+    toggleSidebar: '切換側邊欄',
+    sourceCodeMode: '原始碼模式',
+    spellcheck: '切換拼字檢查',
+    systemDefault: '系統預設',
+    spellcheckLanguage: '拼字檢查語言',
+    wordCount: '字數統計',
+    words: '字詞',
+    characters: '字元',
+    paragraphs: '段落',
+    allCharacters: '所有字元'
+  },
   search: {
-    placeholder: '搜尋',
     replacementPlaceholder: '取代內容',
     caseSensitive: '區分大小寫',
     wholeWord: '全字匹配',

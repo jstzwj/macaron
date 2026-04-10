@@ -49,12 +49,32 @@ export default {
       language: {
         system: 'Sistemi takip et',
         en: 'English',
-        'zh-CN': '简体中文'
+        'zh-CN': '简体中文',
+        'zh-TW': '繁體中文',
+        ja: '日本語',
+        ko: '한국어',
+        fr: 'Français',
+        es: 'Español',
+        pt: 'Português',
+        pl: 'Polski',
+        tr: 'Türkçe',
+        ar: 'العربية'
       }
     }
   },
+  statusBar: {
+    toggleSidebar: 'Kenar Çubuğunu Değiştir',
+    sourceCodeMode: 'Kaynak Kod Modu',
+    spellcheck: 'Yazım Denetimini Değiştir',
+    systemDefault: 'Sistem Varsayılanı',
+    spellcheckLanguage: 'Yazım Denetimi Dili',
+    wordCount: 'Kelime Sayısı',
+    words: 'Kelime',
+    characters: 'Karakter',
+    paragraphs: 'Paragraf',
+    allCharacters: 'Tüm Karakterler'
+  },
   search: {
-    placeholder: 'Ara',
     replacementPlaceholder: 'Değiştirme',
     caseSensitive: 'Büyük/Küçük Harf Duyarlı',
     wholeWord: 'Tüm kelimeyi seç',

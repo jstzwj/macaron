@@ -38,15 +38,6 @@
         >
           <span class="text-center-vertical">&#9776;</span>
         </div>
-        <div
-          v-if="wordCount"
-          class="item word-count"
-          :class="[{ 'title-no-drag': platform !== 'darwin' }]"
-          :title="wordCountTitle"
-          @click.stop="handleWordClick"
-        >
-          <span class="text-center-vertical">{{ `${statsMap[show].short} ${wordCount[show]}` }}</span>
-        </div>
       </div>
       <div
         v-if="titleBarStyle === 'custom' && !isFullScreen && !isOsx"
@@ -96,8 +87,7 @@ export default {
     this.windowIconClose = closePath
     return {
       isFullScreen: false,
-      isMaximized: false,
-      show: 'word'
+      isMaximized: false
     }
   },
   async created () {
@@ -114,7 +104,6 @@ export default {
     filename: String,
     pathname: String,
     active: Boolean,
-    wordCount: Object,
     platform: String,
     isSaved: Boolean
   },
@@ -123,17 +112,6 @@ export default {
       titleBarStyle: state => state.preferences.titleBarStyle,
       showTabBar: state => state.layout.showTabBar
     }),
-    statsMap () {
-      return {
-        word: this.$tm('titleBar.stats.word'),
-        character: this.$tm('titleBar.stats.character'),
-        paragraph: this.$tm('titleBar.stats.paragraph'),
-        all: this.$tm('titleBar.stats.all')
-      }
-    },
-    wordCountTitle () {
-      return `${this.$t('titleBar.words')}: ${this.wordCount.word} | ${this.$t('titleBar.characters')}: ${this.wordCount.character} | ${this.$t('titleBar.paragraphs')}: ${this.wordCount.paragraph}`
-    },
     paths () {
       if (!this.pathname) return []
       const pathnameToken = this.pathname.split(PATH_SEPARATOR).filter(i => i)
@@ -158,15 +136,6 @@ export default {
     }
   },
   methods: {
-    handleWordClick () {
-      const ITEMS = ['word', 'paragraph', 'character', 'all']
-      const len = ITEMS.length
-      let index = ITEMS.indexOf(this.show)
-      index += 1
-      if (index >= len) index = 0
-      this.show = ITEMS[index]
-    },
-
     handleCloseClick () {
       ipcRenderer.invoke('mt::window-action', 'close')
     },
@@ -321,25 +290,6 @@ export default {
     flex-direction: row-reverse;
     & .item {
       margin-right: 10px;
-    }
-  }
-
-  .word-count {
-    cursor: pointer;
-    font-size: 14px;
-    color: var(--editorColor30);
-    text-align: center;
-    line-height: 24px;
-    padding: 0 5px;
-    box-sizing: border-box;
-    transition: all .25s ease-in-out;
-    & > .text-center-vertical {
-      padding: 2px 5px;
-      border-radius: 3px;
-    }
-    &:hover > span {
-      background: var(--sideBarBgColor);
-      color: var(--sideBarTitleColor);
     }
   }
 

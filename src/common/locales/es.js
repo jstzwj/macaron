@@ -49,12 +49,32 @@ export default {
       language: {
         system: 'Seguir sistema',
         en: 'English',
-        'zh-CN': '简体中文'
+        'zh-CN': '简体中文',
+        'zh-TW': '繁體中文',
+        ja: '日本語',
+        ko: '한국어',
+        fr: 'Français',
+        es: 'Español',
+        pt: 'Português',
+        pl: 'Polski',
+        tr: 'Türkçe',
+        ar: 'العربية'
       }
     }
   },
+  statusBar: {
+    toggleSidebar: 'Alternar barra lateral',
+    sourceCodeMode: 'Modo código fuente',
+    spellcheck: 'Alternar corrección ortográfica',
+    systemDefault: 'Predeterminado del sistema',
+    spellcheckLanguage: 'Idioma de corrección ortográfica',
+    wordCount: 'Conteo de palabras',
+    words: 'Palabras',
+    characters: 'Caracteres',
+    paragraphs: 'Párrafos',
+    allCharacters: 'Todos los caracteres'
+  },
   search: {
-    placeholder: 'Buscar',
     replacementPlaceholder: 'Reemplazo',
     caseSensitive: 'Distinguir mayúsculas',
     wholeWord: 'Seleccionar palabra completa',

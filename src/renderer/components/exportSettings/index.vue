@@ -1,18 +1,14 @@
 <template>
-  <div class="print-settings-dialog">
-    <el-dialog
-      v-if="renderExportSettingsDialog"
-      v-model="showExportSettingsDialog"
-      :show-close="true"
-      :modal="true"
-      modal-class="export-settings-backdrop"
-      align-center
-      @closed="afterDialogClosed"
-      class="ag-dialog-table export-settings-modal"
-      width="680px"
-    >
+  <div class="export-settings-dialog" v-if="renderExportSettingsDialog" @click="showExportSettingsDialog = false">
+    <div class="export-settings-overlay"></div>
+    <div class="export-settings-panel" @click.stop>
       <div class="export-settings-shell">
         <header class="dialog-header">
+          <button class="dialog-close-btn" @click="showExportSettingsDialog = false" title="Close">
+            <svg viewBox="0 0 1024 1024" width="14" height="14">
+              <path fill="currentColor" d="M764.288 214.592 512 466.88 259.712 214.592l-45.248 45.248L466.752 512 214.528 764.224l45.248 45.248L512 557.184l252.288 252.288 45.248-45.248L557.312 512l252.224-252.224-45.248-45.184z"/>
+            </svg>
+          </button>
           <div class="header-copy">
             <div class="eyebrow">{{ $t(isPrintable ? 'exportDialog.overviewEyebrow' : 'exportDialog.htmlEyebrow') }}</div>
             <h3>{{ $t('exportDialog.title') }}</h3>
@@ -201,7 +197,7 @@
                 <div class="section-body compact-body">
                   <cur-select
                     :description="dialogLabel('exportDialog.theme')"
-                    more="https://github.com/marktext/marktext/blob/develop/docs/EXPORT_THEMES.md"
+                    more="https://github.com/jstzwj/macaron/blob/develop/docs/EXPORT_THEMES.md"
                     :value="theme"
                     :options="themeList"
                     :onChange="value => onSelectChange('theme', value)"
@@ -361,7 +357,7 @@
           </div>
         </footer>
       </div>
-    </el-dialog>
+    </div>
   </div>
 </template>
 
@@ -444,6 +440,13 @@ export default {
   },
   beforeUnmount () {
     bus.$off('showExportDialog', this.showDialog)
+  },
+  watch: {
+    showExportSettingsDialog (val) {
+      if (!val) {
+        this.renderExportSettingsDialog = false
+      }
+    }
   },
   methods: {
     showDialog (type) {
@@ -559,9 +562,6 @@ export default {
       this.showExportSettingsDialog = false
       bus.$emit('export', options)
     },
-    afterDialogClosed () {
-      this.renderExportSettingsDialog = false
-    },
     dialogLabel (key) {
       return String(this.$t(key)).replace(/[：:]\s*$/, '')
     },
@@ -619,9 +619,32 @@ export default {
   }
 
   .dialog-header {
+    position: relative;
     padding: 20px 24px 16px;
     border-bottom: 1px solid var(--floatBorderColor);
     background: var(--floatBgColor);
+  }
+
+  .dialog-close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    color: var(--editorColor60);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color .2s ease, color .2s ease;
+  }
+
+  .dialog-close-btn:hover {
+    color: var(--editorColor);
+    background: var(--editorColor04);
   }
 
   .header-copy {
@@ -874,122 +897,138 @@ export default {
     }
   }
 </style>
+<style scoped>
+.export-settings-dialog {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.export-settings-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--maskColor);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.export-settings-panel {
+  position: relative;
+  z-index: 1;
+  width: min(680px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  border-radius: 12px;
+  box-shadow: var(--floatShadow);
+  border: 1px solid var(--floatBorderColor);
+  background: var(--floatBgColor);
+  color: var(--editorColor);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.export-settings-panel .export-settings-shell {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+}
+
+.export-settings-panel .dialog-content {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.export-settings-panel .dialog-footer {
+  flex-shrink: 0;
+}
+
+.export-settings-panel .dialog-close-btn {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  color: var(--editorColor60);
+  background: transparent;
+  transition: background-color .2s ease, color .2s ease;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  outline: none;
+}
+
+.export-settings-panel .dialog-close-btn:hover {
+  color: var(--editorColor);
+  background: var(--editorColor04);
+}
+
+.export-settings-panel .dialog-close-btn svg {
+  font-size: 16px;
+}
+</style>
 <style>
-  .el-overlay.export-settings-backdrop {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    align-items: stretch;
-    justify-content: stretch;
-    background: var(--maskColor);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-  }
-
-  .el-overlay.export-settings-backdrop .el-overlay-dialog {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 16px;
-    overflow: hidden;
-  }
-
-  .el-overlay.export-settings-backdrop .el-dialog.export-settings-modal,
-  .el-overlay.export-settings-backdrop .el-dialog.ag-dialog-table.export-settings-modal {
-    width: min(680px, calc(100vw - 32px)) !important;
-    margin: 0 !important;
-    border: 1px solid var(--floatBorderColor);
-    border-radius: 12px;
-    background: var(--floatBgColor);
-    color: var(--editorColor);
-    box-shadow: var(--floatShadow);
-    overflow: hidden;
-  }
-
-  .el-overlay.export-settings-backdrop .el-dialog__header {
-    display: none;
-  }
-
-  .el-overlay.export-settings-backdrop .el-dialog__body {
-    padding: 0;
-    color: var(--editorColor);
-  }
-
-  .el-overlay.export-settings-backdrop .export-settings-modal .el-dialog__headerbtn {
-    top: 18px;
-    right: 18px;
-    width: 28px;
-    height: 28px;
-    border-radius: 999px;
-    color: var(--editorColor60);
-    background: transparent;
-    transition: background-color .2s ease, color .2s ease;
-  }
-
-  .el-overlay.export-settings-backdrop .export-settings-modal .el-dialog__headerbtn:hover {
-    color: var(--editorColor);
-    background: var(--editorColor04);
-  }
-
-  .el-overlay.export-settings-backdrop .export-settings-modal .el-dialog__close {
-    font-size: 16px;
-  }
-
-  .el-overlay.export-settings-backdrop .export-tabs {
+  .export-settings-panel .export-tabs {
     flex: 1;
     min-height: 0;
   }
 
-  .el-overlay.export-settings-backdrop .export-tabs > .el-tabs__content {
+  .export-settings-panel .export-tabs > .el-tabs__content {
     flex: 1;
     min-height: 0;
   }
 
-  .el-overlay.export-settings-backdrop .export-tabs > .el-tabs__content > .el-tab-pane {
+  .export-settings-panel .export-tabs > .el-tabs__content > .el-tab-pane {
     min-height: 100%;
   }
 
-  .el-overlay.export-settings-backdrop .export-tabs .el-tabs__header {
+  .export-settings-panel .export-tabs .el-tabs__header {
     flex-shrink: 0;
     margin: 0;
     padding: 10px 0 0;
     background: var(--floatBgColor);
   }
 
-  .el-overlay.export-settings-backdrop .export-tabs .el-tabs__nav-wrap {
+  .export-settings-panel .export-tabs .el-tabs__nav-wrap {
     padding-bottom: 0;
   }
 
-  .el-overlay.export-settings-backdrop .export-tabs .el-tabs__nav-wrap::after {
+  .export-settings-panel .export-tabs .el-tabs__nav-wrap::after {
     background: var(--floatBorderColor);
     bottom: 0;
   }
 
-  .el-overlay.export-settings-backdrop .export-tabs .el-tabs__nav-scroll {
+  .export-settings-panel .export-tabs .el-tabs__nav-scroll {
     overflow: auto;
     scrollbar-width: none;
   }
 
-  .el-overlay.export-settings-backdrop .export-tabs .el-tabs__nav-scroll::-webkit-scrollbar {
+  .export-settings-panel .export-tabs .el-tabs__nav-scroll::-webkit-scrollbar {
     display: none;
   }
 
-  .el-overlay.export-settings-backdrop .export-tabs .el-tabs__nav {
+  .export-settings-panel .export-tabs .el-tabs__nav {
     display: flex;
     align-items: flex-end;
     gap: 0;
   }
 
-  .el-overlay.export-settings-backdrop .export-tabs .el-tabs__active-bar {
+  .export-settings-panel .export-tabs .el-tabs__active-bar {
     height: 2px;
     border-radius: 999px;
     background-color: var(--themeColor);
     bottom: -1px;
   }
 
-  .el-overlay.export-settings-backdrop .export-tabs .el-tabs__item {
+  .export-settings-panel .export-tabs .el-tabs__item {
     height: auto;
     line-height: 20px;
     padding: 0 12px 12px;
@@ -997,12 +1036,12 @@ export default {
     transition: color .2s ease;
   }
 
-  .el-overlay.export-settings-backdrop .export-tabs .el-tabs__item.is-active,
-  .el-overlay.export-settings-backdrop .export-tabs .el-tabs__item:hover {
+  .export-settings-panel .export-tabs .el-tabs__item.is-active,
+  .export-settings-panel .export-tabs .el-tabs__item:hover {
     color: var(--themeColor);
   }
 
-  .el-overlay.export-settings-backdrop .export-tabs .el-tabs__content {
+  .export-settings-panel .export-tabs .el-tabs__content {
     flex: 1;
     height: auto;
     min-height: 0;
@@ -1014,52 +1053,52 @@ export default {
     background: var(--floatBgColor);
   }
 
-  .el-overlay.export-settings-backdrop .export-tabs .el-tab-pane {
+  .export-settings-panel .export-tabs .el-tab-pane {
     min-height: 100%;
     padding-bottom: 4px;
   }
 
-  .el-overlay.export-settings-backdrop .export-tabs .el-tab-pane > * {
+  .export-settings-panel .export-tabs .el-tab-pane > * {
     min-width: 0;
   }
 
-  .el-overlay.export-settings-backdrop .export-tabs .el-tabs__content::-webkit-scrollbar:vertical {
+  .export-settings-panel .export-tabs .el-tabs__content::-webkit-scrollbar:vertical {
     width: 6px;
   }
 
-  .el-overlay.export-settings-backdrop .pref-select-item,
-  .el-overlay.export-settings-backdrop .pref-switch-item,
-  .el-overlay.export-settings-backdrop .pref-text-box-item,
-  .el-overlay.export-settings-backdrop .pref-font-text-box-item,
-  .el-overlay.export-settings-backdrop .pref-range-item {
+  .export-settings-panel .pref-select-item,
+  .export-settings-panel .pref-switch-item,
+  .export-settings-panel .pref-text-box-item,
+  .export-settings-panel .pref-font-text-box-item,
+  .export-settings-panel .pref-range-item {
     max-width: 100%;
     margin: 16px 0;
   }
 
-  .el-overlay.export-settings-backdrop .pref-select-item:first-child,
-  .el-overlay.export-settings-backdrop .pref-switch-item:first-child,
-  .el-overlay.export-settings-backdrop .pref-text-box-item:first-child,
-  .el-overlay.export-settings-backdrop .pref-font-text-box-item:first-child,
-  .el-overlay.export-settings-backdrop .pref-range-item:first-child {
+  .export-settings-panel .pref-select-item:first-child,
+  .export-settings-panel .pref-switch-item:first-child,
+  .export-settings-panel .pref-text-box-item:first-child,
+  .export-settings-panel .pref-font-text-box-item:first-child,
+  .export-settings-panel .pref-range-item:first-child {
     margin-top: 0;
   }
 
-  .el-overlay.export-settings-backdrop .pref-select-item:last-child,
-  .el-overlay.export-settings-backdrop .pref-switch-item:last-child,
-  .el-overlay.export-settings-backdrop .pref-text-box-item:last-child,
-  .el-overlay.export-settings-backdrop .pref-font-text-box-item:last-child,
-  .el-overlay.export-settings-backdrop .pref-range-item:last-child {
+  .export-settings-panel .pref-select-item:last-child,
+  .export-settings-panel .pref-switch-item:last-child,
+  .export-settings-panel .pref-text-box-item:last-child,
+  .export-settings-panel .pref-font-text-box-item:last-child,
+  .export-settings-panel .pref-range-item:last-child {
     margin-bottom: 0;
   }
 
-  .el-overlay.export-settings-backdrop .pref-select-item .description,
-  .el-overlay.export-settings-backdrop .pref-text-box-item .description,
-  .el-overlay.export-settings-backdrop .pref-font-text-box-item .description,
-  .el-overlay.export-settings-backdrop .pref-range-item .description {
+  .export-settings-panel .pref-select-item .description,
+  .export-settings-panel .pref-text-box-item .description,
+  .export-settings-panel .pref-font-text-box-item .description,
+  .export-settings-panel .pref-range-item .description {
     color: var(--editorColor);
   }
 
-  .el-overlay.export-settings-backdrop .pref-select-item .description .el-icon {
+  .export-settings-panel .pref-select-item .description .el-icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -1072,12 +1111,12 @@ export default {
     color: var(--iconColor);
   }
 
-  .el-overlay.export-settings-backdrop .pref-select-item .description .el-icon svg {
+  .export-settings-panel .pref-select-item .description .el-icon svg {
     width: 1em;
     height: 1em;
   }
 
-  .el-overlay.export-settings-backdrop .pref-select-item .select-input {
+  .export-settings-panel .pref-select-item .select-input {
     width: 100% !important;
     max-width: 100%;
     appearance: auto;
@@ -1087,51 +1126,51 @@ export default {
     border-radius: 6px;
   }
 
-  .el-overlay.export-settings-backdrop #pane-header .pref-text-box-item .el-input {
+  .export-settings-panel #pane-header .pref-text-box-item .el-input {
     width: 100% !important;
     max-width: 100%;
   }
 
-  .el-overlay.export-settings-backdrop .pref-text-box-item .el-input__wrapper,
-  .el-overlay.export-settings-backdrop .pref-font-text-box-item input,
-  .el-overlay.export-settings-backdrop .pref-range-item input,
-  .el-overlay.export-settings-backdrop .metric-field .el-input__wrapper {
+  .export-settings-panel .pref-text-box-item .el-input__wrapper,
+  .export-settings-panel .pref-font-text-box-item input,
+  .export-settings-panel .pref-range-item input,
+  .export-settings-panel .metric-field .el-input__wrapper {
     background: var(--inputBgColor);
   }
 
-  .el-overlay.export-settings-backdrop .metric-field .el-input-number,
-  .el-overlay.export-settings-backdrop .metric-field .el-input-number .el-input,
-  .el-overlay.export-settings-backdrop .metric-field .el-input-number .el-input__wrapper,
-  .el-overlay.export-settings-backdrop .metric-field .el-input-number .el-input__inner,
-  .el-overlay.export-settings-backdrop .metric-field .el-input-number__decrease,
-  .el-overlay.export-settings-backdrop .metric-field .el-input-number__increase {
+  .export-settings-panel .metric-field .el-input-number,
+  .export-settings-panel .metric-field .el-input-number .el-input,
+  .export-settings-panel .metric-field .el-input-number .el-input__wrapper,
+  .export-settings-panel .metric-field .el-input-number .el-input__inner,
+  .export-settings-panel .metric-field .el-input-number__decrease,
+  .export-settings-panel .metric-field .el-input-number__increase {
     box-sizing: border-box;
   }
 
-  .el-overlay.export-settings-backdrop .metric-field .el-input-number {
+  .export-settings-panel .metric-field .el-input-number {
     inline-size: 100%;
     max-inline-size: 100%;
   }
 
-  .el-overlay.export-settings-backdrop .metric-field .el-input-number .el-input__wrapper {
+  .export-settings-panel .metric-field .el-input-number .el-input__wrapper {
     padding-right: 30px;
   }
 
-  .el-overlay.export-settings-backdrop .metric-field .el-input-number__decrease,
-  .el-overlay.export-settings-backdrop .metric-field .el-input-number__increase {
+  .export-settings-panel .metric-field .el-input-number__decrease,
+  .export-settings-panel .metric-field .el-input-number__increase {
     width: 26px;
     border-left: 1px solid var(--floatBorderColor);
     background: var(--editorColor04);
     color: var(--editorColor60);
   }
 
-  .el-overlay.export-settings-backdrop .metric-field .el-input-number__decrease:hover,
-  .el-overlay.export-settings-backdrop .metric-field .el-input-number__increase:hover {
+  .export-settings-panel .metric-field .el-input-number__decrease:hover,
+  .export-settings-panel .metric-field .el-input-number__increase:hover {
     color: var(--editorColor);
     background: var(--editorColor10);
   }
 
-  .el-overlay.export-settings-backdrop .metric-field .el-input-number.is-controls-right .el-input-number__decrease {
+  .export-settings-panel .metric-field .el-input-number.is-controls-right .el-input-number__decrease {
     border-bottom: 1px solid var(--floatBorderColor);
   }
 </style>

@@ -49,12 +49,32 @@ export default {
       language: {
         system: '시스템 설정 따르기',
         en: 'English',
-        'zh-CN': '简体中文'
+        'zh-CN': '简体中文',
+        'zh-TW': '繁體中文',
+        ja: '日本語',
+        ko: '한국어',
+        fr: 'Français',
+        es: 'Español',
+        pt: 'Português',
+        pl: 'Polski',
+        tr: 'Türkçe',
+        ar: 'العربية'
       }
     }
   },
+  statusBar: {
+    toggleSidebar: '사이드바 전환',
+    sourceCodeMode: '소스 코드 모드',
+    spellcheck: '맞춤법 검사 전환',
+    systemDefault: '시스템 기본값',
+    spellcheckLanguage: '맞춤법 검사 언어',
+    wordCount: '글자 수',
+    words: '단어',
+    characters: '문자',
+    paragraphs: '단락',
+    allCharacters: '모든 문자'
+  },
   search: {
-    placeholder: '검색',
     replacementPlaceholder: '바꿀 내용',
     caseSensitive: '대소문자 구분',
     wholeWord: '단어 단위 선택',

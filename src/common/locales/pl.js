@@ -49,12 +49,32 @@ export default {
       language: {
         system: 'Zgodnie z systemem',
         en: 'English',
-        'zh-CN': '简体中文'
+        'zh-CN': '简体中文',
+        'zh-TW': '繁體中文',
+        ja: '日本語',
+        ko: '한국어',
+        fr: 'Français',
+        es: 'Español',
+        pt: 'Português',
+        pl: 'Polski',
+        tr: 'Türkçe',
+        ar: 'العربية'
       }
     }
   },
+  statusBar: {
+    toggleSidebar: 'Przełącz pasek boczny',
+    sourceCodeMode: 'Tryb kodu źródłowego',
+    spellcheck: 'Przełącz sprawdzanie pisowni',
+    systemDefault: 'Domyślny systemowy',
+    spellcheckLanguage: 'Język sprawdzania pisowni',
+    wordCount: 'Liczba słów',
+    words: 'Słowa',
+    characters: 'Znaki',
+    paragraphs: 'Akapity',
+    allCharacters: 'Wszystkie znaki'
+  },
   search: {
-    placeholder: 'Szukaj',
     replacementPlaceholder: 'Zastąp',
     caseSensitive: 'Rozróżniaj wielkość liter',
     wholeWord: 'Zaznacz całe słowo',

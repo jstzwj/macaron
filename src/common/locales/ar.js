@@ -49,12 +49,32 @@ export default {
       language: {
         system: 'اتباع النظام',
         en: 'English',
-        'zh-CN': '简体中文'
+        'zh-CN': '简体中文',
+        'zh-TW': '繁體中文',
+        ja: '日本語',
+        ko: '한국어',
+        fr: 'Français',
+        es: 'Español',
+        pt: 'Português',
+        pl: 'Polski',
+        tr: 'Türkçe',
+        ar: 'العربية'
       }
     }
   },
+  statusBar: {
+    toggleSidebar: 'تبديل الشريط الجانبي',
+    sourceCodeMode: 'وضع الكود المصدري',
+    spellcheck: 'تبديل التدقيق الإملائي',
+    systemDefault: 'الافتراضي للنظام',
+    spellcheckLanguage: 'لغة التدقيق الإملائي',
+    wordCount: 'عدد الكلمات',
+    words: 'كلمات',
+    characters: 'أحرف',
+    paragraphs: 'فقرات',
+    allCharacters: 'كل الأحرف'
+  },
   search: {
-    placeholder: 'البحث',
     replacementPlaceholder: 'الاستبدال',
     caseSensitive: 'حساس لحالة الأحرف',
     wholeWord: 'تحديد الكلمة كاملة',

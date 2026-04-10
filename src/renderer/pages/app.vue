@@ -9,7 +9,6 @@
         :pathname="currentFile.pathname"
         :filename="currentFile.filename"
         :active="windowActive"
-        :word-count="currentFile.wordCount"
         :platform="platform"
         :is-saved="currentFile.isSaved"
       ></title-bar>
@@ -27,6 +26,7 @@
         :platform="platform"
       ></editor-with-tabs>
       <command-palette></command-palette>
+      <status-bar v-if="uiInit"></status-bar>
       <about-dialog></about-dialog>
       <export-setting-dialog></export-setting-dialog>
       <rename></rename>
@@ -44,6 +44,7 @@ import TitleBar from '@/components/titleBar'
 import SideBar from '@/components/sideBar'
 import AboutDialog from '@/components/about'
 import CommandPalette from '@/components/commandPalette'
+import StatusBar from '@/components/statusBar'
 import ExportSettingDialog from '@/components/exportSettings'
 import Rename from '@/components/rename'
 import Tweet from '@/components/tweet'
@@ -66,7 +67,8 @@ export default {
     Rename,
     Tweet,
     ImportModal,
-    CommandPalette
+    CommandPalette,
+    StatusBar
   },
   mixins: [loadingPageMixins],
   data () {

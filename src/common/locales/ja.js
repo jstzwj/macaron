@@ -62,8 +62,19 @@ export default {
       }
     }
   },
+  statusBar: {
+    toggleSidebar: 'サイドバーを切り替え',
+    sourceCodeMode: 'ソースコードモード',
+    spellcheck: 'スペルチェックを切り替え',
+    systemDefault: 'システムデフォルト',
+    spellcheckLanguage: 'スペルチェック言語',
+    wordCount: '文字数',
+    words: '単語',
+    characters: '文字',
+    paragraphs: '段落',
+    allCharacters: 'すべての文字'
+  },
   search: {
-    placeholder: '検索',
     replacementPlaceholder: '置換',
     caseSensitive: '大文字と小文字を区別',
     wholeWord: '単語全体を選択',

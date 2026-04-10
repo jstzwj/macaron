@@ -1,30 +1,20 @@
 <template>
-  <div class="rename">
-    <el-dialog
-      v-if="renderRename"
-      v-model="showRename"
-      :teleported="false"
-      :show-close="false"
-      :modal="true"
-      @closed="afterDialogClosed"
-      class="ag-dialog-table"
-      width="410px"
-    >
-      <template #title>
-        <div class="search-wrapper">
-          <div class="input-wrapper">
-            <input
-              type="text" v-model="tempName" class="search"
-              @keyup.13="confirm"
-              ref="search"
-            >
-            <svg class="icon" aria-hidden="true" @click="confirm">
-              <use xlink:href="#icon-markdown"></use>
-            </svg>
-          </div>
+  <div class="rename-dialog" v-if="renderRename" @click="showRename = false">
+    <div class="rename-dialog-overlay"></div>
+    <div class="rename-dialog-panel" @click.stop>
+      <div class="search-wrapper">
+        <div class="input-wrapper">
+          <input
+            type="text" v-model="tempName" class="search"
+            @keyup.13="confirm"
+            ref="search"
+          >
+          <svg class="icon" aria-hidden="true" @click="confirm">
+            <use xlink:href="#icon-markdown"></use>
+          </svg>
         </div>
-      </template>
-    </el-dialog>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -67,73 +57,86 @@ export default {
     confirm () {
       this.$store.dispatch('RENAME', this.tempName)
       this.showRename = false
-    },
-    afterDialogClosed () {
-      this.renderRename = false
+    }
+  },
+  watch: {
+    showRename (val) {
+      if (!val) {
+        this.renderRename = false
+      }
     }
   }
 }
 </script>
 
-<style>
-  .rename .el-dialog__header {
-    box-sizing: border-box;
-    padding: 12px 8px;
-  }
-  .rename .el-dialog__body {
-    display: none;
-  }
-</style>
-
 <style scoped>
-  .search-wrapper {
-    margin-top: 8px;
-    z-index: 10000;
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 410px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-shadow: none;
-    border: none;
-    border-radius: 3px;
-    margin: 0;
-    padding: 0 8px;
+.rename-dialog {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 80px;
+}
 
-    & .input-wrapper {
-      display: flex;
-      width: 100%;
-      border: 1px solid var(--inputBgColor);
-      background: var(--inputBgColor);
-      border-radius: 4px;
+.rename-dialog-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--maskColor);
+}
 
-      & input {
-        background: transparent;
-      }
-    }
-  }
-  .search {
-    width: 100%;
-    height: 30px;
-    outline: none;
-    border: none;
-    font-size: 14px;
-    padding: 0 8px;
-    margin: 0 10px;
-    color: var(--sideBarColor);
-  }
-  .search-wrapper svg {
-    cursor: pointer;
-    margin: 0 5px;
-    width: 30px;
-    height: 30px;
-    color: var(--iconColor);
-    transition: all .3s ease-in-out;
-  }
-  .search-wrapper svg:hover {
-    color: var(--themeColor);
-  }
+.rename-dialog-panel {
+  position: relative;
+  z-index: 1;
+  width: 410px;
+  border-radius: 8px;
+  box-shadow: var(--floatShadow);
+  border: 1px solid var(--floatBorderColor);
+  background-color: var(--floatBgColor);
+}
+
+.rename-dialog-panel .search-wrapper {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 8px;
+}
+
+.rename-dialog-panel .input-wrapper {
+  display: flex;
+  width: 100%;
+  border: 1px solid var(--inputBgColor);
+  background: var(--inputBgColor);
+  border-radius: 4px;
+}
+
+.rename-dialog-panel .input-wrapper input {
+  background: transparent;
+}
+
+.search {
+  width: 100%;
+  height: 30px;
+  outline: none;
+  border: none;
+  font-size: 14px;
+  padding: 0 8px;
+  margin: 0 10px;
+  color: var(--sideBarColor);
+}
+
+.rename-dialog-panel .input-wrapper svg {
+  cursor: pointer;
+  margin: 0 5px;
+  width: 30px;
+  height: 30px;
+  color: var(--iconColor);
+  transition: all .3s ease-in-out;
+}
+
+.rename-dialog-panel .input-wrapper svg:hover {
+  color: var(--themeColor);
+}
 </style>

@@ -1,15 +1,7 @@
 <template>
-  <div class="import-dialog">
-    <el-dialog
-      v-if="renderImport"
-      v-model="showImport"
-      :teleported="false"
-      :show-close="false"
-      :modal="true"
-      @closed="afterDialogClosed"
-      class="ag-dialog-table"
-      width="450px"
-    >
+  <div class="import-dialog" v-if="renderImport" @click="showImport = false">
+    <div class="import-dialog-overlay"></div>
+    <div class="import-dialog-panel" @click.stop>
       <div class="body">
         <div
           class="drop-container"
@@ -32,7 +24,7 @@
           <div>.wiki</div>
         </div>
       </div>
-    </el-dialog>
+    </div>
   </div>
 </template>
 
@@ -82,51 +74,82 @@ export default {
         }
         ipcRenderer.send('mt::window::drop', fileList)
       }
-    },
-    afterDialogClosed () {
-      this.renderImport = false
-      this.isOver = false
+    }
+  },
+  watch: {
+    showImport (val) {
+      if (!val) {
+        this.renderImport = false
+        this.isOver = false
+      }
     }
   }
 }
 </script>
 
 <style scoped>
+.import-dialog {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.import-dialog-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--maskColor);
+}
+
+.import-dialog-panel {
+  position: relative;
+  z-index: 1;
+  width: 450px;
+  border-radius: 8px;
+  box-shadow: var(--floatShadow);
+  border: 1px solid var(--floatBorderColor);
+  background-color: var(--floatBgColor);
+  color: var(--editorColor);
+  padding: 16px;
+}
+
 .drop-container {
   border-radius: 5px;
   color: var(--sideBarColor);
   border: 1px dashed var(--sideBarTextColor);
-  & div,
-  & p {
-    text-align: center;
-  }
-  &.active {
-    border: 1px dashed var(--themeColor);
-    background-color: var(--itemBgColor);
-  }
+}
+.drop-container div,
+.drop-container p {
+  text-align: center;
+}
+.drop-container.active {
+  border: 1px dashed var(--themeColor);
+  background-color: var(--itemBgColor);
 }
 .img-wrapper {
   width: 50px;
   height: 70px;
   margin: 40px auto 0 auto;
-  & img {
-    width: 100%;
-    height: 100%;
-  }
+}
+.img-wrapper img {
+  width: 100%;
+  height: 100%;
 }
 .file-list {
   margin-top: 20px;
   display: flex;
   justify-content: space-between;
-  & div {
-    width: 70px;
-    height: 70px;
-    border: 1px solid var(--sideBarTextColor);
-    border-radius: 3px;
-    text-align: center;
-    font-size: 18px;
-    line-height: 70px;
-    color: var(--sideBarTitleColor);
-  }
+}
+.file-list div {
+  width: 70px;
+  height: 70px;
+  border: 1px solid var(--sideBarTextColor);
+  border-radius: 3px;
+  text-align: center;
+  font-size: 18px;
+  line-height: 70px;
+  color: var(--sideBarTitleColor);
 }
 </style>

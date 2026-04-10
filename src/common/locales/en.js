@@ -99,6 +99,18 @@ export default {
   commandPalette: {
     placeholder: 'Type a command to execute'
   },
+  statusBar: {
+    toggleSidebar: 'Toggle Sidebar',
+    sourceCodeMode: 'Source Code Mode',
+    spellcheck: 'Toggle Spell Check',
+    systemDefault: 'System Default',
+    spellcheckLanguage: 'Spellcheck Language',
+    wordCount: 'Word Count',
+    words: 'Words',
+    characters: 'Characters',
+    paragraphs: 'Paragraphs',
+    allCharacters: 'All Characters'
+  },
   exportDialog: {
     title: 'Export Options',
     overviewEyebrow: 'Export Settings',

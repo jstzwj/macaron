@@ -24,17 +24,17 @@ export default function (i18n) {
     submenu: [{
       label: i18n.t('menu.help.quickStart'),
       click () {
-        shell.openExternal('https://github.com/marktext/marktext/blob/master/docs/README.md')
+        shell.openExternal('https://github.com/jstzwj/macaron/blob/master/docs/README.md')
       }
     }, {
       label: i18n.t('menu.help.markdownReference'),
       click () {
-        shell.openExternal('https://github.com/marktext/marktext/blob/master/docs/MARKDOWN_SYNTAX.md')
+        shell.openExternal('https://github.com/jstzwj/macaron/blob/master/docs/MARKDOWN_SYNTAX.md')
       }
     }, {
       label: i18n.t('menu.help.changelog'),
       click () {
-        shell.openExternal('https://github.com/marktext/marktext/blob/master/.github/CHANGELOG.md')
+        shell.openExternal('https://github.com/jstzwj/macaron/blob/master/.github/CHANGELOG.md')
       }
     }, {
       type: 'separator'
@@ -51,19 +51,19 @@ export default function (i18n) {
     }, {
       label: i18n.t('menu.help.reportIssue'),
       click () {
-        shell.openExternal('https://github.com/marktext/marktext/issues')
+        shell.openExternal('https://github.com/jstzwj/macaron/issues')
       }
     }, {
       type: 'separator'
     }, {
       label: i18n.t('menu.help.website'),
       click () {
-        shell.openExternal('https://github.com/marktext/marktext')
+        shell.openExternal('https://github.com/jstzwj/macaron')
       }
     }, {
       label: i18n.t('menu.help.watchOnGitHub'),
       click () {
-        shell.openExternal('https://github.com/marktext/marktext')
+        shell.openExternal('https://github.com/jstzwj/macaron')
       }
     }, {
       label: i18n.t('menu.help.followOnGitHub'),
@@ -80,7 +80,7 @@ export default function (i18n) {
     }, {
       label: i18n.t('menu.help.license'),
       click () {
-        shell.openExternal('https://github.com/marktext/marktext/blob/master/LICENSE')
+        shell.openExternal('https://github.com/jstzwj/macaron/blob/master/LICENSE')
       }
     }]
   }
