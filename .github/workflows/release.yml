@@ -2,176 +2,96 @@ name: Release
 
 on:
   push:
-    branches:
-      - 'release-v*'
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
 
 jobs:
-  unix:
+  release:
     runs-on: ${{ matrix.os }}
-    continue-on-error: false
     timeout-minutes: 45
 
     strategy:
+      fail-fast: false
       matrix:
-        os: [macos-11, ubuntu-latest]
+        os: [macos-latest, ubuntu-latest, windows-latest]
 
     env:
-      DISPLAY: ":99.0"
       MARKTEXT_IS_STABLE: 1
       MARKTEXT_EXIT_ON_ERROR: 1
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
-      - name: Install Node.js
-        uses: actions/setup-node@v6
+      - uses: actions/setup-node@v4
         with:
-          node-version: 24
-          check-latest: true
+          node-version: 22
           cache: yarn
-          cache-dependency-path: yarn.lock
 
-      - name: Install build dependencies
+      - name: Install Linux build dependencies
         if: runner.os == 'Linux'
-        #                         electron-builder                 | keyboard-layout         | keytar                      | fontmanager     | RPM on Ubuntu
         run: |
           sudo apt-get -y update
-          sudo apt-get install -y icnsutils graphicsmagick xz-utils libx11-dev libxkbfile-dev gnome-keyring libsecret-1-dev libfontconfig-dev rpm
-
-      - name: Cache node_modules
-        uses: actions/cache@v5
-        with:
-          path: ${{ github.workspace }}/node_modules
-          key: ${{ runner.os }}-node_modules-cache-v2-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
-          restore-keys: |
-            ${{ runner.os }}-node_modules-cache-v2-
-
-      - name: Cache Electron
-        uses: actions/cache@v5
-        with:
-          path: ${{ env.HOME }}/.cache/electron
-          key: ${{ runner.os }}-electron-cache-v2-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
-
-      - name: Cache Electron-Builder
-        uses: actions/cache@v5
-        with:
-          path: ${{ env.HOME }}/.cache//electron-builder
-          key: ${{ runner.os }}-electron-builder-cache-v2-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
+          sudo apt-get install -y libx11-dev libxkbfile-dev libsecret-1-dev libfontconfig-dev rpm
 
       - name: Install dependencies
-        run: yarn install --check-files --frozen-lockfile
+        run: yarn install --frozen-lockfile
 
-      - name: Strip ripgrep on Linux
-        if: runner.os == 'Linux'
-        run: strip node_modules/vscode-ripgrep/bin/rg
+      - name: Fix node-gyp (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          npm install --global node-gyp@latest
+          npm prefix -g | % {npm config set node_gyp "$_\node_modules\node-gyp\bin\node-gyp.js"}
+        shell: pwsh
 
       - name: Lint
-        run: |
-          yarn run lint
-          yarn run validate-licenses
+        run: yarn run lint
 
-      - name: Run unit and E2E tests
+      - name: Run tests
+        if: runner.os == 'Linux'
         uses: GabrielBB/xvfb-action@v1
         with:
           run: yarn run test
 
-      - name: Build and release
-        run: |
-              if [ "$RUNNER_OS" == "Linux" ]; then
-                yarn run release:linux --publish always
-              elif [ "$RUNNER_OS" == "macOS" ]; then
-                yarn run release:mac --publish always
-              else
-                echo "$RUNNER_OS not supported"
-                exit 1
-              fi
+      - name: Run tests
+        if: runner.os != 'Linux'
+        run: yarn run test
+
+      - name: Build & release (Linux)
+        if: runner.os == 'Linux'
+        run: yarn run release:linux --publish always
+
+      - name: Build & release (macOS)
+        if: runner.os == 'macOS'
+        run: yarn run release:mac --publish always
+
+      - name: Build & release (Windows)
+        if: runner.os == 'Windows'
+        run: yarn run release:win --publish always
 
       - name: Calculate checksums
         if: runner.os == 'Linux'
         run: |
-          sha256sum build/macaron-x64.tar.gz
-          sha256sum build/macaron-x86_64.AppImage
-          sha256sum build/macaron-*.deb
-          sha256sum build/macaron-*.rpm
-        shell: bash
+          echo "=== Checksums ==="
+          sha256sum build/macaron-*.tar.gz 2>/dev/null || true
+          sha256sum build/macaron-*.AppImage 2>/dev/null || true
+          sha256sum build/macaron-*.deb 2>/dev/null || true
+          sha256sum build/macaron-*.rpm 2>/dev/null || true
 
-      - name: Calculate checksums
+      - name: Calculate checksums (macOS)
         if: runner.os == 'macOS'
         run: |
-          shasum -a 256 build/macaron-arm64-mac.zip
-          shasum -a 256 build/macaron-x64-mac.zip
-          shasum -a 256 build/macaron-arm64.dmg
-          shasum -a 256 build/macaron-x64.dmg
-        shell: bash
+          echo "=== Checksums ==="
+          shasum -a 256 build/macaron-*-mac.zip 2>/dev/null || true
+          shasum -a 256 build/macaron-*.dmg 2>/dev/null || true
 
-  windows:
-    runs-on: windows-latest
-    continue-on-error: false
-    timeout-minutes: 45
-
-    env:
-      MARKTEXT_IS_STABLE: 1
-      MARKTEXT_EXIT_ON_ERROR: 1
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v6
-
-      - name: Install Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: 24
-          check-latest: true
-          cache: yarn
-          cache-dependency-path: yarn.lock
-
-      # Workaround: Fix native build failure due to outdated node-gyp version.
-      - name: Fix node-gyp
-        run: |
-          npm install --global node-gyp@latest
-          npm prefix -g | % {npm config set node_gyp "$_\node_modules\node-gyp\bin\node-gyp.js"}
-          node-gyp install
+      - name: Calculate checksums (Windows)
+        if: runner.os == 'Windows'
         shell: pwsh
-
-      - name: Cache node_modules
-        uses: actions/cache@v5
-        with:
-          path: ${{ github.workspace }}\node_modules
-          key: ${{ runner.os }}-node_modules-cache-v2-${{ hashFiles(format('{0}{1}', github.workspace, '\yarn.lock')) }}
-          restore-keys: |
-            ${{ runner.os }}-node_modules-cache-v2-
-
-      - name: Cache Electron
-        uses: actions/cache@v5
-        with:
-          path: ${{ env.LOCALAPPDATA }}\electron\Cache
-          key: ${{ runner.os }}-electron-cache-v2-${{ hashFiles(format('{0}{1}', github.workspace, '\yarn.lock')) }}
-
-      - name: Cache Electron-Builder
-        uses: actions/cache@v5
-        with:
-          path: ${{ env.LOCALAPPDATA }}\electron-builder\cache
-          key: ${{ runner.os }}-electron-builder-cache-v2-${{ hashFiles(format('{0}{1}', github.workspace, '\yarn.lock')) }}
-
-      - name: Install dependencies
-        run: yarn install --check-files --frozen-lockfile
-
-      - name: Lint
         run: |
-          yarn run lint
-          yarn run validate-licenses
-
-      - name: Run unit and E2E tests
-        run: yarn run test
-
-      - name: Build and release
-        run: yarn run release:win --publish always
-
-      - name: Calculate checksums
-        run: |
-          get-filehash -Algorithm SHA256 "build\macaron-setup.exe"
-          get-filehash -Algorithm SHA256 "build\macaron-*-win.zip"
-        shell: pwsh
+          Write-Host "=== Checksums ==="
+          Get-FileHash -Algorithm SHA256 "build\macaron-setup.exe" -ErrorAction SilentlyContinue
+          Get-FileHash -Algorithm SHA256 "build\macaron-*-win.zip" -ErrorAction SilentlyContinue

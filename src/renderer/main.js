@@ -25,6 +25,15 @@ sourceMapSupport.install({
 global.marktext = {}
 bootstrapRenderer()
 
+// Suppress benign ResizeObserver loop error (browser limitation, not a real error)
+const debounceResizeObserverError = e => {
+  if (e.message === 'ResizeObserver loop completed with undelivered notifications.') {
+    e.stopImmediatePropagation()
+  }
+}
+window.addEventListener('error', debounceResizeObserverError)
+window.addEventListener('unhandledrejection', debounceResizeObserverError)
+
 // -----------------------------------------------
 // Be careful when changing code before this line!
 
