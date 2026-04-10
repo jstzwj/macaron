@@ -34,9 +34,14 @@ class SettingWindow extends BaseWindow {
     // Enable native or custom/frameless window and titlebar
     const { titleBarStyle, theme } = preferences.getAll()
     if (!isOsx) {
-      winOptions.titleBarStyle = 'default'
       if (titleBarStyle === 'native') {
         winOptions.frame = true
+        winOptions.titleBarStyle = 'default'
+      } else {
+        // Use 'hidden' (not 'hiddenInset') and disable overlay to prevent
+        // Windows 11 from drawing native window controls on frameless windows
+        winOptions.titleBarStyle = 'hidden'
+        winOptions.titleBarOverlay = false
       }
     }
 
@@ -51,6 +56,12 @@ class SettingWindow extends BaseWindow {
     win.once('ready-to-show', () => {
       this.lifecycle = WindowLifecycle.READY
       this.emit('window-ready')
+    })
+
+    win.webContents.once('did-finish-load', () => {
+      if (process.env.NODE_ENV === 'development') {
+        win.webContents.openDevTools()
+      }
     })
 
     win.on('focus', () => {

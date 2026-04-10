@@ -1,10 +1,7 @@
 <template>
   <div class="command-palette" v-if="showCommandPalette">
-    <dialog
-      class="command-palette-dialog"
-      open
-      width="500px"
-    >
+    <div class="command-palette-overlay" @click="handleOverlayClick"></div>
+    <div class="command-palette-panel">
       <div class="search-wrapper">
         <div class="input-wrapper">
           <input
@@ -41,7 +38,7 @@
           </ul>
         </transition>
       </div>
-    </dialog>
+    </div>
   </div>
 </template>
 
@@ -117,6 +114,10 @@ export default {
       }
       this.currentCommand = null
     },
+    handleOverlayClick () {
+      this.showCommandPalette = false
+      this.handleDialogClose()
+    },
     handleBeforeInput (event) {
       const { availableCommands, selectedCommandIndex } = this
       switch (event.key) {
@@ -161,13 +162,17 @@ export default {
         case 'Alt':
         case 'Meta':
         case 'Shift':
-        case 'Escape':
         case 'PageDown':
         case 'PageUp':
         case 'ArrowUp':
         case 'ArrowDown':
         case 'ArrowLeft':
         case 'ArrowRight': {
+          break
+        }
+        case 'Escape': {
+          this.showCommandPalette = false
+          this.handleDialogClose()
           break
         }
         case 'Enter': {
@@ -258,26 +263,49 @@ export default {
     display: none;
   }
 
-  .search-wrapper {
+  .command-palette {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10000;
+  }
+
+  .command-palette-overlay {
     position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 500px;
-    height: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, .4);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+
+  .command-palette-panel {
+    position: absolute;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
+    z-index: 10001;
+    width: 500px;
+    margin-top: 8px;
+  }
+
+  .search-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
     padding: 8px;
     margin: 0 auto;
-    margin-top: 8px;
     box-sizing: border-box;
     color: var(--editorColor);
     background: var(--floatBgColor);
     border: 1px solid var(--floatBorderColor);
     border-radius: 4px;
     box-shadow: 0 3px 8px 3px var(--floatShadow);
-    z-index: 10000;
   }
   .input-wrapper {
     display: block;
@@ -362,24 +390,5 @@ export default {
 <style>
   .command-palette .cpt-loading .loader {
     margin-top: 20px;
-  }
-
-  .command-palette-dialog {
-    position: fixed;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 500px;
-    border: none;
-    background: none;
-    box-shadow: none;
-    padding: 0;
-    margin: 0;
-    z-index: 10000;
-    overflow: visible;
-
-    &::backdrop {
-      background: rgba(0, 0, 0, .3);
-    }
   }
 </style>

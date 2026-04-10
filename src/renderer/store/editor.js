@@ -350,6 +350,10 @@ const createSerializableSavePayload = file => {
   return JSON.parse(JSON.stringify({ id, filename, pathname, markdown, options }))
 }
 
+const createSavePayload = (id, filename, pathname, markdown, options, defaultPath) => {
+  return JSON.parse(JSON.stringify({ id, filename, pathname, markdown, options, defaultPath }))
+}
+
 const actions = {
   FORMAT_LINK_CLICK ({ commit }, { data, dirname }) {
     ipcRenderer.send('mt::format-link-click', { data, dirname })
@@ -432,14 +436,7 @@ const actions = {
       const options = getOptionsFromState(state.currentFile)
       const defaultPath = getRootFolderFromState(rootState)
       if (id) {
-        ipcRenderer.send('mt::response-file-save', {
-          id,
-          filename,
-          pathname,
-          markdown,
-          options,
-          defaultPath
-        })
+        ipcRenderer.send('mt::response-file-save', createSavePayload(id, filename, pathname, markdown, options, defaultPath))
       }
     })
   },
@@ -451,14 +448,7 @@ const actions = {
       const options = getOptionsFromState(state.currentFile)
       const defaultPath = getRootFolderFromState(rootState)
       if (id) {
-        ipcRenderer.send('mt::response-file-save-as', {
-          id,
-          filename,
-          pathname,
-          markdown,
-          options,
-          defaultPath
-        })
+        ipcRenderer.send('mt::response-file-save-as', createSavePayload(id, filename, pathname, markdown, options, defaultPath))
       }
     })
   },
@@ -561,14 +551,7 @@ const actions = {
       if (!id) return
       if (!pathname) {
         // if current file is a newly created file, just save it!
-        ipcRenderer.send('mt::response-file-save', {
-          id,
-          filename,
-          pathname,
-          markdown,
-          options,
-          defaultPath
-        })
+        ipcRenderer.send('mt::response-file-save', createSavePayload(id, filename, pathname, markdown, options, defaultPath))
       } else {
         // if not, move to a new(maybe) folder
         ipcRenderer.send('mt::response-file-move-to', { id, pathname })
@@ -589,14 +572,7 @@ const actions = {
     if (!id) return
     if (!pathname) {
       // if current file is a newly created file, just save it!
-      ipcRenderer.send('mt::response-file-save', {
-        id,
-        filename,
-        pathname,
-        markdown,
-        options,
-        defaultPath
-      })
+      ipcRenderer.send('mt::response-file-save', createSavePayload(id, filename, pathname, markdown, options, defaultPath))
     } else {
       bus.$emit('rename')
     }
@@ -1018,14 +994,7 @@ const actions = {
         const defaultPath = getRootFolderFromState(rootState)
 
         // Tab changed status is set after the file is saved.
-        ipcRenderer.send('mt::response-file-save', {
-          id,
-          filename,
-          pathname,
-          markdown,
-          options,
-          defaultPath
-        })
+        ipcRenderer.send('mt::response-file-save', createSavePayload(id, filename, pathname, markdown, options, defaultPath))
       }
     }, autoSaveDelay)
     autoSaveTimers.set(id, timer)

@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import TitleBar from '@/prefComponents/common/titlebar'
 import SideBar from '@/prefComponents/sideBar'
 import { loadingPageMixins } from '@/mixins'
@@ -24,7 +23,10 @@ import { isOsx } from '@/util'
 export default {
   data () {
     this.isOsx = isOsx
-    return {}
+    return {
+      _titleBarStyle: '',
+      _theme: ''
+    }
   },
   mixins: [loadingPageMixins],
   components: {
@@ -32,16 +34,15 @@ export default {
     SideBar
   },
   computed: {
-    ...mapState({
-      theme: state => state.preferences.theme,
-      titleBarStyle: state => state.preferences.titleBarStyle
-    }),
+    titleBarStyle () {
+      return this._titleBarStyle
+    },
     showCustomTitleBar () {
-      return this.titleBarStyle === 'custom' && !this.isOsx
+      return this._titleBarStyle === 'custom' && !this.isOsx
     }
   },
   watch: {
-    theme: function (value, oldValue) {
+    _theme: function (value, oldValue) {
       if (value !== oldValue) {
         addThemeStyle(value)
       }
@@ -52,9 +53,24 @@ export default {
       const state = global.marktext.initialState || DEFAULT_STYLE
       addThemeStyle(state.theme)
 
+      // Use store subscriber for reliable Vue 3 reactivity
+      this._titleBarStyle = this.$store.state.preferences.titleBarStyle
+      this._theme = this.$store.state.preferences.theme
+      this._unsub = this.$store.subscribe((mutation, state) => {
+        if (mutation.type === 'SET_USER_PREFERENCE') {
+          this._titleBarStyle = state.preferences.titleBarStyle
+          this._theme = state.preferences.theme
+        }
+      })
+
       this.$store.dispatch('ASK_FOR_USER_PREFERENCE')
       this.hideLoadingPage()
     })
+  },
+  beforeUnmount () {
+    if (this._unsub) {
+      this._unsub()
+    }
   }
 }
 </script>
@@ -112,6 +128,17 @@ export default {
     /* Move the scrollbar below the titlebar */
     margin-top: var(--titleBarHeight);
     padding-top: 0;
+  }
+
+  /* Keep el-icon small in preference items */
+  & .el-icon {
+    width: 12px;
+    height: 12px;
+    font-size: 12px;
+  }
+  & .el-icon svg {
+    width: 1em;
+    height: 1em;
   }
 }
 </style>

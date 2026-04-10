@@ -64,9 +64,14 @@ class EditorWindow extends BaseWindow {
 
     // Enable native or custom/frameless window and titlebar
     if (!isOsx) {
-      winOptions.titleBarStyle = 'default'
       if (titleBarStyle === 'native') {
         winOptions.frame = true
+        winOptions.titleBarStyle = 'default'
+      } else {
+        // Use 'hidden' (not 'hiddenInset') and disable overlay to prevent
+        // Windows 11 from drawing native window controls on frameless windows
+        winOptions.titleBarStyle = 'hidden'
+        winOptions.titleBarOverlay = false
       }
     }
 

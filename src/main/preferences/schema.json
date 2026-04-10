@@ -72,7 +72,16 @@
     "enum": [
       "system",
       "en",
-      "zh-CN"
+      "zh-CN",
+      "zh-TW",
+      "ja",
+      "ko",
+      "fr",
+      "es",
+      "pt",
+      "pl",
+      "tr",
+      "ar"
     ],
     "default": "system"
   },

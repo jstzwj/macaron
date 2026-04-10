@@ -31,13 +31,13 @@
     </section>
     <section class="footer">
       <separator></separator>
-      <el-button size="medium" @click="saveKeybindings">{{ $t('preferences.keybindings.buttonSave') }}</el-button>
-      <el-button size="medium" @click="restoreDefaults">{{ $t('preferences.keybindings.buttonRestoreDefaults') }}</el-button>
+      <el-button size="default" @click="saveKeybindings">{{ $t('preferences.keybindings.buttonSave') }}</el-button>
+      <el-button size="default" @click="restoreDefaults">{{ $t('preferences.keybindings.buttonRestoreDefaults') }}</el-button>
     </section>
     <section v-if="showDebugTools" class="keyboard-debug">
       <separator></separator>
       <div><strong>Debug options:</strong></div>
-      <el-button size="medium" @click="dumpKeyboardInformation">Dump keyboard information</el-button>
+      <el-button size="default" @click="dumpKeyboardInformation">Dump keyboard information</el-button>
     </section>
     <key-input-dialog
       :showWithId="selectedShortcutId"
