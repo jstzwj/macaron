@@ -160,6 +160,14 @@ const actions = {
     ipcRenderer.on('mt::toggle-view-mode-entry', (event, entryName) => {
       commit('TOGGLE_VIEW_MODE', entryName)
       dispatch('DISPATCH_EDITOR_VIEW_STATE', { [entryName]: state[entryName] })
+      // Persist view modes to electron-store so they survive restart
+      if (entryName === 'sourceCode') {
+        dispatch('SET_SINGLE_PREFERENCE', { type: 'sourceCodeModeEnabled', value: state.sourceCode })
+      } else if (entryName === 'typewriter') {
+        dispatch('SET_SINGLE_PREFERENCE', { type: 'typewriterModeEnabled', value: state.typewriter })
+      } else if (entryName === 'focus') {
+        dispatch('SET_SINGLE_PREFERENCE', { type: 'focusModeEnabled', value: state.focus })
+      }
     })
   },
 
@@ -168,6 +176,14 @@ const actions = {
     bus.$on('view:toggle-view-entry', entryName => {
       commit('TOGGLE_VIEW_MODE', entryName)
       dispatch('DISPATCH_EDITOR_VIEW_STATE', { [entryName]: state[entryName] })
+      // Persist sourceCodeMode to electron-store so it survives restart
+      if (entryName === 'sourceCode') {
+        dispatch('SET_SINGLE_PREFERENCE', { type: 'sourceCodeModeEnabled', value: state.sourceCode })
+      } else if (entryName === 'typewriter') {
+        dispatch('SET_SINGLE_PREFERENCE', { type: 'typewriterModeEnabled', value: state.typewriter })
+      } else if (entryName === 'focus') {
+        dispatch('SET_SINGLE_PREFERENCE', { type: 'focusModeEnabled', value: state.focus })
+      }
     })
   },
 

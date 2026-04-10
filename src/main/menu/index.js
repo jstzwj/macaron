@@ -144,6 +144,8 @@ class AppMenu {
    */
   addEditorMenu (window, options = {}) {
     const isSourceMode = !!options.sourceCodeModeEnabled
+    const isTypewriterMode = !!options.typewriterModeEnabled
+    const isFocusMode = !!options.focusModeEnabled
     const { windowMenus } = this
     windowMenus.set(window.id, this._buildEditorMenu())
 
@@ -154,11 +156,15 @@ class AppMenu {
       sourceCodeModeMenuItem.checked = isSourceMode
     }
 
-    if (isSourceMode) {
-      const typewriterModeMenuItem = menu.getMenuItemById('typewriterModeMenuItem')
-      const focusModeMenuItem = menu.getMenuItemById('focusModeMenuItem')
-      if (typewriterModeMenuItem) typewriterModeMenuItem.enabled = false
-      if (focusModeMenuItem) focusModeMenuItem.enabled = false
+    const typewriterModeMenuItem = menu.getMenuItemById('typewriterModeMenuItem')
+    const focusModeMenuItem = menu.getMenuItemById('focusModeMenuItem')
+    if (typewriterModeMenuItem) {
+      typewriterModeMenuItem.checked = isTypewriterMode
+      if (isSourceMode) typewriterModeMenuItem.enabled = false
+    }
+    if (focusModeMenuItem) {
+      focusModeMenuItem.checked = isFocusMode
+      if (isSourceMode) focusModeMenuItem.enabled = false
     }
 
     const { _keybindings } = this

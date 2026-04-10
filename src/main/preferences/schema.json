@@ -387,6 +387,16 @@
     "type": "boolean",
     "default": false
   },
+  "typewriterModeEnabled": {
+    "description": "View--Whether the typewriter mode is enabled by default.",
+    "type": "boolean",
+    "default": false
+  },
+  "focusModeEnabled": {
+    "description": "View--Whether the focus mode is enabled by default.",
+    "type": "boolean",
+    "default": false
+  },
   "searchExclusions": {
     "description": "Searcher--List of glob patterns to exclude from search.",
     "type": "array",

@@ -58,6 +58,8 @@ class EditorWindow extends BaseWindow {
       sideBarVisibility,
       tabBarVisibility,
       sourceCodeModeEnabled,
+      typewriterModeEnabled,
+      focusModeEnabled,
       spellcheckerEnabled,
       spellcheckerLanguage
     } = preferences.getAll()
@@ -92,7 +94,7 @@ class EditorWindow extends BaseWindow {
     }
 
     // Create a menu for the current window
-    appMenu.addEditorMenu(win, { sourceCodeModeEnabled })
+    appMenu.addEditorMenu(win, { sourceCodeModeEnabled, typewriterModeEnabled, focusModeEnabled })
 
     win.webContents.on('context-menu', (event, params) => {
       showEditorContextMenu(win, event, params, preferences.getItem('spellcheckerEnabled'))
@@ -119,7 +121,9 @@ class EditorWindow extends BaseWindow {
         lineEnding,
         sideBarVisibility,
         tabBarVisibility,
-        sourceCodeModeEnabled
+        sourceCodeModeEnabled,
+        typewriterModeEnabled,
+        focusModeEnabled
       }
 
       win.webContents.send('mt::bootstrap-editor', bootstrapData)
@@ -438,7 +442,7 @@ class EditorWindow extends BaseWindow {
     browserWindow.webContents.once('did-finish-load', () => {
       this.lifecycle = WindowLifecycle.READY
       const { preferences } = this._accessor
-      const { sideBarVisibility, tabBarVisibility, sourceCodeModeEnabled } = preferences.getAll()
+      const { sideBarVisibility, tabBarVisibility, sourceCodeModeEnabled, typewriterModeEnabled, focusModeEnabled } = preferences.getAll()
       const lineEnding = preferences.getPreferredEol()
       browserWindow.webContents.send('mt::bootstrap-editor', {
         addBlankTab: true,
@@ -446,7 +450,9 @@ class EditorWindow extends BaseWindow {
         lineEnding,
         sideBarVisibility,
         tabBarVisibility,
-        sourceCodeModeEnabled
+        sourceCodeModeEnabled,
+        typewriterModeEnabled,
+        focusModeEnabled
       })
     })
 

@@ -618,7 +618,9 @@ const actions = {
         lineEnding,
         sideBarVisibility,
         tabBarVisibility,
-        sourceCodeModeEnabled
+        sourceCodeModeEnabled,
+        typewriterModeEnabled,
+        focusModeEnabled
       } = config
 
       dispatch('SEND_INITIALIZED')
@@ -633,6 +635,14 @@ const actions = {
       commit('SET_MODE', {
         type: 'sourceCode',
         checked: !!sourceCodeModeEnabled
+      })
+      commit('SET_MODE', {
+        type: 'typewriter',
+        checked: !!typewriterModeEnabled
+      })
+      commit('SET_MODE', {
+        type: 'focus',
+        checked: !!focusModeEnabled
       })
 
       if (addBlankTab) {

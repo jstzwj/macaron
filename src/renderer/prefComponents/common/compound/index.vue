@@ -3,7 +3,11 @@ import { h } from 'vue'
 
 export default {
   props: {
-    notes: String
+    notes: String,
+    disable: {
+      type: Boolean,
+      default: false
+    }
   },
   render () {
     const head = this.$slots.head ? this.$slots.head() : []
@@ -12,7 +16,7 @@ export default {
       ? h('div', { class: 'notes' }, this.notes)
       : null
 
-    return h('section', { class: 'pref-compound-item' }, [
+    return h('section', { class: { 'pref-compound-item': true, disabled: this.disable } }, [
       h('div', { class: 'pref-compound-head' }, head),
       h('div', { class: 'pref-compound-body' }, children),
       notes
@@ -58,5 +62,10 @@ export default {
       font-style: italic;
       font-size: 12px;
     }
+  }
+
+  .pref-compound-item.disabled {
+    opacity: 0.5;
+    pointer-events: none;
   }
 </style>

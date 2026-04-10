@@ -1,5 +1,5 @@
 <template>
-  <section class="pref-select-item" :class="{'ag-underdevelop': disable}">
+  <section class="pref-select-item" :class="{'ag-underdevelop': disable, disabled: disable}">
     <div class="description" v-if="description">
       <span>{{description}}:</span>
       <el-icon
@@ -103,5 +103,9 @@ export default {
   & i:hover {
     color: var(--themeColor);
   }
+}
+.pref-select-item.disabled {
+  opacity: 0.5;
+  pointer-events: none;
 }
 </style>

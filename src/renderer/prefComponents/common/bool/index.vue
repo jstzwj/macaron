@@ -1,5 +1,5 @@
 <template>
-  <section class="pref-switch-item" :class="{'ag-underdevelop': disable}">
+  <section class="pref-switch-item" :class="{'ag-underdevelop': disable, disabled: disable}">
     <div class="description">
       <span>{{description}}:</span>
       <el-icon v-if="more"
@@ -121,6 +121,11 @@ export default {
   .switch.disabled {
     cursor: not-allowed;
     opacity: 0.6;
+  }
+
+  .pref-switch-item.disabled {
+    opacity: 0.5;
+    pointer-events: none;
   }
 
   .switch input {

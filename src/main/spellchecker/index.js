@@ -25,16 +25,6 @@ export const removeFromDictionary = (win, word) => {
 }
 
 /**
- * Returns a list of all words in the custom dictionary.
- *
- * @param {BrowserWindow} win The browser window.
- * @returns {Promise<string[]>} List of custom dictionary words.
- */
-export const getCustomDictionaryWords = async win => {
-  return win.webContents.session.listWordsInSpellCheckerDictionary()
-}
-
-/**
  * Sets whether to enable the builtin spell checker.
  *
  * @param {BrowserWindow} win The browser window.
@@ -94,9 +84,5 @@ export default () => {
       return false
     }
     return true
-  })
-  ipcMain.handle('mt::spellchecker-get-custom-dictionary-words', async e => {
-    const win = BrowserWindow.fromWebContents(e.sender)
-    return getCustomDictionaryWords(win)
   })
 }
