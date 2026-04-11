@@ -1,7 +1,7 @@
 <template>
   <div class="cpt-loading">
     <div class="loader">
-      <span v-for="i in 3" :key="i" :style="dotSize"></span>
+      <div class="spinner-arc" :style="spinnerSize"></div>
     </div>
   </div>
 </template>
@@ -11,12 +11,12 @@ export default {
   props: {
     size: {
       type: Number,
-      default: 14
+      default: 22
     }
   },
 
   computed: {
-    dotSize () {
+    spinnerSize () {
       const size = `${this.size}px`
       return {
         width: size,
@@ -37,57 +37,24 @@ export default {
     width: 100%;
     height: 100%;
   }
+
   .loader {
     width: 100%;
-    text-align: center;
+    display: flex;
+    justify-content: center;
   }
 
-  .loader span {
-      position: absolute;
-      display: inline-block;
-      border-radius: 50%;
-      animation: 3s infinite linear;
-  }
-  .loader span:nth-child(1) {
-    background: var(--themeColor);
-    animation: kiri 1.2s infinite linear;
-  }
-  .loader span:nth-child(2) {
-    z-index: 100;
-    background: var(--highlightColor);
-  }
-  .loader span:nth-child(3) {
-    background: var(--selectionColor);
-    animation: kanan 1.2s infinite linear;
+  .spinner-arc {
+    border-radius: 50%;
+    border: 2.5px solid transparent;
+    border-top-color: var(--themeColor);
+    border-right-color: var(--themeColor);
+    opacity: 0.3;
+    animation: arc-rotate 0.8s linear infinite;
   }
 
-  @keyframes kanan {
-    0% {
-      transform: translateX(20px);
-    }
-
-    50% {
-      transform: translateX(-20px);
-    }
-
-    100% {
-      z-index: 200;
-
-      transform: translateX(20px);
-    }
-  }
-
-  @keyframes kiri {
-    0% {
-      z-index: 200;
-
-      transform: translateX(-20px);
-    }
-    50% {
-      transform: translateX(20px);
-    }
-    100% {
-      transform: translateX(-20px);
-    }
+  @keyframes arc-rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
 </style>

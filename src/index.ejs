@@ -20,45 +20,28 @@
       }
 
       .spinner {
-        width: 40px;
-        height: 40px;
+        width: 36px;
+        height: 36px;
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translateX(-50%) translateY(-50%);
-      }
-
-      .double-bounce1, .double-bounce2 {
-        width: 100%;
-        height: 100%;
         border-radius: 50%;
-        opacity: 0.4;
-        position: absolute;
-        top: 0;
-        left: 0;
-
-        -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
-        animation: sk-bounce 2.0s infinite ease-in-out;
+        border: 3px solid transparent;
+        border-top-color: var(--spinner-color, rgba(33, 181, 111, 1));
+        border-right-color: var(--spinner-color, rgba(33, 181, 111, 0.3));
+        -webkit-animation: spinner-rotate 0.8s linear infinite;
+        animation: spinner-rotate 0.8s linear infinite;
       }
 
-      .double-bounce2 {
-        -webkit-animation-delay: -1.0s;
-        animation-delay: -1.0s;
+      @-webkit-keyframes spinner-rotate {
+        0% { -webkit-transform: translateX(-50%) translateY(-50%) rotate(0deg); }
+        100% { -webkit-transform: translateX(-50%) translateY(-50%) rotate(360deg); }
       }
 
-      @-webkit-keyframes sk-bounce {
-        0%, 100% { -webkit-transform: scale(0.0) }
-        50% { -webkit-transform: scale(1.0) }
-      }
-
-      @keyframes sk-bounce {
-        0%, 100% {
-          transform: scale(0.0);
-          -webkit-transform: scale(0.0);
-        } 50% {
-          transform: scale(1.0);
-          -webkit-transform: scale(1.0);
-        }
+      @keyframes spinner-rotate {
+        0% { transform: translateX(-50%) translateY(-50%) rotate(0deg); }
+        100% { transform: translateX(-50%) translateY(-50%) rotate(360deg); }
       }
     </style>
     <% if (htmlWebpackPlugin.options.nodeModules) { %>
@@ -74,10 +57,7 @@
 
     <!-- Loading page on application startup -->
     <div id="loading-page">
-      <div class="spinner">
-        <div class="double-bounce1 dot"></div>
-        <div class="double-bounce2 dot"></div>
-      </div>
+      <div class="spinner dot"></div>
     </div>
 
     <script>
@@ -91,10 +71,13 @@
         'ulysses': 'rgb(12, 139, 186)'
       }
 
-      const dots = document.querySelectorAll('.dot')
-      Array.from(dots).forEach(dot => {
-        dot.style.background = THEMES_COLOR[params.get('theme')] || 'rgba(33, 181, 111, 1)'
-      })
+      const color = THEMES_COLOR[params.get('theme')] || 'rgba(33, 181, 111, 1)'
+      const spinner = document.querySelector('.dot')
+      if (spinner) {
+        spinner.style.setProperty('--spinner-color', color)
+        spinner.style.borderTopColor = color
+        spinner.style.borderRightColor = color.replace(/[\d.]+\)$/, '0.3)')
+      }
     </script>
 
     <!-- Set `__static` path to static files in production -->
