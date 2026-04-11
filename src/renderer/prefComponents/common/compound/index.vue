@@ -65,7 +65,9 @@ export default {
   }
 
   .pref-compound-item.disabled {
-    opacity: 0.5;
-    pointer-events: none;
+    & .pref-compound-body {
+      opacity: 0.5;
+      pointer-events: none;
+    }
   }
 </style>
