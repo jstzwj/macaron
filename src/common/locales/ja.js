@@ -110,6 +110,9 @@ export default {
   commandPalette: {
     placeholder: 'コマンドを入力して実行'
   },
+  sideBar: {
+    tableOfContents: '目次'
+  },
   exportDialog: {
     title: 'エクスポートオプション',
     overviewEyebrow: 'エクスポート設定',
@@ -280,7 +283,8 @@ export default {
       flowChart: 'フローチャート',
       sequenceDiagram: 'シーケンス図',
       plantuml: 'PlantUML 図',
-      mermaid: 'Mermaid 図'
+      mermaid: 'Mermaid 図',
+      typeToInsert: "{'@'} を入力して挿入"
     }
   },
   fileOperation: {
@@ -359,6 +363,19 @@ export default {
       title: '画像',
       insertActionDesc: 'ローカルフォルダまたはクリップボードから画像が挿入された後のデフォルトのアクション',
       clipboardHint: 'クリップボード処理は macOS と Windows でのみ完全にサポートされています。',
+      actionUpload: '選択したアップローダーを使用して画像をクラウドにアップロード（下で設定が必要）',
+      actionFolder: '指定の相対アセットまたはグローバルローカルフォルダに画像をコピー',
+      actionPath: '元の場所を保持',
+      folder: {
+        globalOrRelative: 'グローバルまたは相対画像フォルダ',
+        globalFolder: 'グローバル画像フォルダ',
+        open: '開く...',
+        showInFolder: 'フォルダで表示',
+        preferRelative: '相対アセットフォルダを優先',
+        relativeName: '相対画像フォルダ名',
+        footnotePrefix: '上のテキストボックスに ',
+        footnoteSuffix: ' を含めると、ドキュメントファイル名が自動的に挿入されます。'
+      },
       uploader: {
         title: 'アップローダー',
         currentUploader: '現在の画像アップローダーは {name} です。',

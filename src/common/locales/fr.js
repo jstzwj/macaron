@@ -110,6 +110,9 @@ export default {
   commandPalette: {
     placeholder: 'Tapez une commande à exécuter'
   },
+  sideBar: {
+    tableOfContents: 'Table des matières'
+  },
   exportDialog: {
     title: 'Options d\'exportation',
     overviewEyebrow: 'Paramètres d\'exportation',
@@ -280,7 +283,8 @@ export default {
       flowChart: 'Organigramme',
       sequenceDiagram: 'Diagramme de séquence',
       plantuml: 'Diagramme PlantUML',
-      mermaid: 'Mermaid'
+      mermaid: 'Mermaid',
+      typeToInsert: "Tapez {'@'} pour insérer"
     }
   },
   fileOperation: {
@@ -359,6 +363,19 @@ export default {
       title: 'Image',
       insertActionDesc: 'Action par défaut après l\'insertion d\'une image depuis un dossier local ou le presse-papiers',
       clipboardHint: 'La gestion du presse-papiers n\'est entièrement supportée que sur macOS et Windows.',
+      actionUpload: 'Télécharger l\'image vers le cloud avec l\'uploader sélectionné (doit être configuré ci-dessous)',
+      actionFolder: 'Copier l\'image vers le répertoire d\'assets relatif ou le dossier local global désigné',
+      actionPath: 'Conserver l\'emplacement d\'origine',
+      folder: {
+        globalOrRelative: 'Dossier d\'images global ou relatif',
+        globalFolder: 'Dossier d\'images global',
+        open: 'Ouvrir...',
+        showInFolder: 'Afficher dans le dossier',
+        preferRelative: 'Préférer le dossier d\'assets relatif',
+        relativeName: 'Nom du dossier d\'images relatif',
+        footnotePrefix: 'Inclure ',
+        footnoteSuffix: ' dans la zone de texte ci-dessus pour insérer automatiquement le nom du fichier document.'
+      },
       uploader: {
         title: 'Service de téléchargement',
         currentUploader: 'Le service de téléchargement d\'images actuel est {name}.',

@@ -110,6 +110,9 @@ export default {
   commandPalette: {
     placeholder: '실행할 명령을 입력하세요'
   },
+  sideBar: {
+    tableOfContents: '목차'
+  },
   exportDialog: {
     title: '내보내기 옵션',
     overviewEyebrow: '내보내기 설정',
@@ -280,7 +283,8 @@ export default {
       flowChart: '순서도',
       sequenceDiagram: '시퀀스 다이어그램',
       plantuml: 'PlantUML 다이어그램',
-      mermaid: 'Mermaid 다이어그램'
+      mermaid: 'Mermaid 다이어그램',
+      typeToInsert: "{'@'} 입력하여 삽입"
     }
   },
   fileOperation: {
@@ -359,6 +363,19 @@ export default {
       title: '이미지',
       insertActionDesc: '로컬 폴더 또는 클립보드에서 이미지를 삽입한 후의 기본 동작',
       clipboardHint: '클립보드 처리는 macOS와 Windows에서만 완전히 지원됩니다.',
+      actionUpload: '선택한 업로더를 사용하여 클라우드에 이미지 업로드 (아래에서 설정 필요)',
+      actionFolder: '지정된 상대 에셋 또는 전역 로컬 폴더에 이미지 복사',
+      actionPath: '원래 위치 유지',
+      folder: {
+        globalOrRelative: '전역 또는 상대 이미지 폴더',
+        globalFolder: '전역 이미지 폴더',
+        open: '열기...',
+        showInFolder: '폴더에서 보기',
+        preferRelative: '상대 에셋 폴더 우선',
+        relativeName: '상대 이미지 폴더 이름',
+        footnotePrefix: '위의 텍스트 상자에 ',
+        footnoteSuffix: ' 을(를) 포함하면 문서 파일 이름이 자동으로 삽입됩니다.'
+      },
       uploader: {
         title: '업로더',
         currentUploader: '현재 이미지 업로더는 {name}입니다.',

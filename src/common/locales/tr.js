@@ -110,6 +110,9 @@ export default {
   commandPalette: {
     placeholder: 'Çalıştırmak için bir komut yazın'
   },
+  sideBar: {
+    tableOfContents: 'İçindekiler'
+  },
   exportDialog: {
     title: 'Dışa Aktarma Seçenekleri',
     overviewEyebrow: 'Dışa aktarma ayarları',
@@ -280,7 +283,8 @@ export default {
       flowChart: 'Akış Şeması',
       sequenceDiagram: 'Sıralama Diyagramı',
       plantuml: 'PlantUML Diyagramı',
-      mermaid: 'Mermaid'
+      mermaid: 'Mermaid',
+      typeToInsert: "Eklemek için {'@'} yazın"
     }
   },
   fileOperation: {
@@ -359,6 +363,19 @@ export default {
       title: 'Resim',
       insertActionDesc: 'Yerel klasörden veya panodan resim eklendikten sonraki varsayılan eylem',
       clipboardHint: 'Pano işleme yalnızca macOS ve Windows\'ta tam olarak desteklenmektedir.',
+      actionUpload: 'Seçilen yükleyiciyi kullanarak görüntüyü buluta yükle (aşağıda yapılandırılmalıdır)',
+      actionFolder: 'Görüntüyü belirlenen göreli assets dizinine veya genel yerel klasöre kopyala',
+      actionPath: 'Orijinal konumu koru',
+      folder: {
+        globalOrRelative: 'Genel veya göreli resim klasörü',
+        globalFolder: 'Genel resim klasörü',
+        open: 'Aç...',
+        showInFolder: 'Klasörde Göster',
+        preferRelative: 'Göreli assets klasörünü tercih et',
+        relativeName: 'Göreli resim klasörü adı',
+        footnotePrefix: 'Yukarıdaki metin kutusuna ',
+        footnoteSuffix: ' ekleyerek belge dosya adını otomatik olarak ekleyin.'
+      },
       uploader: {
         title: 'Yükleyici',
         currentUploader: 'Mevcut resim yükleyici {name}.',

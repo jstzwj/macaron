@@ -516,6 +516,9 @@ export default {
       setFrontMenuTranslator(translate)
       setQuickInsertTranslator(translate)
 
+      // Set CSS variable for quick insert hint text (i18n)
+      document.documentElement.style.setProperty('--ag-quick-insert-hint', `'${translate('editor.quickInsert.typeToInsert')}'`)
+
       // Load non-critical Muya UI plugins lazily after editor is ready
       const loadMuyaPlugins = async () => {
         const [

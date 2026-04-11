@@ -110,6 +110,9 @@ export default {
   commandPalette: {
     placeholder: 'Escriba un comando para ejecutar'
   },
+  sideBar: {
+    tableOfContents: 'Tabla de contenidos'
+  },
   exportDialog: {
     title: 'Opciones de exportación',
     overviewEyebrow: 'Configuración de exportación',
@@ -280,7 +283,8 @@ export default {
       flowChart: 'Diagrama de flujo',
       sequenceDiagram: 'Diagrama de secuencia',
       plantuml: 'Diagrama PlantUML',
-      mermaid: 'Mermaid'
+      mermaid: 'Mermaid',
+      typeToInsert: "Escriba {'@'} para insertar"
     }
   },
   fileOperation: {
@@ -359,6 +363,19 @@ export default {
       title: 'Imagen',
       insertActionDesc: 'Acción predeterminada después de insertar una imagen desde carpeta local o portapapeles',
       clipboardHint: 'El manejo del portapapeles solo es totalmente compatible en macOS y Windows.',
+      actionUpload: 'Subir imagen a la nube usando el cargador seleccionado (debe configurarse abajo)',
+      actionFolder: 'Copiar imagen al directorio de assets relativo o carpeta local global designada',
+      actionPath: 'Mantener ubicación original',
+      folder: {
+        globalOrRelative: 'Carpeta de imágenes global o relativa',
+        globalFolder: 'Carpeta de imágenes global',
+        open: 'Abrir...',
+        showInFolder: 'Mostrar en carpeta',
+        preferRelative: 'Preferir carpeta de assets relativa',
+        relativeName: 'Nombre de carpeta de imágenes relativa',
+        footnotePrefix: 'Incluya ',
+        footnoteSuffix: ' en el cuadro de texto de arriba para insertar automáticamente el nombre del archivo del documento.'
+      },
       uploader: {
         title: 'Cargador',
         currentUploader: 'El cargador de imágenes actual es {name}.',

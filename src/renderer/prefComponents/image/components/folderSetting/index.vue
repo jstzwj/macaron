@@ -1,27 +1,27 @@
 <template>
   <section class="image-folder">
-    <h5>Global or relative image folder</h5>
-    <text-box description="Global image folder" :input="imageFolderPath"
+    <h5>{{ $t('preferences.image.folder.globalOrRelative') }}</h5>
+    <text-box :description="$t('preferences.image.folder.globalFolder')" :input="imageFolderPath"
       :regexValidator="/^(?:$|([a-zA-Z]:)?[\/\\].*$)/" :defaultValue="folderPathPlaceholder"
       :onChange="value => modifyImageFolderPath(value)"></text-box>
     <div>
-      <el-button size="mini" @click="modifyImageFolderPath(undefined)">Open...</el-button>
-      <el-button size="mini" @click="openImageFolder">Show in Folder</el-button>
+      <el-button size="mini" @click="modifyImageFolderPath(undefined)">{{ $t('preferences.image.folder.open') }}</el-button>
+      <el-button size="mini" @click="openImageFolder">{{ $t('preferences.image.folder.showInFolder') }}</el-button>
     </div>
     <compound>
       <template #head>
-        <bool description="Prefer relative assets folder"
+        <bool :description="$t('preferences.image.folder.preferRelative')"
           more="https://github.com/jstzwj/macaron/blob/develop/docs/IMAGES.md"
           :bool="imagePreferRelativeDirectory"
           :onChange="value => onSelectChange('imagePreferRelativeDirectory', value)"></bool>
       </template>
       <template #children>
-        <text-box description="Relative image folder name" :input="imageRelativeDirectoryName"
+        <text-box :description="$t('preferences.image.folder.relativeName')" :input="imageRelativeDirectoryName"
           :regexValidator="/^(?:$|(?![a-zA-Z]:)[^\/\\].*$)/"
           :defaultValue="relativeDirectoryNamePlaceholder"
           :onChange="value => onSelectChange('imageRelativeDirectoryName', value)"></text-box>
         <div class="footnote">
-          Include <code>${filename}</code> in the text-box above to automatically insert the document file name.
+          {{ $t('preferences.image.folder.footnotePrefix') }}<code>${filename}</code>{{ $t('preferences.image.folder.footnoteSuffix') }}
         </div>
       </template>
     </compound>

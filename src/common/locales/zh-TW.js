@@ -110,6 +110,9 @@ export default {
   commandPalette: {
     placeholder: '輸入命令以執行'
   },
+  sideBar: {
+    tableOfContents: '目錄'
+  },
   exportDialog: {
     title: '匯出選項',
     overviewEyebrow: '匯出設定',
@@ -280,7 +283,8 @@ export default {
       flowChart: '流程圖',
       sequenceDiagram: '時序圖',
       plantuml: 'PlantUML 圖',
-      mermaid: 'Mermaid 圖'
+      mermaid: 'Mermaid 圖',
+      typeToInsert: "輸入 {'@'} 插入"
     }
   },
   fileOperation: {
@@ -359,6 +363,19 @@ export default {
       title: '圖片',
       insertActionDesc: '從本機資料夾或剪貼簿插入圖片後的預設操作',
       clipboardHint: '剪貼簿處理僅在 macOS 和 Windows 上完全支援。',
+      actionUpload: '使用選定的上傳器上傳圖片到雲端（需在下方設定）',
+      actionFolder: '將圖片複製到指定的相對資源目錄或全域本機資料夾',
+      actionPath: '保留原始位置',
+      folder: {
+        globalOrRelative: '全域或相對圖片資料夾',
+        globalFolder: '全域圖片資料夾',
+        open: '開啟...',
+        showInFolder: '在資料夾中顯示',
+        preferRelative: '優先使用相對資源資料夾',
+        relativeName: '相對圖片資料夾名稱',
+        footnotePrefix: '在上方的文字方塊中包含 ',
+        footnoteSuffix: ' 可自動插入文件檔案名稱。'
+      },
       uploader: {
         title: '上傳器',
         currentUploader: '目前圖片上傳器是 {name}。',

@@ -99,6 +99,9 @@ export default {
   commandPalette: {
     placeholder: '输入命令以执行'
   },
+  sideBar: {
+    tableOfContents: '目录'
+  },
   statusBar: {
     toggleSidebar: '切换侧边栏',
     sourceCodeMode: '源码模式',
@@ -281,7 +284,8 @@ export default {
       flowChart: '流程图',
       sequenceDiagram: '时序图',
       plantuml: 'PlantUML 图',
-      mermaid: 'Mermaid 图'
+      mermaid: 'Mermaid 图',
+      typeToInsert: "输入 {'@'} 插入"
     }
   },
   fileOperation: {
@@ -360,6 +364,19 @@ export default {
       title: '图片',
       insertActionDesc: '从本地文件夹或剪贴板插入图片后的默认操作',
       clipboardHint: '剪贴板处理仅在 macOS 和 Windows 上完全支持。',
+      actionUpload: '使用选定的上传器上传图片到云端（需在下方配置）',
+      actionFolder: '将图片复制到指定的相对资源目录或全局本地文件夹',
+      actionPath: '保留原始位置',
+      folder: {
+        globalOrRelative: '全局或相对图片文件夹',
+        globalFolder: '全局图片文件夹',
+        open: '打开...',
+        showInFolder: '在文件夹中显示',
+        preferRelative: '优先使用相对资源文件夹',
+        relativeName: '相对图片文件夹名称',
+        footnotePrefix: '在上方的文本框中包含 ',
+        footnoteSuffix: ' 可自动插入文档文件名。'
+      },
       uploader: {
         title: '上传器',
         currentUploader: '当前图片上传器是 {name}。',

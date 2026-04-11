@@ -110,6 +110,9 @@ export default {
   commandPalette: {
     placeholder: 'Wpisz polecenie do wykonania'
   },
+  sideBar: {
+    tableOfContents: 'Spis treści'
+  },
   exportDialog: {
     title: 'Opcje eksportu',
     overviewEyebrow: 'Ustawienia eksportu',
@@ -280,7 +283,8 @@ export default {
       flowChart: 'Schemat blokowy',
       sequenceDiagram: 'Diagram sekwencji',
       plantuml: 'Diagram PlantUML',
-      mermaid: 'Mermaid'
+      mermaid: 'Mermaid',
+      typeToInsert: "Wpisz {'@'} aby wstawić"
     }
   },
   fileOperation: {
@@ -359,6 +363,19 @@ export default {
       title: 'Obraz',
       insertActionDesc: 'Domyślna czynność po wstawieniu obrazu z lokalnego folderu lub schowka',
       clipboardHint: 'Obsługa schowka jest w pełni wspierana tylko na macOS i Windows.',
+      actionUpload: 'Prześlij obraz do chmury za pomocą wybranego programu przesyłającego (należy skonfigurować poniżej)',
+      actionFolder: 'Kopiuj obraz do wyznaczonego względnego katalogu assets lub globalnego folderu lokalnego',
+      actionPath: 'Zachowaj oryginalną lokalizację',
+      folder: {
+        globalOrRelative: 'Globalny lub względny folder obrazów',
+        globalFolder: 'Globalny folder obrazów',
+        open: 'Otwórz...',
+        showInFolder: 'Pokaż w folderze',
+        preferRelative: 'Preferuj względny folder assets',
+        relativeName: 'Nazwa względnego folderu obrazów',
+        footnotePrefix: 'Uwzględnij ',
+        footnoteSuffix: ' w powyższym polu tekstowym, aby automatycznie wstawić nazwę pliku dokumentu.'
+      },
       uploader: {
         title: 'Program przesyłający',
         currentUploader: 'Bieżący program przesyłający obrazy to {name}.',

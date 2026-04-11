@@ -110,6 +110,9 @@ export default {
   commandPalette: {
     placeholder: 'اكتب أمراً للتنفيذ'
   },
+  sideBar: {
+    tableOfContents: 'جدول المحتويات'
+  },
   exportDialog: {
     title: 'خيارات التصدير',
     overviewEyebrow: 'إعدادات التصدير',
@@ -280,7 +283,8 @@ export default {
       flowChart: 'مخطط انسيابي',
       sequenceDiagram: 'مخطط تسلسلي',
       plantuml: 'مخطط PlantUML',
-      mermaid: 'Mermaid'
+      mermaid: 'Mermaid',
+      typeToInsert: "اكتب {'@'} للإدراج"
     }
   },
   fileOperation: {
@@ -359,6 +363,19 @@ export default {
       title: 'الصورة',
       insertActionDesc: 'الإجراء الافتراضي بعد إدراج صورة من مجلد محلي أو الحافظة',
       clipboardHint: 'التعامل مع الحافظة مدعوم بالكامل فقط على macOS و Windows.',
+      actionUpload: 'رفع الصورة إلى السحابة باستخدام الرافع المحدد (يجب تكوينه أدناه)',
+      actionFolder: 'نسخ الصورة إلى دليل الأصول النسبي المعين أو المجلد المحلي العام',
+      actionPath: 'الاحتفاظ بالموقع الأصلي',
+      folder: {
+        globalOrRelative: 'مجلد الصور العام أو النسبي',
+        globalFolder: 'مجلد الصور العام',
+        open: 'فتح...',
+        showInFolder: 'إظهار في المجلد',
+        preferRelative: 'تفضيل مجلد الأصول النسبي',
+        relativeName: 'اسم مجلد الصور النسبي',
+        footnotePrefix: 'قم بتضمين ',
+        footnoteSuffix: ' في مربع النص أعلاه لإدراج اسم ملف المستند تلقائياً.'
+      },
       uploader: {
         title: 'رافع الصور',
         currentUploader: 'رافع الصور الحالي هو {name}.',

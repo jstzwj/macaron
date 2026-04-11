@@ -110,6 +110,9 @@ export default {
   commandPalette: {
     placeholder: 'Digite um comando para executar'
   },
+  sideBar: {
+    tableOfContents: 'Índice'
+  },
   exportDialog: {
     title: 'Opções de Exportação',
     overviewEyebrow: 'Configurações de exportação',
@@ -280,7 +283,8 @@ export default {
       flowChart: 'Fluxograma',
       sequenceDiagram: 'Diagrama de Sequência',
       plantuml: 'Diagrama PlantUML',
-      mermaid: 'Mermaid'
+      mermaid: 'Mermaid',
+      typeToInsert: "Digite {'@'} para inserir"
     }
   },
   fileOperation: {
@@ -359,6 +363,19 @@ export default {
       title: 'Imagem',
       insertActionDesc: 'Ação padrão após uma imagem ser inserida de uma pasta local ou área de transferência',
       clipboardHint: 'O manuseio da área de transferência é totalmente suportado apenas no macOS e Windows.',
+      actionUpload: 'Enviar imagem para a nuvem usando o enviador selecionado (deve ser configurado abaixo)',
+      actionFolder: 'Copiar imagem para o diretório de assets relativo ou pasta local global designada',
+      actionPath: 'Manter localização original',
+      folder: {
+        globalOrRelative: 'Pasta de imagens global ou relativa',
+        globalFolder: 'Pasta de imagens global',
+        open: 'Abrir...',
+        showInFolder: 'Mostrar na pasta',
+        preferRelative: 'Preferir pasta de assets relativa',
+        relativeName: 'Nome da pasta de imagens relativa',
+        footnotePrefix: 'Inclua ',
+        footnoteSuffix: ' na caixa de texto acima para inserir automaticamente o nome do arquivo do documento.'
+      },
       uploader: {
         title: 'Enviador',
         currentUploader: 'O enviador de imagem atual é {name}.',

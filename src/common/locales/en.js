@@ -99,6 +99,9 @@ export default {
   commandPalette: {
     placeholder: 'Type a command to execute'
   },
+  sideBar: {
+    tableOfContents: 'Table of Contents'
+  },
   statusBar: {
     toggleSidebar: 'Toggle Sidebar',
     sourceCodeMode: 'Source Code Mode',
@@ -281,7 +284,8 @@ export default {
       flowChart: 'Flow Chart',
       sequenceDiagram: 'Sequence Diagram',
       plantuml: 'PlantUML Diagram',
-      mermaid: 'Mermaid'
+      mermaid: 'Mermaid',
+      typeToInsert: "Type {'@'} to insert"
     }
   },
   fileOperation: {
@@ -360,6 +364,19 @@ export default {
       title: 'Image',
       insertActionDesc: 'Default action after an image is inserted from local folder or clipboard',
       clipboardHint: 'Clipboard handling is only fully supported on macOS and Windows.',
+      actionUpload: 'Upload image to cloud using selected uploader (must be configured below)',
+      actionFolder: 'Copy image to designated relative assets or global local folder',
+      actionPath: 'Keep original location',
+      folder: {
+        globalOrRelative: 'Global or relative image folder',
+        globalFolder: 'Global image folder',
+        open: 'Open...',
+        showInFolder: 'Show in Folder',
+        preferRelative: 'Prefer relative assets folder',
+        relativeName: 'Relative image folder name',
+        footnotePrefix: 'Include ',
+        footnoteSuffix: ' in the text-box above to automatically insert the document file name.'
+      },
       uploader: {
         title: 'Uploader',
         currentUploader: 'The current image uploader is {name}.',

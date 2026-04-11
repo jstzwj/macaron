@@ -7,7 +7,10 @@
         :title="$t('statusBar.toggleSidebar')"
         @click="toggleSidebar"
       >
-        <svg viewBox="0 0 1024 1024" width="14" height="14">
+        <svg v-if="showSideBar" viewBox="0 0 1024 1024" width="14" height="14">
+          <path fill="currentColor" d="M658.975 155.648l-327.637 327.637c-12.497 12.497-12.497 32.758 0 45.255l327.637 327.637c12.497 12.497 32.758 12.497 45.255 0s12.497-32.758 0-45.255l-305.109-305.109 305.109-305.109c12.497-12.497 12.497-32.758 0-45.255s-32.758-12.497-45.255 0z" />
+        </svg>
+        <svg v-else viewBox="0 0 1024 1024" width="14" height="14">
           <circle :cx="512" :cy="512" :r="400" fill="currentColor" />
         </svg>
       </button>
