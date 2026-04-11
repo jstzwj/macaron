@@ -1,7 +1,7 @@
 <template>
   <div class="editor-tabs">
     <div class="tabs-scroll" ref="tabsScroll">
-      <div class="tabs-list">
+      <div class="tabs-list" ref="tabsList">
         <div
           v-for="file of tabs"
           :key="file.id"
@@ -13,7 +13,7 @@
           <span class="tab-title">{{ file.filename }}</span>
           <span class="tab-close" @click.stop="removeFileInTab(file)">
             <svg viewBox="0 0 1024 1024" width="12" height="12">
-              <path fill="currentColor" d="M563.8 512l262.5-312.9c4.4-5.2 0.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L512 442.2 295.9 191.7c-3-3.6-7.5-5.7-12.3-5.7H203.8c-6.8 0-10.5 7.9-6.1 13.1L460.2 512 197.7 824.9c-4.4 5.2-0.7 13.1 6.1 13.1h79.8c4.7 0 9.2-2.1 12.3-5.7L512 581.8l216.1 250.5c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z" />
+              <path fill="currentColor" d="M563.8 512l262.5-312.9c4.4-5.2 0.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L512 442.2 295.9 191.7c-3-3.6-7.5-5.7-12.3-5.7H203.8c-6.8 0-10.5 7.9-6.1 13.1L460.2 512 197.7 824.9c-4.4 5.2-0.7 13.1 6.1 13.1h79.8c4.7 0 9.2 2.1 12.3 5.7L512 581.8l216.1 250.5c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z" />
             </svg>
           </span>
         </div>
@@ -31,8 +31,14 @@
 import { shell, clipboard } from 'electron'
 import { showContextMenu } from '../../contextMenu/tabs'
 import bus from '../../bus'
+import Sortable from 'sortablejs'
 
 export default {
+  data () {
+    return {
+      sortable: null
+    }
+  },
   computed: {
     currentFile () {
       return this.$store.state.editor.currentFile
@@ -62,7 +68,7 @@ export default {
       }
     },
     newFile () {
-      this.$store.dispatch('NEW_UNTITLED_TAB', {})
+      this.$store.dispatch('NEW_UNTITLED_TAB', {}).catch(err => console.error('[tabs] NEW_UNTITLED_TAB error:', err))
     },
     closeTab (tabId) {
       const tab = this.tabs.find(f => f.id === tabId)
@@ -104,6 +110,33 @@ export default {
       if (tab.id) {
         showContextMenu(event, tab)
       }
+    },
+    initSortable () {
+      const el = this.$refs.tabsList
+      if (el) {
+        this.sortable = Sortable.create(el, {
+          animation: 150,
+          direction: 'horizontal',
+          ghostClass: 'tab-ghost',
+          chosenClass: 'tab-chosen',
+          dragClass: 'tab-drag',
+          filter: '.tab-close',
+          preventOnFilter: false,
+          fallbackTolerance: 3,
+          onEnd: (evt) => {
+            const { oldIndex, newIndex } = evt
+            if (oldIndex !== newIndex && oldIndex != null && newIndex != null) {
+              this.$store.dispatch('SORT_TABS', { oldIndex, newIndex })
+            }
+          }
+        })
+      }
+    },
+    destroySortable () {
+      if (this.sortable) {
+        this.sortable.destroy()
+        this.sortable = null
+      }
     }
   },
   created () {
@@ -117,7 +150,13 @@ export default {
       bus.$on('TABS::show-in-folder', this.showInFolder)
     })
   },
+  mounted () {
+    this.$nextTick(() => {
+      this.initSortable()
+    })
+  },
   beforeUnmount () {
+    this.destroySortable()
     bus.$off('TABS::close-this', this.closeTab)
     bus.$off('TABS::close-others', this.closeOthers)
     bus.$off('TABS::close-saved', this.closeSaved)
@@ -199,7 +238,7 @@ export default {
   }
 
   .tab-close {
-    display: none;
+    display: flex;
     align-items: center;
     justify-content: center;
     margin-left: 6px;
@@ -215,16 +254,21 @@ export default {
     color: var(--themeColor);
   }
 
-  .tab-item:hover .tab-close {
-    display: flex;
-  }
-
   .tab-item.unsaved:not(.active) .tab-close {
     display: flex;
   }
 
-  .tab-item.active .tab-close {
-    display: flex;
+  .tab-ghost {
+    opacity: 0.4;
+    background: var(--editorColor10);
+  }
+
+  .tab-chosen {
+    box-shadow: 0 0 0 1px var(--themeColor);
+  }
+
+  .tab-drag {
+    opacity: 0.7;
   }
 
   .tab-new {

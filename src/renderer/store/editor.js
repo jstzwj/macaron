@@ -98,6 +98,11 @@ const mutations = {
       moveItem(tabs, fromIndex, realToIndex)
     }
   },
+  SORT_TABS (state, { oldIndex, newIndex }) {
+    const { tabs } = state
+    const item = tabs.splice(oldIndex, 1)[0]
+    tabs.splice(newIndex, 0, item)
+  },
   LOAD_CHANGE (state, change) {
     const { tabs, currentFile } = state
     const { data, pathname } = change
@@ -263,6 +268,7 @@ const mutations = {
     let tabIndex = 0
     tabIdList.forEach(id => {
       const index = state.tabs.findIndex(f => f.id === id)
+      if (index === -1) return
       const { pathname } = state.tabs[index]
 
       // Notify main process to remove the file from the window and free resources.
@@ -412,6 +418,10 @@ const actions = {
 
   EXCHANGE_TABS_BY_ID ({ commit }, tabIDs) {
     commit('EXCHANGE_TABS_BY_ID', tabIDs)
+  },
+
+  SORT_TABS ({ commit }, { oldIndex, newIndex }) {
+    commit('SORT_TABS', { oldIndex, newIndex })
   },
 
   // We need to update line endings menu when changing tabs.

@@ -446,7 +446,21 @@ export default {
 
     currentFile: function (value, oldValue) {
       if (value && value !== oldValue) {
-        this.scrollToCursor(0)
+        const { editor } = this
+        if (editor && value.id && typeof value.markdown === 'string') {
+          editor.clearHistory()
+          if (value.history) {
+            editor.setHistory(value.history)
+          }
+          if (value.cursor) {
+            editor.setMarkdown(value.markdown, value.cursor, true)
+          } else {
+            editor.setMarkdown(value.markdown)
+          }
+          this.scrollToCursor(0)
+        } else {
+          this.scrollToCursor(0)
+        }
         // Hide float tools if needed.
         this.editor && this.editor.hideAllFloatTools()
       }
@@ -511,8 +525,13 @@ export default {
       })
 
       // Register core Muya UI plugins synchronously (needed for immediate editing)
-      Muya.use(FrontMenu)
-      Muya.use(QuickInsert)
+      // Guard against duplicate registration when editor is recreated
+      if (!Muya.plugins.some(p => p.plugin === FrontMenu)) {
+        Muya.use(FrontMenu)
+      }
+      if (!Muya.plugins.some(p => p.plugin === QuickInsert)) {
+        Muya.use(QuickInsert)
+      }
       setFrontMenuTranslator(translate)
       setQuickInsertTranslator(translate)
 
@@ -522,17 +541,17 @@ export default {
       // Load non-critical Muya UI plugins lazily after editor is ready
       const loadMuyaPlugins = async () => {
         const [
-          TablePicker,
-          CodePicker,
-          EmojiPicker,
-          ImagePathPicker,
-          ImageSelector,
-          Transformer,
-          ImageToolbar,
-          FormatPicker,
-          LinkTools,
-          FootnoteTool,
-          TableBarTools
+          TablePickerModule,
+          CodePickerModule,
+          EmojiPickerModule,
+          ImagePathPickerModule,
+          ImageSelectorModule,
+          TransformerModule,
+          ImageToolbarModule,
+          FormatPickerModule,
+          LinkToolsModule,
+          FootnoteToolModule,
+          TableBarToolsModule
         ] = await Promise.all([
           import(/* webpackChunkName: "muya-tablePicker" */ 'muya/lib/ui/tablePicker'),
           import(/* webpackChunkName: "muya-codePicker" */ 'muya/lib/ui/codePicker'),
@@ -547,22 +566,41 @@ export default {
           import(/* webpackChunkName: "muya-tableBarTools" */ 'muya/lib/ui/tableTools')
         ])
 
-        Muya.use(TablePicker)
-        Muya.use(CodePicker)
-        Muya.use(EmojiPicker)
-        Muya.use(ImagePathPicker)
-        Muya.use(ImageSelector, {
+        const TablePicker = TablePickerModule.default || TablePickerModule
+        const CodePicker = CodePickerModule.default || CodePickerModule
+        const EmojiPicker = EmojiPickerModule.default || EmojiPickerModule
+        const ImagePathPicker = ImagePathPickerModule.default || ImagePathPickerModule
+        const ImageSelector = ImageSelectorModule.default || ImageSelectorModule
+        const Transformer = TransformerModule.default || TransformerModule
+        const ImageToolbar = ImageToolbarModule.default || ImageToolbarModule
+        const FormatPicker = FormatPickerModule.default || FormatPickerModule
+        const LinkTools = LinkToolsModule.default || LinkToolsModule
+        const FootnoteTool = FootnoteToolModule.default || FootnoteToolModule
+        const TableBarTools = TableBarToolsModule.default || TableBarToolsModule
+
+        // Guard against duplicate registration when editor is recreated
+        const useOnce = (Plugin, options) => {
+          if (!Muya.plugins.some(p => p.plugin === Plugin)) {
+            Muya.use(Plugin, options)
+          }
+        }
+
+        useOnce(TablePicker)
+        useOnce(CodePicker)
+        useOnce(EmojiPicker)
+        useOnce(ImagePathPicker)
+        useOnce(ImageSelector, {
           unsplashAccessKey: process.env.UNSPLASH_ACCESS_KEY,
           photoCreatorClick: this.photoCreatorClick
         })
-        Muya.use(Transformer)
-        Muya.use(ImageToolbar)
-        Muya.use(FormatPicker)
-        Muya.use(LinkTools, {
+        useOnce(Transformer)
+        useOnce(ImageToolbar)
+        useOnce(FormatPicker)
+        useOnce(LinkTools, {
           jumpClick: this.jumpClick
         })
-        Muya.use(FootnoteTool)
-        Muya.use(TableBarTools)
+        useOnce(FootnoteTool)
+        useOnce(TableBarTools)
       }
 
       // Defer non-critical plugin loading to avoid blocking initial render
@@ -630,6 +668,21 @@ export default {
 
       if (this._localTypewriter) {
         this.scrollToCursor()
+      }
+
+      // Load initial content from store in case bus events were missed
+      // (file-changed/file-loaded may fire before this component is mounted)
+      const storeCurrentFile = this.$store.state.editor.currentFile
+      if (storeCurrentFile && storeCurrentFile.id && typeof storeCurrentFile.markdown === 'string') {
+        this.editor.clearHistory()
+        if (storeCurrentFile.history) {
+          this.editor.setHistory(storeCurrentFile.history)
+        }
+        if (storeCurrentFile.cursor) {
+          this.editor.setMarkdown(storeCurrentFile.markdown, storeCurrentFile.cursor, true)
+        } else {
+          this.editor.setMarkdown(storeCurrentFile.markdown)
+        }
       }
 
       // listen for bus events.
@@ -1223,8 +1276,10 @@ export default {
 
     document.removeEventListener('keyup', this.keyup)
 
-    this.editor.destroy()
-    this.editor = null
+    if (this.editor) {
+      this.editor.destroy()
+      this.editor = null
+    }
   }
 }
 </script>

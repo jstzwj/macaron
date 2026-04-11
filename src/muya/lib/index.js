@@ -447,11 +447,11 @@ class Muya {
 
   destroy () {
     this.contentState.clear()
-    this.quickInsert.destroy()
-    this.codePicker.destroy()
-    this.tablePicker.destroy()
-    this.emojiPicker.destroy()
-    this.imagePathPicker.destroy()
+    if (this.quickInsert) this.quickInsert.destroy()
+    if (this.codePicker) this.codePicker.destroy()
+    if (this.tablePicker) this.tablePicker.destroy()
+    if (this.emojiPicker) this.emojiPicker.destroy()
+    if (this.imagePathPicker) this.imagePathPicker.destroy()
     this.eventCenter.detachAllDomEvents()
   }
 }
