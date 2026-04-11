@@ -205,6 +205,25 @@ const rendererConfig = {
     assetModuleFilename: 'assets/[name].[contenthash:8][ext]',
     asyncChunks: true
   },
+  optimization: {
+    splitChunks: {
+      chunks: 'async',
+      minSize: 20000,
+      maxSize: 250000,
+      cacheGroups: {
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendor',
+          priority: 10
+        },
+        muya: {
+          test: /[\\/]muya[\\/]/,
+          name: 'muya-core',
+          priority: 5
+        }
+      }
+    }
+  },
   resolve: {
     alias: {
       'main': path.join(__dirname, '../src/main'),

@@ -77,19 +77,8 @@ import { mapState } from 'vuex'
 // import ViewImage from 'view-image'
 import { isChildOfDirectory } from 'common/filesystem/paths'
 import Muya from 'muya/lib'
-import TablePicker from 'muya/lib/ui/tablePicker'
-import QuickInsert from 'muya/lib/ui/quickInsert'
-import CodePicker from 'muya/lib/ui/codePicker'
-import EmojiPicker from 'muya/lib/ui/emojiPicker'
-import ImagePathPicker from 'muya/lib/ui/imagePicker'
-import ImageSelector from 'muya/lib/ui/imageSelector'
-import ImageToolbar from 'muya/lib/ui/imageToolbar'
-import Transformer from 'muya/lib/ui/transformer'
-import FormatPicker from 'muya/lib/ui/formatPicker'
-import LinkTools from 'muya/lib/ui/linkTools'
-import FootnoteTool from 'muya/lib/ui/footnoteTool'
-import TableBarTools from 'muya/lib/ui/tableTools'
 import FrontMenu from 'muya/lib/ui/frontMenu'
+import QuickInsert from 'muya/lib/ui/quickInsert'
 import { setFrontMenuTranslator } from 'muya/lib/ui/frontMenu/config'
 import { setQuickInsertTranslator } from 'muya/lib/ui/quickInsert/config'
 import { translate } from '@/i18n'
@@ -521,30 +510,60 @@ export default {
         }
       })
 
-      // use muya UI plugins
-      Muya.use(TablePicker)
+      // Register core Muya UI plugins synchronously (needed for immediate editing)
+      Muya.use(FrontMenu)
       Muya.use(QuickInsert)
-      Muya.use(CodePicker)
-      Muya.use(EmojiPicker)
-      Muya.use(ImagePathPicker)
-      Muya.use(ImageSelector, {
-        unsplashAccessKey: process.env.UNSPLASH_ACCESS_KEY,
-        photoCreatorClick: this.photoCreatorClick
-      })
-      Muya.use(Transformer)
-      Muya.use(ImageToolbar)
-      Muya.use(FormatPicker)
-
-      // Inject i18n into Muya UI plugins
       setFrontMenuTranslator(translate)
       setQuickInsertTranslator(translate)
 
-      Muya.use(FrontMenu)
-      Muya.use(LinkTools, {
-        jumpClick: this.jumpClick
-      })
-      Muya.use(FootnoteTool)
-      Muya.use(TableBarTools)
+      // Load non-critical Muya UI plugins lazily after editor is ready
+      const loadMuyaPlugins = async () => {
+        const [
+          TablePicker,
+          CodePicker,
+          EmojiPicker,
+          ImagePathPicker,
+          ImageSelector,
+          Transformer,
+          ImageToolbar,
+          FormatPicker,
+          LinkTools,
+          FootnoteTool,
+          TableBarTools
+        ] = await Promise.all([
+          import(/* webpackChunkName: "muya-tablePicker" */ 'muya/lib/ui/tablePicker'),
+          import(/* webpackChunkName: "muya-codePicker" */ 'muya/lib/ui/codePicker'),
+          import(/* webpackChunkName: "muya-emojiPicker" */ 'muya/lib/ui/emojiPicker'),
+          import(/* webpackChunkName: "muya-imagePicker" */ 'muya/lib/ui/imagePicker'),
+          import(/* webpackChunkName: "muya-imageSelector" */ 'muya/lib/ui/imageSelector'),
+          import(/* webpackChunkName: "muya-transformer" */ 'muya/lib/ui/transformer'),
+          import(/* webpackChunkName: "muya-imageToolbar" */ 'muya/lib/ui/imageToolbar'),
+          import(/* webpackChunkName: "muya-formatPicker" */ 'muya/lib/ui/formatPicker'),
+          import(/* webpackChunkName: "muya-linkTools" */ 'muya/lib/ui/linkTools'),
+          import(/* webpackChunkName: "muya-footnoteTool" */ 'muya/lib/ui/footnoteTool'),
+          import(/* webpackChunkName: "muya-tableBarTools" */ 'muya/lib/ui/tableTools')
+        ])
+
+        Muya.use(TablePicker)
+        Muya.use(CodePicker)
+        Muya.use(EmojiPicker)
+        Muya.use(ImagePathPicker)
+        Muya.use(ImageSelector, {
+          unsplashAccessKey: process.env.UNSPLASH_ACCESS_KEY,
+          photoCreatorClick: this.photoCreatorClick
+        })
+        Muya.use(Transformer)
+        Muya.use(ImageToolbar)
+        Muya.use(FormatPicker)
+        Muya.use(LinkTools, {
+          jumpClick: this.jumpClick
+        })
+        Muya.use(FootnoteTool)
+        Muya.use(TableBarTools)
+      }
+
+      // Defer non-critical plugin loading to avoid blocking initial render
+      requestIdleCallback(() => loadMuyaPlugins(), { timeout: 2000 })
 
       const options = {
         focusMode: this._localFocus,
@@ -591,8 +610,16 @@ export default {
 
       const { container } = this.editor = new Muya(ele, options)
 
-      // Create spell check wrapper and enable spell checking if preferred.
+      // Create spell check wrapper but defer activation until after first render.
       this.spellchecker = new SpellChecker(spellcheckerEnabled, spellcheckerLanguage)
+      if (spellcheckerEnabled) {
+        // Defer spellchecker activation to avoid blocking initial render.
+        requestAnimationFrame(() => {
+          this.spellchecker.activateSpellchecker(spellcheckerLanguage).catch(error => {
+            log.error('Failed to activate spellchecker:', error)
+          })
+        })
+      }
 
       // Register command palette entry for switching spellchecker language.
       this.switchLanguageCommand = new SpellcheckerLanguageCommand(this.spellchecker)

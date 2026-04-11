@@ -110,7 +110,11 @@ class QuickInsert extends BaseScrollFloat {
     const canInserFrontMatter = contentState.canInserFrontMatter(this.block)
     const obj = deepCopy(getQuickInsertObj())
     if (!canInserFrontMatter) {
-      obj['basic block'].splice(2, 1)
+      // Remove the "front matter" item (3rd entry) from the first category.
+      const firstKey = Object.keys(obj)[0]
+      if (obj[firstKey]) {
+        obj[firstKey].splice(2, 1)
+      }
     }
     let result = obj
     if (text !== '') {

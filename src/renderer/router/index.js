@@ -1,13 +1,3 @@
-import App from '@/pages/app'
-import Preference from '@/pages/preference'
-import General from '@/prefComponents/general'
-import Editor from '@/prefComponents/editor'
-import Markdown from '@/prefComponents/markdown'
-import SpellChecker from '@/prefComponents/spellchecker'
-import Theme from '@/prefComponents/theme'
-import Image from '@/prefComponents/image'
-import Keybindings from '@/prefComponents/keybindings'
-
 const parseSettingsPage = type => {
   let pageUrl = '/preference'
   if (/\/spelling$/.test(type)) {
@@ -19,26 +9,28 @@ const parseSettingsPage = type => {
 const routes = type => ([{
   path: '/', redirect: type === 'editor' ? '/editor' : parseSettingsPage(type)
 }, {
-  path: '/editor', component: App
+  path: '/editor',
+  component: () => import(/* webpackChunkName: "app" */ '@/pages/app')
 }, {
   path: '/preference',
-  component: Preference,
+  component: () => import(/* webpackChunkName: "preference" */ '@/pages/preference'),
   children: [{
-    path: '', component: General
+    path: '',
+    component: () => import(/* webpackChunkName: "pref-general" */ '@/prefComponents/general')
   }, {
-    path: 'general', component: General, name: 'general'
+    path: 'general', component: () => import(/* webpackChunkName: "pref-general" */ '@/prefComponents/general'), name: 'general'
   }, {
-    path: 'editor', component: Editor, name: 'editor'
+    path: 'editor', component: () => import(/* webpackChunkName: "pref-editor" */ '@/prefComponents/editor'), name: 'editor'
   }, {
-    path: 'markdown', component: Markdown, name: 'markdown'
+    path: 'markdown', component: () => import(/* webpackChunkName: "pref-markdown" */ '@/prefComponents/markdown'), name: 'markdown'
   }, {
-    path: 'spelling', component: SpellChecker, name: 'spelling'
+    path: 'spelling', component: () => import(/* webpackChunkName: "pref-spelling" */ '@/prefComponents/spellchecker'), name: 'spelling'
   }, {
-    path: 'theme', component: Theme, name: 'theme'
+    path: 'theme', component: () => import(/* webpackChunkName: "pref-theme" */ '@/prefComponents/theme'), name: 'theme'
   }, {
-    path: 'image', component: Image, name: 'image'
+    path: 'image', component: () => import(/* webpackChunkName: "pref-image" */ '@/prefComponents/image'), name: 'image'
   }, {
-    path: 'keybindings', component: Keybindings, name: 'keybindings'
+    path: 'keybindings', component: () => import(/* webpackChunkName: "pref-keybindings" */ '@/prefComponents/keybindings'), name: 'keybindings'
   }]
 }])
 

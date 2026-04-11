@@ -1,5 +1,4 @@
 import { createApp, h } from 'vue'
-import sourceMapSupport from 'source-map-support'
 import bootstrapRenderer from './bootstrap'
 import { createRouter, createWebHashHistory, RouterView } from 'vue-router'
 import axios from './axios'
@@ -15,11 +14,13 @@ import './assets/styles/printService.css'
 
 // -----------------------------------------------
 
-// Decode source map in production - must be registered first
-sourceMapSupport.install({
-  environment: 'node',
-  handleUncaughtExceptions: false,
-  hookRequire: false
+// Decode source map in production - deferred to not block initial render.
+import(/* webpackChunkName: "source-map-support" */ 'source-map-support').then(sourceMapSupport => {
+  sourceMapSupport.default.install({
+    environment: 'node',
+    handleUncaughtExceptions: false,
+    hookRequire: false
+  })
 })
 
 global.marktext = {}
