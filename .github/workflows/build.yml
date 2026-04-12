@@ -23,6 +23,7 @@ jobs:
         os: [macos-latest, ubuntu-latest, windows-latest]
 
     env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       MARKTEXT_EXIT_ON_ERROR: 1
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -31,7 +32,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: yarn
 
       - name: Install Linux build dependencies
