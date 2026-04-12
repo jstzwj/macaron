@@ -17,6 +17,7 @@ directories:
 npmRebuild: false
 files:
 - "dist/electron/**/*"
+- "LICENSE"
 # Don't bundle these files
 - "!**/node_modules/**/{CHANGELOG.md,README.md,README,readme.md,readme}"
 - "!node_modules/css-b64-images/{draft.png,draft.xcf}"
@@ -50,11 +51,6 @@ files:
 - "!node_modules/**/build/Release/{*.lib,*.exp,*.ilk,*.pdb,*.iobj,*.ipdb}"
 - "!node_modules/**/build/Release/obj"
 extraFiles:
-- from: "LICENSE"
-  to: "LICENSE"
-  target:
-  - linux
-  - win
 - from: "resources/THIRD-PARTY-LICENSES.txt"
   to: "THIRD-PARTY-LICENSES.txt"
 
@@ -75,6 +71,7 @@ mac:
   artifactName: "macaron-${arch}-mac.${ext}"
   icon: "resources/icons/icon.icns"
   darkModeSupport: true
+  extraFiles: []
   extraResources:
   - from: "LICENSE"
     to: "LICENSE"
@@ -96,6 +93,8 @@ dmg:
 win:
   artifactName: "macaron-${arch}-win.${ext}"
   icon: "resources/icons/icon.ico"
+  extraFiles:
+  - "LICENSE"
   target:
   - target: "nsis"
     arch: [x64]
@@ -117,6 +116,8 @@ linux:
   mimeTypes:
   - "text/markdown"
   icon: "resources/icons"
+  extraFiles:
+  - "LICENSE"
   desktop:
     entry:
       StartupWMClass: "macaron"
