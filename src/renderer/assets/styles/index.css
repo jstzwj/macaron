@@ -1,109 +1,124 @@
 /* Common CSS use by both light and dark themes */
+/* Design tokens:
+ * Border radius: 3px (inline code), 6px (buttons/inputs/tabs), 8px (dialogs/search), 12px (containers)
+ * Shadows: subtle elevation for depth hierarchy
+ * Transitions: 0.15s for micro-interactions, 0.3s for theme changes
+ */
 :root {
-  --titleBarHeight: 32px;
+  --titleBarHeight: 40px;
   --editorAreaWidth: 750px;
 
   /*editor*/
-  /*Theme color cluster*/
-  --themeColor: rgba(33, 181, 111, 1);
-  --themeColor90: rgba(33, 181, 111, .9);
-  --themeColor80: rgba(33, 181, 111, .8);
-  --themeColor70: rgba(33, 181, 111, .7);
-  --themeColor60: rgba(33, 181, 111, .6);
-  --themeColor50: rgba(33, 181, 111, .5);
-  --themeColor40: rgba(33, 181, 111, .4);
-  --themeColor30: rgba(33, 181, 111, .3);
-  --themeColor20: rgba(33, 181, 111, .2);
-  --themeColor10: rgba(33, 181, 111, .1);
-  --highlightThemeColor: var(--themeColor);
+  /*Theme color cluster - Clean Minimal Blue (#3B82F6) */
+  --themeColor: #3B82F6;
+  --themeColor90: rgba(59, 130, 246, .9);
+  --themeColor80: rgba(59, 130, 246, .8);
+  --themeColor70: rgba(59, 130, 246, .7);
+  --themeColor60: rgba(59, 130, 246, .6);
+  --themeColor50: rgba(59, 130, 246, .5);
+  --themeColor40: rgba(59, 130, 246, .4);
+  --themeColor30: rgba(59, 130, 246, .3);
+  --themeColor20: rgba(59, 130, 246, .2);
+  --themeColor10: rgba(59, 130, 246, .1);
+  --highlightThemeColor: #F59E0B;
 
-  --highlightColor: rgba(33, 181, 111, .4);
-  --selectionColor: rgba(0, 0, 0, .1);
-  --editorColor: rgba(0, 0, 0, .7);
-  --editorColor80: rgba(0, 0, 0, .8);
-  --editorColor60: rgba(0, 0, 0, .6);
-  --editorColor50: rgba(0, 0, 0, .5);
-  --editorColor40: rgba(0, 0, 0, .4);
-  --editorColor30: rgba(0, 0, 0, .3);
-  --editorColor10: rgba(0, 0, 0, .1);
-  --editorColor04: rgba(0, 0, 0, .03);
-  --editorBgColor: rgba(255, 255, 255, 1);
-  --deleteColor: #ff6969;
-  --iconColor: #6B737B;
-  --codeBgColor: #d8d8d869;
-  --codeBlockBgColor: rgba(0, 0, 0, 0.03);
-  --footnoteBgColor: rgba(0, 0, 0, .03);
-  --inputBgColor: rgba(0, 0, 0, .06);
+  --highlightColor: rgba(59, 130, 246, .2);
+  --selectionColor: rgba(59, 130, 246, .12);
+  --editorColor: #1E293B;
+  --editorColor80: rgba(30, 41, 59, .8);
+  --editorColor60: rgba(30, 41, 59, .6);
+  --editorColor50: rgba(30, 41, 59, .5);
+  --editorColor40: rgba(30, 41, 59, .4);
+  --editorColor30: rgba(30, 41, 59, .3);
+  --editorColor10: rgba(30, 41, 59, .1);
+  --editorColor04: rgba(30, 41, 59, .04);
+  --editorBgColor: #FAFBFC;
+  --deleteColor: #EF4444;
+  --iconColor: #64748B;
+  --codeBgColor: #F1F5F9;
+  --codeBlockBgColor: #F1F5F9;
+  --footnoteBgColor: rgba(59, 130, 246, .04);
+  --inputBgColor: #F8FAFC;
   --focusColor: var(--themeColor);
 
   --buttonFontColor: var(--editorColor);
   --buttonBgColor: #ffffff;
-  --buttonBorder: 1px solid #dcdfe6;
-  --buttonShadow: none;
+  --buttonBorder: 1px solid #E2E8F0;
+  --buttonShadow: 0 1px 2px rgba(0, 0, 0, .05);
   --buttonFontColorHover: var(--buttonFontColor);
-  --buttonBgColorHover: linear-gradient(#f9f9f9, #f2f2f2);
-  --buttonBorderHover: var(--buttonBorder);
+  --buttonBgColorHover: #F8FAFC;
+  --buttonBorderHover: 1px solid #CBD5E1;
   --buttonFontColorActive: var(--buttonFontColor);
-  --buttonBgColorActive: #f0f0f0;
+  --buttonBgColorActive: #F1F5F9;
   --buttonBorderActive: var(--buttonBorder);
   --buttonFocusBorder: 1px solid var(--themeColor);
 
   --buttonPrimaryFontColor: #ffffff;
   --buttonPrimaryBgColor: var(--themeColor);
   --buttonPrimaryBorder: none;
-  --buttonPrimaryShadow: 0 0 8px 0 rgba(0, 0, 0, .1);
+  --buttonPrimaryShadow: 0 2px 8px rgba(59, 130, 246, .25);
   --buttonPrimaryFontColorHover: var(--buttonPrimaryFontColor);
-  --buttonPrimaryBgColorHover: var(--buttonPrimaryBgColor);
+  --buttonPrimaryBgColorHover: #2563EB;
   --buttonPrimaryBorderHover: var(--buttonPrimaryBorder);
   --buttonPrimaryFontColorActive: var(--buttonPrimaryFontColor);
-  --buttonPrimaryBgColorActive: var(--buttonPrimaryBgColor);
+  --buttonPrimaryBgColorActive: #1D4ED8;
   --buttonPrimaryBorderActive: var(--buttonPrimaryBorder);
   --buttonPrimaryFocusBorder: none;
-  --buttonPrimaryFocusShadow: inset 0 0 0 1px rgba(13, 91, 55, 0.5), 0 0 0 1px var(--themeColor);
-  --tableBorderColor: #e5e5e5;
+  --buttonPrimaryFocusShadow: inset 0 0 0 1px rgba(30, 64, 110, 0.5), 0 0 0 1px var(--themeColor);
+  --tableBorderColor: #E2E8F0;
 
   /*marktext*/
-  --sideBarColor: rgba(0, 0, 0, .6);
-  --sideBarIconColor: var(--iconColor);
-  --sideBarTitleColor: rgba(0, 0, 0, 1);
-  --sideBarTextColor: rgba(0, 0, 0, .4);
-  --sideBarBgColor: rgba(242, 242, 242, 0.9);
-  --sideBarItemHoverBgColor: rgba(0, 0, 0, .03);
-  --itemBgColor: rgba(255, 255, 255, 0.6);
+  --sideBarColor: #64748B;
+  --sideBarIconColor: #94A3B8;
+  --sideBarTitleColor: #1E293B;
+  --sideBarTextColor: #94A3B8;
+  --sideBarBgColor: #F1F5F9;
+  --sideBarItemHoverBgColor: rgba(59, 130, 246, .06);
+  --itemBgColor: #FFFFFF;
 
-  --floatFontColor: rgba(0, 0, 0, .6);
-  --floatBgColor: #fff;
-  --floatHoverColor: rgba(0, 0, 0, .04);
-  --floatBorderColor: rgba(0, 0, 0, .1);
-  --floatShadow: rgba(15, 15, 15, 0.03) 0px 0px 0px 1px, rgba(15, 15, 15, 0.04) 0px 3px 6px, rgba(15, 15, 15, 0.05) 0px 9px 24px;
-  --maskColor: rgba(232, 232, 232, .8);
+  --floatFontColor: #1E293B;
+  --floatBgColor: #FFFFFF;
+  --floatHoverColor: rgba(59, 130, 246, .04);
+  --floatBorderColor: #E2E8F0;
+  --floatShadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -2px rgba(0, 0, 0, .1);
+  --maskColor: rgba(30, 41, 59, .4);
 
   /* Notification colors */
   --notificationPrimaryColor: #ffffff;
   --notificationPrimaryBg: var(--themeColor);
   --notificationInfoColor: #ffffff;
-  --notificationInfoBg: #909399;
+  --notificationInfoBg: #3B82F6;
   --notificationWarningColor: #ffffff;
-  --notificationWarningBg: #ff8800;
+  --notificationWarningBg: #F59E0B;
   --notificationErrorColor: #ffffff;
-  --notificationErrorBg: #ff6969;
+  --notificationErrorBg: #EF4444;
 }
 
 ::-webkit-scrollbar,
 ::-webkit-scrollbar-corner {
-  background: var(--floatHoverColor);
+  background: transparent;
 }
 
 ::-webkit-scrollbar:vertical {
-  width: 12px;
+  width: 8px;
+}
+
+::-webkit-scrollbar:horizontal {
+  height: 8px;
 }
 
 ::-webkit-scrollbar-thumb {
   background: var(--editorColor10);
+  border-radius: 4px;
+  transition: background 0.15s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--editorColor30);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 :focus {
@@ -140,7 +155,20 @@ body {
   white-space: nowrap;
 }
 
-/* Overwrite Element style */
+/* Constrain Element Plus icons to a reasonable size */
+.el-icon {
+  width: 1em;
+  height: 1em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.el-icon svg {
+  width: 1em;
+  height: 1em;
+}
+
+/* Override Element style */
 .el-tooltip__popper {
   background: var(--floatBgColor);
   color: var(--sideBarColor);
@@ -257,7 +285,7 @@ div.el-tab-pane {
   color: var(--buttonFontColor);
   background: var(--buttonBgColor);
   border: var(--buttonBorder);
-  border-radius: 5px;
+  border-radius: 6px;
   box-shadow: var(--buttonShadow);
   padding: 7px 14px;
 }
@@ -290,7 +318,7 @@ div.el-tab-pane {
   color: var(--buttonPrimaryFontColor);
   background: var(--buttonPrimaryBgColor);
   border: var(--buttonPrimaryBorder);
-  border-radius: 5px;
+  border-radius: 6px;
   box-shadow: var(--buttonPrimaryShadow);
   padding: 7px 14px;
 }
@@ -402,4 +430,27 @@ button.button-primary:not(.custom):focus,
 
 .image-viewer {
   z-index: 10001;
+}
+
+/* Global transitions for theme-aware properties */
+.side-bar,
+.status-bar,
+.title-bar,
+.editor-tabs,
+.pref-sidebar,
+.pref-header {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Smooth focus indicators */
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--themeColor);
+  box-shadow: 0 0 0 3px var(--themeColor10);
+}
+
+/* Smooth selection */
+::selection {
+  background: var(--selectionColor);
 }

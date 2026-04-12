@@ -219,10 +219,12 @@ export default {
     vertical-align: top;
   }
   .title {
-    padding: 0 142px;
+    padding: 0 160px;
     height: 100%;
     line-height: var(--titleBarHeight);
-    font-size: 14px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
     text-align: center;
     transition: all .25s ease-in-out;
     overflow: hidden;
@@ -302,6 +304,7 @@ export default {
     display: block;
     width: 46px;
     height: var(--titleBarHeight);
+    transition: background-color 0.15s ease;
   }
   .frameless-titlebar-button > div {
     position: absolute;
@@ -315,10 +318,12 @@ export default {
   }
   .frameless-titlebar-close:hover {
     background-color: rgb(228, 79, 79);
+    transition: background-color 0.15s ease;
   }
   .frameless-titlebar-minimize:hover,
   .frameless-titlebar-toggle:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.06);
+    transition: background-color 0.15s ease;
   }
   .frameless-titlebar-button svg {
     fill: #000000

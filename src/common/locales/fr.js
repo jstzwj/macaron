@@ -301,6 +301,12 @@ export default {
       failMessage: 'L\'impression/exportation de {filename} a échoué'
     }
   },
+  recent: {
+    welcome: 'Bienvenue sur Macaron',
+    newFile: 'Nouveau fichier',
+    openFile: 'Ouvrir un fichier',
+    openFolder: 'Ouvrir un dossier'
+  },
   about: {
     appName: 'Macaron',
     copyright: 'Copyright © 2017-{year} Luo Ran',
@@ -583,6 +589,7 @@ export default {
       focusMode: 'Mode focus',
       showSidebar: 'Afficher la barre latérale',
       showTabBar: 'Afficher la barre d\'onglets',
+      showTitleBar: 'Afficher la barre de titre',
       toggleToc: 'Basculer la table des matières',
       reloadImages: 'Recharger les images',
       showDevTools: 'Afficher les outils de développement',

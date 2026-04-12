@@ -1,77 +1,77 @@
 :root {
   /*editor*/
-  --themeColor: rgba(77, 120, 204, 1);
-  --themeColor90: rgba(77, 120, 204, .9);
-  --themeColor80: rgba(77, 120, 204, .8);
-  --themeColor70: rgba(77, 120, 204, .7);
-  --themeColor60: rgba(77, 120, 204, .6);
-  --themeColor50: rgba(77, 120, 204, .5);
-  --themeColor40: rgba(77, 120, 204, .4);
-  --themeColor30: rgba(77, 120, 204, .3);
-  --themeColor20: rgba(77, 120, 204, .2);
-  --themeColor10: rgba(77, 120, 204, .1);
-  --highlightThemeColor: #e2c08d;
+  /* Atom One Dark - Deep space with violet/purple accent */
+  --themeColor: #C678DD;
+  --themeColor90: rgba(198, 120, 221, .9);
+  --themeColor80: rgba(198, 120, 221, .8);
+  --themeColor70: rgba(198, 120, 221, .7);
+  --themeColor60: rgba(198, 120, 221, .6);
+  --themeColor50: rgba(198, 120, 221, .5);
+  --themeColor40: rgba(198, 120, 221, .4);
+  --themeColor30: rgba(198, 120, 221, .3);
+  --themeColor20: rgba(198, 120, 221, .2);
+  --themeColor10: rgba(198, 120, 221, .1);
 
-  --highlightColor: #ffffff10;
-  --selectionColor: #67769660;
-  --editorColor: #9da5b4;
-  --editorColor80: #9da5b4;
-  --editorColor60: rgba(157, 165, 180, .6);
-  --editorColor50: rgba(157, 165, 180, .5);
-  --editorColor40: rgba(157, 165, 180, .4);
-  --editorColor30: rgba(157, 165, 180, .3);
-  --editorColor10: rgba(157, 165, 180, .1);
-  --editorColor04: rgba(157, 165, 180, .04);
-  --editorBgColor: #282c34;
-  --deleteColor: #ff6969;
-  --iconColor: rgba(255, 255, 255, .56);
-  --codeBgColor: #3a3f4b;
-  --codeBlockBgColor: #3a3f4b;
-  --footnoteBgColor: rgba(66, 67, 68, .5);
-  --inputBgColor: rgba(0, 0, 0, .1);
-  --focusColor: #568af2;
+  --highlightColor: rgba(198, 120, 221, .25);
+  --selectionColor: rgba(198, 120, 221, .2);
+  --editorColor: #ABB2BF;
+  --editorColor80: rgba(171, 178, 191, .8);
+  --editorColor60: rgba(171, 178, 191, .6);
+  --editorColor50: rgba(171, 178, 191, .5);
+  --editorColor40: rgba(171, 178, 191, .4);
+  --editorColor30: rgba(171, 178, 191, .3);
+  --editorColor10: rgba(171, 178, 191, .1);
+  --editorColor04: rgba(171, 178, 191, .04);
+  --editorBgColor: #282C34;
+  --deleteColor: #E06C75;
+  --iconColor: #5C6370;
+  --codeBgColor: #2C313C;
+  --codeBlockBgColor: #2C313C;
+  --footnoteBgColor: rgba(44, 49, 60, .5);
+  --inputBgColor: #2C313C;
 
-  --buttonFontColor: #9da5b4;
-  --buttonBgColor: linear-gradient(#3a3f4b, #353b45);
-  --buttonBorder: 1px solid #181a1f;
+  --focusColor: var(--themeColor);
+
+  --buttonFontColor: #828997;
+  --buttonBgColor: #2C313C;
+  --buttonBorder: 1px solid #3E4451;
   --buttonShadow: none;
-  --buttonFontColorHover: #d7dae0;
-  --buttonBgColorHover: linear-gradient(#3e4451, #3a3f4b);
-  --buttonBorderHover: var(--buttonBorder);
+  --buttonFontColorHover: #ABB2BF;
+  --buttonBgColorHover: #353B47;
+  --buttonBorderHover: 1px solid #4B5263;
   --buttonFontColorActive: var(--buttonFontColor);
-  --buttonBgColorActive: #2c313a;
+  --buttonBgColorActive: #262B35;
   --buttonBorderActive: var(--buttonBorder);
-  --buttonFocusBorder: 1px solid #568af2;
 
-  --buttonPrimaryFontColor: #ffffff;
-  --buttonPrimaryBgColor: linear-gradient(#557ecf, #4d78cc);
-  --buttonPrimaryBorder: 1px solid #181a1f;;
-  --buttonPrimaryShadow: none;
+  --buttonPrimaryFontColor: #282C34;
+  --buttonPrimaryBgColor: var(--themeColor);
+  --buttonPrimaryBorder: none;
+  --buttonPrimaryShadow: 0 2px 12px rgba(198, 120, 221, .2);
   --buttonPrimaryFontColorHover: var(--buttonPrimaryFontColor);
-  --buttonPrimaryBgColorHover: linear-gradient(#6187d2, #5981d0);
+  --buttonPrimaryBgColorHover: #B865CC;
   --buttonPrimaryBorderHover: var(--buttonPrimaryBorder);
   --buttonPrimaryFontColorActive: var(--buttonPrimaryFontColor);
-  --buttonPrimaryBgColorActive: #3d6bc8;
+  --buttonPrimaryBgColorActive: #A855BF;
   --buttonPrimaryBorderActive: var(--buttonPrimaryBorder);
   --buttonPrimaryFocusBorder: none;
-  --buttonPrimaryFocusShadow: inset 0 0 0 1px rgba(24, 26, 31, 0.5), 0 0 0 1px #568af2;
-  --tableBorderColor: #363839;
+  --buttonPrimaryFocusShadow: inset 0 0 0 1px rgba(20, 22, 28, 0.5), 0 0 0 1px var(--themeColor);
+  --tableBorderColor: #3E4451;
 
   /*marktext*/
-  --sideBarColor: #9da5b4;
-  --sideBarIconColor: var(--iconColor);
-  --sideBarTitleColor: #9da5b4;
-  --sideBarTextColor: #9da5b4;
-  --sideBarBgColor: #21252b;
-  --sideBarItemHoverBgColor: #3a3f4b;
-  --itemBgColor: #21252b;
+  --sideBarColor: #828997;
+  --sideBarIconColor: #5C6370;
+  --sideBarTitleColor: #D1D4DC;
+  --sideBarTextColor: #5C6370;
+  --sideBarBgColor: #21252B;
+  --sideBarItemHoverBgColor: rgba(198, 120, 221, .06);
+  --itemBgColor: #2C313C;
 
-  --floatFontColor: #9da5b4;
-  --floatBgColor: #21252b;
-  --floatHoverColor: #3a3f4b;
-  --floatBorderColor: #181a1f;
-  --floatShadow: rgba(0, 0, 0, 0.3);
-  --maskColor: rgba(0, 0, 0, .7);
+  --floatFontColor: #ABB2BF;
+  --floatBgColor: #2C313C;
+  --floatHoverColor: rgba(198, 120, 221, .06);
+  --floatBorderColor: #3E4451;
+  --floatShadow: rgba(0, 0, 0, 0.3) 0px 4px 16px;
+  --maskColor: rgba(0, 0, 0, .6);
   --editorAreaWidth: 750px;
 }
 
@@ -80,30 +80,28 @@
   background: var(--editorBgColor);
 }
 ::-webkit-scrollbar:vertical {
-  width: 10px;
-}
-::-webkit-scrollbar:vertical:hover {
-  width: 12px;
+  width: 8px;
 }
 ::-webkit-scrollbar-thumb {
-  background: #414956;
+  background: #3E4451;
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #4b5362;
+  background: #545A6A;
 }
 
 /* --- Element UI ------------------------------------------------ */
 
 .v-modal {
-  background: #08090a !important;
+  background: #1e2127 !important;
   opacity: 0.65 !important;
 }
 .el-dialog,
 .el-dialog.ag-dialog-table {
   border-radius: 6px !important;
   box-shadow: 0 1px 3px rgba(0,0,0,.3) !important;
-  border: 1px solid #181a1f !important;
-  background: #252830 !important;
+  border: 1px solid #3E4451 !important;
+  background: #2C313C !important;
 }
 
 .el-button:focus {
@@ -122,35 +120,32 @@
 }
 
 .title-bar .frameless-titlebar-button > div > svg {
-  fill: #ffffff;
+  fill: #ABB2BF;
 }
 .title-bar .frameless-titlebar-minimize:hover,
 .title-bar .frameless-titlebar-toggle:hover {
-  background-color: rgba(215, 218, 224, 0.05) !important;
+  background-color: rgba(171, 178, 191, .05) !important;
 }
 
 .input-wrapper {
-  border-radius: 3px !important;
-  border: 1px solid #181a1f !important;
-  background: #1b1d23 !important;
+  border-radius: 6px !important;
+  border: 1px solid #3E4451 !important;
+  background: #2C313C !important;
 }
 
 /* --- UI elements ----------------------------------------------- */
 
 .side-bar {
-  border-right: 1px solid #181a1f !important;
+  border-right: 1px solid #3E4451 !important;
 }
 .left-column ul > li > svg {
-  fill: rgba(215, 218, 224, 0.6) !important;
+  fill: rgba(171, 178, 191, .6) !important;
 }
 .left-column ul > li:hover > svg {
-  fill: #d7dae0 !important;
-}
-.left-column ul > li:hover > svg {
-  fill: #d7dae0 !important;
+  fill: #ABB2BF !important;
 }
 .left-column ul > li.active > svg {
-  fill: #4d78cc !important;
+  fill: #C678DD !important;
 }
 
 .open-project button.button-primary,
@@ -164,7 +159,7 @@
 .editor-tabs:after {
   position: absolute;
   content: '';
-  border-bottom: 1px solid #181a1f;
+  border-bottom: 1px solid #3E4451;
   bottom: 0;
   left: 0;
   right: 0;
@@ -173,7 +168,7 @@
 .editor-tabs ul.tabs-container:after {
   position: absolute;
   content: '';
-  border-bottom: 1px solid #181a1f;
+  border-bottom: 1px solid #3E4451;
   bottom: 0;
   left: 0;
   right: 0;
@@ -185,7 +180,7 @@
   background: var(--editorBgColor) !important;
 }
 .tabs-container > li.active {
-  border: 1px solid #181a1f;
+  border: 1px solid #3E4451;
   border-bottom: none;
 }
 .tabs-container > li.active:after {
@@ -193,10 +188,10 @@
   right: auto !important;
   width: 2px !important;
   height: auto !important;
-  background: #4d78cc !important;
+  background: #C678DD !important;
 }
 .tabs-container svg.close-icon #unsaved-circle-icon {
-  fill: #4d78cc;
+  fill: #C678DD;
 }
 
 /* --- Editor ---------------------------------------------------- */
@@ -214,7 +209,7 @@ pre.ag-paragraph {
 }
 
 p:not(.ag-active)[data-role="hr"]::before {
-  border-top: 2px dashed #4b5362 !important;
+  border-top: 1px solid #3E4451 !important;
   background: none !important;
 }
 

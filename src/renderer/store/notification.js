@@ -26,8 +26,12 @@ const actions = {
     ipcRenderer.on('mt::pandoc-not-exists', async (e, opts) => {
       const options = Object.assign({}, DEFAULT_OPTS, opts)
       options.showConfirm = true
-      await notice.notify(options)
-      shell.openExternal('http://pandoc.org')
+      try {
+        await notice.notify(options)
+        shell.openExternal('http://pandoc.org')
+      } catch (_) {
+        // User closed the notification by clicking X, no action needed
+      }
     })
   }
 }

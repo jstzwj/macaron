@@ -5,6 +5,7 @@
     <side-bar v-if="uiInit"></side-bar>
     <div class="editor-middle">
       <title-bar
+        v-show="showTitleBar"
         :project="projectTree"
         :pathname="currentFile.pathname"
         :filename="currentFile.filename"
@@ -88,7 +89,8 @@ export default {
       _zoom: 1.0,
       _projectTree: null,
       _windowActive: true,
-      _showPreferences: false
+      _showPreferences: false,
+      _showTitleBar: false
     }
   },
   computed: {
@@ -124,6 +126,9 @@ export default {
     },
     showPreferences () {
       return this._showPreferences
+    },
+    showTitleBar () {
+      return this._showTitleBar
     }
   },
   watch: {
@@ -150,6 +155,7 @@ export default {
     this._projectTree = storeState.project.projectTree
     this._windowActive = storeState.windowActive
     this._showPreferences = storeState.layout.showPreferences
+    this._showTitleBar = storeState.layout.showTitleBar
 
     this.unsubscribeStore = this.$store.subscribe((mutation, state) => {
       this.uiInit = state.init
@@ -164,6 +170,7 @@ export default {
       this._projectTree = state.project.projectTree
       this._windowActive = state.windowActive
       this._showPreferences = state.layout.showPreferences
+      this._showTitleBar = state.layout.showTitleBar
     })
 
     dispatch('LINTEN_WIN_STATUS')

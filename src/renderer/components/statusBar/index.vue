@@ -217,15 +217,16 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 26px;
-    min-height: 26px;
-    padding: 0 8px;
+    height: 28px;
+    min-height: 28px;
+    padding: 0 12px;
     background: var(--sideBarBgColor);
-    border-top: 1px solid var(--editorColor10);
+    border-top: 1px solid var(--floatBorderColor);
     color: var(--editorColor50);
     font-size: 12px;
     user-select: none;
     -webkit-app-region: drag;
+    transition: background-color 0.3s ease;
   }
 
   .status-bar-left,
@@ -240,8 +241,8 @@ export default {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 2px 6px;
-    border-radius: 3px;
+    padding: 3px 8px;
+    border-radius: 4px;
     cursor: pointer;
     color: var(--editorColor50);
     background: transparent;
@@ -250,15 +251,17 @@ export default {
     font-size: 12px;
     line-height: 1;
     white-space: nowrap;
+    transition: background-color 0.15s ease, color 0.15s ease;
   }
 
   .status-bar-item:hover {
-    background: var(--editorColor10);
+    background: var(--editorColor04);
     color: var(--editorColor);
   }
 
   .status-bar-item.active {
     color: var(--themeColor);
+    background: var(--themeColor10);
   }
 
   .status-bar-dropdown {
@@ -268,8 +271,8 @@ export default {
   .dropdown-trigger {
     display: inline-flex;
     align-items: center;
-    padding: 2px 6px;
-    border-radius: 3px;
+    padding: 3px 8px;
+    border-radius: 4px;
     cursor: pointer;
     color: var(--editorColor50);
     background: transparent;
@@ -277,10 +280,11 @@ export default {
     outline: none;
     font-size: 12px;
     line-height: 1;
+    transition: background-color 0.15s ease, color 0.15s ease;
   }
 
   .dropdown-trigger:hover {
-    background: var(--editorColor10);
+    background: var(--editorColor04);
     color: var(--editorColor);
   }
 
@@ -289,13 +293,19 @@ export default {
     bottom: 100%;
     right: 0;
     min-width: 140px;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
     padding: 4px 0;
     background: var(--floatBgColor);
     border: 1px solid var(--floatBorderColor);
-    border-radius: 4px;
-    box-shadow: 0 2px 8px var(--floatShadow);
+    border-radius: 6px;
+    box-shadow: var(--floatShadow);
     z-index: 9999;
+    animation: menuFadeIn 0.15s ease;
+  }
+
+  @keyframes menuFadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   .dropdown-item {

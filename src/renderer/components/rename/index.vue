@@ -1,21 +1,25 @@
 <template>
-  <div class="rename-dialog" v-if="renderRename" @click="showRename = false">
-    <div class="rename-dialog-overlay"></div>
-    <div class="rename-dialog-panel" @click.stop>
-      <div class="search-wrapper">
-        <div class="input-wrapper">
-          <input
-            type="text" v-model="tempName" class="search"
-            @keyup.13="confirm"
-            ref="search"
-          >
-          <svg class="icon" aria-hidden="true" @click="confirm">
-            <use xlink:href="#icon-markdown"></use>
-          </svg>
+  <transition name="dialog-fade">
+    <div class="rename-dialog" v-if="renderRename" @click="showRename = false">
+      <transition name="dialog-slide" @after-enter="focusInput">
+        <div class="rename-dialog-panel" v-if="showRename" @click.stop>
+          <div class="search-wrapper">
+            <div class="input-wrapper">
+              <input
+                type="text" v-model="tempName" class="search"
+                @keyup.13="confirm"
+                ref="search"
+              >
+              <svg class="icon" aria-hidden="true" @click="confirm">
+                <use xlink:href="#icon-markdown"></use>
+              </svg>
+            </div>
+          </div>
         </div>
-      </div>
+      </transition>
+      <div class="rename-dialog-overlay"></div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -54,6 +58,11 @@ export default {
         })
       })
     },
+    focusInput () {
+      if (this.$refs.search) {
+        this.$refs.search.focus()
+      }
+    },
     confirm () {
       this.$store.dispatch('RENAME', this.tempName)
       this.showRename = false
@@ -62,7 +71,9 @@ export default {
   watch: {
     showRename (val) {
       if (!val) {
-        this.renderRename = false
+        setTimeout(() => {
+          this.renderRename = false
+        }, 200)
       }
     }
   }
@@ -109,7 +120,7 @@ export default {
   width: 100%;
   border: 1px solid var(--inputBgColor);
   background: var(--inputBgColor);
-  border-radius: 4px;
+  border-radius: 6px;
 }
 
 .rename-dialog-panel .input-wrapper input {
@@ -138,5 +149,35 @@ export default {
 
 .rename-dialog-panel .input-wrapper svg:hover {
   color: var(--themeColor);
+}
+
+/* Fade transition for overlay */
+.dialog-fade-enter-active,
+.dialog-fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+.dialog-fade-enter-from,
+.dialog-fade-leave-to {
+  opacity: 0;
+}
+.dialog-fade-enter-active .rename-dialog-overlay,
+.dialog-fade-leave-active .rename-dialog-overlay {
+  transition: opacity 0.2s ease;
+}
+
+/* Slide transition for panel */
+.dialog-slide-enter-active {
+  transition: all 0.2s ease;
+}
+.dialog-slide-leave-active {
+  transition: all 0.15s ease;
+}
+.dialog-slide-enter-from {
+  opacity: 0;
+  transform: translateY(-12px) scale(0.97);
+}
+.dialog-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-8px) scale(0.97);
 }
 </style>

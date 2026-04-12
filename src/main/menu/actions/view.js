@@ -56,6 +56,10 @@ export const toggleTabBar = win => {
   toggleLayout(win, 'showTabBar')
 }
 
+export const toggleTitleBar = win => {
+  toggleLayout(win, 'showTitleBar')
+}
+
 export const showTabBar = win => {
   setLayout(win, 'showTabBar', true)
 }
@@ -118,6 +122,9 @@ export const viewLayoutChanged = (applicationMenu, changes) => {
         break
       case 'showTabBar':
         changeMenuByName('tabBarMenuItem', value)
+        break
+      case 'showTitleBar':
+        changeMenuByName('titleBarMenuItem', value)
         break
       case 'sourceCode':
         changeMenuByName('sourceCodeModeMenuItem', value)

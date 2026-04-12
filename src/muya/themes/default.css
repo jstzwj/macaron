@@ -97,7 +97,9 @@
 html, body {
   font-family: "Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
-  line-height: 1.6;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 span code,
@@ -177,7 +179,7 @@ kbd {
     margin-top: 1rem;
     margin-bottom: 1rem;
     font-weight: bold;
-    line-height: 1.4;
+    line-height: 1.3;
     cursor: text;
     color: var(--editorColor80);
   }
@@ -223,27 +225,35 @@ kbd {
   }
 
   h1 {
-    font-size: 1.875em;
+    font-size: 2em;
+    margin: 1.5em 0 .8em;
+    letter-spacing: -0.02em;
   }
 
   h2 {
     font-size: 1.5em;
+    margin: 1.4em 0 .7em;
+    letter-spacing: -0.01em;
   }
 
   h3 {
-    font-size: 1.375em;
+    font-size: 1.25em;
+    margin: 1.3em 0 .6em;
   }
 
   h4 {
-    font-size: 1.25em;
+    font-size: 1.125em;
+    margin: 1.2em 0 .5em;
   }
 
   h5 {
-    font-size: 1.125em;
+    font-size: 1em;
+    margin: 1.1em 0 .5em;
   }
 
   h6 {
-    font-size: 1em;
+    font-size: .875em;
+    margin: 1em 0 .5em;
   }
 
   h1 .ag-gray {
@@ -271,7 +281,7 @@ kbd {
   ol,
   dl,
   table {
-    margin: 0.5em 0;
+    margin: 0.8em 0;
   }
 
   li>ol,
@@ -280,10 +290,10 @@ kbd {
   }
 
   hr {
-    height: 4px;
+    height: 1px;
     padding: 0;
-    margin: 16px 0;
-    background-color: #e7e7e7;
+    margin: 2em 0;
+    background: linear-gradient(90deg, transparent, var(--editorColor10) 20%, var(--editorColor10) 80%, transparent);
     border: 0 none;
     overflow: hidden;
     box-sizing: content-box;
@@ -357,19 +367,23 @@ kbd {
 
   blockquote {
     position: relative;
-    padding: 0 30px;
+    padding: 0.5em 1.5em 0.5em 1.8em;
+    margin: 1em 0;
     color: var(--editorColor50);
+    background: var(--codeBlockBgColor);
+    border-radius: 6px;
   }
 
   blockquote::before {
     content: '';
     display: block;
-    height: 100%;
-    width: 2px;
+    height: calc(100% - 1em);
+    width: 3px;
     position: absolute;
-    left: 15px;
-    top: 0;
-    background: var(--themeColor);
+    left: 8px;
+    top: 0.5em;
+    background: linear-gradient(180deg, var(--themeColor), var(--themeColor50));
+    border-radius: 2px;
   }
 
   blockquote blockquote {
@@ -548,14 +562,11 @@ kbd {
   td code,
   th code {
     background-color: var(--codeBlockBgColor);
-    border-radius: 3px;
-    padding: 0;
-    /*font-family: Menlo, Monaco, Consolas, "Courier New", monospace;*/
-    padding: 2px 4px 0px 4px;
+    border-radius: 4px;
+    padding: 0.15em 0.4em;
     font-size: 85%;
-    margin: 0;
-    padding: 0.2em 0.4em;
     color: var(--editorColor);
+    border: 1px solid var(--editorColor04);
   }
 
   :not(pre) > code[class*="language-"],
@@ -564,11 +575,12 @@ kbd {
   pre.ag-paragraph {
     overflow: visible;
     font-size: 90%;
-    line-height: 1.6;
+    line-height: 1.7;
     background: var(--codeBlockBgColor);
     border: 1px solid var(--editorColor10);
-    border-radius: 3px;
+    border-radius: 6px;
     color: var(--editorColor50);
+    padding: 1em 1.2em;
   }
 
   .ag-hide.ag-ruby > .ag-ruby-render,

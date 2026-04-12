@@ -292,23 +292,33 @@ export default {
 <style scoped>
   .search-bar {
     position: absolute;
-    width: 400px;
-    padding: 0;
-    top: 0;
+    width: 420px;
+    padding: 8px;
+    top: 8px;
     right: 20px;
-    border-radius: 3px;
+    border-radius: 8px;
     box-shadow: var(--floatShadow);
     background: var(--floatBgColor);
     display: flex;
     flex-direction: row;
+    animation: searchSlideIn 0.2s ease;
+    border: 1px solid var(--floatBorderColor);
   }
+
+  @keyframes searchSlideIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   .search-bar .left-arrow {
-    width: 20px;
+    width: 28px;
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.15s ease;
   }
   .search-bar .left-arrow:hover {
     background: var(--floatHoverColor);
@@ -325,29 +335,40 @@ export default {
     flex: 1;
   }
   .search, .replace {
-    height: 28px;
+    height: 32px;
     display: flex;
-    padding: 4px 10px 0 4px;
-    margin-bottom: 5px;
+    padding: 0 4px;
+    margin-bottom: 4px;
+    gap: 6px;
   }
 
   .search-bar .button {
     outline: none;
     cursor: pointer;
     box-sizing: border-box;
-    height: 28px;
-    width: 28px;
+    height: 32px;
+    width: 32px;
     text-align: center;
     padding: 5px;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     font-weight: 500;
     color: var(--sideBarIconColor);
+    border-radius: 6px;
+    border: 1px solid var(--floatBorderColor);
+    background: var(--buttonBgColor);
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
     &.left {
-      margin-right: 10px;
+      margin-right: 0;
     }
     &.right {
-      margin-left: 10px;
+      margin-left: 0;
     }
+  }
+  .search-bar .button:hover {
+    background: var(--buttonBgColorHover);
+    border-color: var(--buttonBorderHover);
   }
   .button.active {
     color: var(--themeColor);
@@ -372,10 +393,15 @@ export default {
     display: flex;
     flex: 1;
     position: relative;
-    border: 1px solid var(--inputBgColor);
+    border: 1px solid var(--floatBorderColor);
     background: var(--inputBgColor);
-    border-radius: 3px;
+    border-radius: 6px;
     overflow: visible;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .input-wrapper:focus-within {
+    border-color: var(--themeColor);
+    box-shadow: 0 0 0 3px var(--themeColor10);
   }
   .input-wrapper.error {
     border: 1px solid var(--notificationErrorBg);
@@ -417,31 +443,30 @@ export default {
 
   .input-wrapper .error-msg {
     position: absolute;
-    top: 27px;
+    top: 31px;
     width: calc(100% + 2px);
     height: 28px;
     left: -1px;
     padding: 0 8px;
     box-sizing: border-box;
-    border-bottom-left-radius: 3px;
-    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
     background: var(--notificationErrorBg);
     line-height: 28px;
     color: #ffffff;
-    font-size: 14px;
+    font-size: 13px;
     z-index: 1;
   }
 
   .input-wrapper input {
     flex: 1;
-    padding: 0 8px;
-    height: 26px;
+    padding: 0 10px;
+    height: 30px;
     outline: none;
     border: none;
     box-sizing: border-box;
-    font-size: 14px;
+    font-size: 13px;
     color: var(--editorColor);
-    padding: 0 8px;
     background: transparent;
   }
 </style>

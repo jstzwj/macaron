@@ -301,6 +301,12 @@ export default {
       failMessage: '列印/匯出 {filename} 失敗'
     }
   },
+  recent: {
+    welcome: '歡迎使用 Macaron',
+    newFile: '新增檔案',
+    openFile: '開啟檔案',
+    openFolder: '開啟資料夾'
+  },
   about: {
     appName: 'Macaron',
     copyright: '版權所有 © 2017-{year} Luo Ran',
@@ -583,6 +589,7 @@ export default {
       focusMode: '專注模式',
       showSidebar: '顯示側邊欄',
       showTabBar: '顯示分頁列',
+      showTitleBar: '顯示標題列',
       toggleToc: '切換目錄',
       reloadImages: '重新載入圖片',
       showDevTools: '顯示開發者工具',

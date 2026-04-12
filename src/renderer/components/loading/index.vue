@@ -49,7 +49,6 @@ export default {
     border: 2.5px solid transparent;
     border-top-color: var(--themeColor);
     border-right-color: var(--themeColor);
-    opacity: 0.3;
     animation: arc-rotate 0.8s linear infinite;
   }
 

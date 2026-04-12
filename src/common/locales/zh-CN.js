@@ -302,6 +302,12 @@ export default {
       failMessage: '打印/导出 {filename} 失败'
     }
   },
+  recent: {
+    welcome: '欢迎使用 Macaron',
+    newFile: '新建文件',
+    openFile: '打开文件',
+    openFolder: '打开文件夹'
+  },
   about: {
     appName: 'Macaron',
     copyright: '版权所有 © 2017-{year} Luo Ran',
@@ -584,6 +590,7 @@ export default {
       focusMode: '专注模式',
       showSidebar: '显示侧边栏',
       showTabBar: '显示标签栏',
+      showTitleBar: '显示标题栏',
       toggleToc: '切换目录',
       reloadImages: '重新加载图片',
       showDevTools: '显示开发者工具',

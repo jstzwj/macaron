@@ -59,6 +59,14 @@ export default function (keybindings, i18n) {
         actions.toggleTabBar(focusedWindow)
       }
     }, {
+      label: i18n.t('menu.view.showTitleBar'),
+      id: 'titleBarMenuItem',
+      type: 'checkbox',
+      checked: false,
+      click (item, focusedWindow) {
+        actions.toggleTitleBar(focusedWindow)
+      }
+    }, {
       label: i18n.t('menu.view.toggleToc'),
       id: 'tocMenuItem',
       accelerator: keybindings.getAccelerator('view.toggle-toc'),

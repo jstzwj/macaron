@@ -1,24 +1,28 @@
 <template>
-  <div class="about-dialog" v-if="renderAboutDialog" @click="showAboutDialog = false">
-    <div class="about-dialog-overlay"></div>
-    <div class="about-dialog-panel" @click.stop>
-      <img class="logo" :src="logo" />
-      <el-row>
-        <el-col :span="24">
-          <h3 class="title">{{ name }}</h3>
-        </el-col>
-        <el-col :span="24">
-          <div class="text">{{ appVersion }}</div>
-        </el-col>
-        <el-col :span="24">
-          <div class="text" style="min-height: auto">{{ copyright }}</div>
-        </el-col>
-        <el-col :span="24">
-          <div class="text">{{ copyrightContributors }}</div>
-        </el-col>
-      </el-row>
+  <transition name="dialog-fade">
+    <div class="about-dialog" v-if="renderAboutDialog" @click="hideDialog">
+      <transition name="dialog-slide">
+        <div class="about-dialog-panel" v-if="showAboutDialog" @click.stop>
+          <img class="logo" :src="logo" />
+          <el-row>
+            <el-col :span="24">
+              <h3 class="title">{{ name }}</h3>
+            </el-col>
+            <el-col :span="24">
+              <div class="text">{{ appVersion }}</div>
+            </el-col>
+            <el-col :span="24">
+              <div class="text" style="min-height: auto">{{ copyright }}</div>
+            </el-col>
+            <el-col :span="24">
+              <div class="text">{{ copyrightContributors }}</div>
+            </el-col>
+          </el-row>
+        </div>
+      </transition>
+      <div class="about-dialog-overlay"></div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -66,13 +70,14 @@ export default {
     },
     hideDialog () {
       this.showAboutDialog = false
-      this.renderAboutDialog = false
     }
   },
   watch: {
     showAboutDialog (val) {
       if (!val) {
-        this.renderAboutDialog = false
+        setTimeout(() => {
+          this.renderAboutDialog = false
+        }, 200)
       }
     }
   }
@@ -131,5 +136,30 @@ export default {
 .about-dialog-panel el-row,
 .about-dialog-panel el-col {
   display: block;
+}
+
+/* Transitions */
+.dialog-fade-enter-active,
+.dialog-fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+.dialog-fade-enter-from,
+.dialog-fade-leave-to {
+  opacity: 0;
+}
+
+.dialog-slide-enter-active {
+  transition: all 0.2s ease;
+}
+.dialog-slide-leave-active {
+  transition: all 0.15s ease;
+}
+.dialog-slide-enter-from {
+  opacity: 0;
+  transform: translateY(12px) scale(0.97);
+}
+.dialog-slide-leave-to {
+  opacity: 0;
+  transform: translateY(8px) scale(0.97);
 }
 </style>

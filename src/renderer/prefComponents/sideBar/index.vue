@@ -154,20 +154,26 @@ export default {
   .search-wrapper {
     -webkit-app-region: no-drag;
     padding: 0 20px;
-    margin: 30px 0;
+    margin: 20px 0 16px;
     position: relative;
   }
   .search-input {
     width: 100%;
-    height: 35px;
-    line-height: 35px;
-    padding: 0 10px;
+    height: 36px;
+    line-height: 36px;
+    padding: 0 12px;
     box-sizing: border-box;
-    background: transparent;
+    background: var(--inputBgColor);
     color: var(--editorColor);
     border: 1px solid var(--floatBorderColor);
-    border-radius: 6px;
+    border-radius: 8px;
     outline: none;
+    font-size: 13px;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .search-input:focus {
+    border-color: var(--themeColor);
+    box-shadow: 0 0 0 3px var(--themeColor10);
   }
   .search-results {
     margin-top: 8px;
@@ -175,18 +181,19 @@ export default {
     overflow-y: auto;
     background: var(--floatBgColor);
     border: 1px solid var(--floatBorderColor);
-    border-radius: 6px;
+    border-radius: 8px;
   }
   .search-result-item {
     width: 100%;
     display: block;
     text-align: left;
-    padding: 7px;
+    padding: 8px 12px;
     border: 0;
     background: transparent;
     cursor: pointer;
     opacity: .8;
     color: inherit;
+    border-radius: 4px;
   }
   .search-result-item:hover {
     background: var(--floatHoverColor);
@@ -204,11 +211,13 @@ export default {
     -webkit-app-region: no-drag;
     overflow-y: auto;
     & .item {
-      width: 100%;
-      height: 50px;
-      font-size: 18px;
+      width: calc(100% - 16px);
+      margin: 1px 8px;
+      height: 44px;
+      font-size: 14px;
+      font-weight: 500;
       color: var(--sideBarColor);
-      padding-left: 20px;
+      padding-left: 12px;
       box-sizing: border-box;
       display: flex;
       flex-direction: row;
@@ -216,33 +225,39 @@ export default {
       cursor: pointer;
       position: relative;
       user-select: none;
+      border-radius: 6px;
+      transition: background-color 0.15s ease, color 0.15s ease;
       & > svg {
-        width: 28px;
-        height: 28px;
+        width: 20px;
+        height: 20px;
         fill: var(--iconColor);
-        margin-right: 15px;
+        margin-right: 12px;
+        transition: fill 0.15s ease;
       }
       &:hover {
         background: var(--sideBarItemHoverBgColor);
       }
       &::before {
         content: '';
-        width: 4px;
+        width: 3px;
         height: 0;
-        background: var(--highlightThemeColor);
+        background: var(--themeColor);
         position: absolute;
         left: 0;
-        border-top-right-radius: 3px;
-        border-bottom-right-radius: 3px;
-        transition: height .25s ease-in-out;
+        border-radius: 0 2px 2px 0;
+        transition: height 0.2s ease-in-out;
         top: 50%;
         transform: translateY(-50%);
       }
       &.active {
         color: var(--sideBarTitleColor);
+        background: var(--themeColor10);
+      }
+      &.active > svg {
+        fill: var(--themeColor);
       }
       &.active::before {
-        height: 100%;
+        height: 60%;
       }
     }
   }

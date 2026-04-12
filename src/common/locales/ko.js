@@ -301,6 +301,12 @@ export default {
       failMessage: '{filename} 내보내기에 실패했습니다'
     }
   },
+  recent: {
+    welcome: 'Macaron에 오신 것을 환영합니다',
+    newFile: '새 파일',
+    openFile: '파일 열기',
+    openFolder: '폴더 열기'
+  },
   about: {
     appName: 'Macaron',
     copyright: 'Copyright © 2017-{year} Luo Ran',
@@ -583,6 +589,7 @@ export default {
       focusMode: '집중 모드',
       showSidebar: '사이드바 표시',
       showTabBar: '탭 표시줄 표시',
+      showTitleBar: '제목 표시줄 표시',
       toggleToc: '목차 전환',
       reloadImages: '이미지 다시 로드',
       showDevTools: '개발자 도구 표시',

@@ -301,6 +301,12 @@ export default {
       failMessage: '{filename} dışa aktarma/yazdırma başarısız oldu'
     }
   },
+  recent: {
+    welcome: 'Macaron\'a Hoş Geldiniz',
+    newFile: 'Yeni Dosya',
+    openFile: 'Dosya Aç',
+    openFolder: 'Klasör Aç'
+  },
   about: {
     appName: 'Macaron',
     copyright: 'Telif Hakkı © 2017-{year} Luo Ran',
@@ -583,6 +589,7 @@ export default {
       focusMode: 'Odak Modu',
       showSidebar: 'Kenar Çubuğunu Göster',
       showTabBar: 'Sekme Çubuğunu Göster',
+      showTitleBar: 'Başlık Çubuğunu Göster',
       toggleToc: 'İçindekiler Tablosunu Aç/Kapat',
       reloadImages: 'Resimleri Yeniden Yükle',
       showDevTools: 'Geliştirici Araçlarını Göster',

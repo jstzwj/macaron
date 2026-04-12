@@ -278,9 +278,9 @@ export default {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, .4);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    background: var(--maskColor);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
   }
 
   .command-palette-panel {
@@ -304,7 +304,7 @@ export default {
     color: var(--editorColor);
     background: var(--floatBgColor);
     border: 1px solid var(--floatBorderColor);
-    border-radius: 4px;
+    border-radius: 8px;
     box-shadow: 0 3px 8px 3px var(--floatShadow);
   }
   .input-wrapper {
@@ -312,7 +312,7 @@ export default {
     width: 100%;
     border: 1px solid var(--inputBgColor);
     background: var(--inputBgColor);
-    border-radius: 3px;
+    border-radius: 6px;
   }
   input.search {
     width: 100%;
@@ -383,7 +383,7 @@ export default {
   .fade-enter-active, .fade-leave-active {
     transition: opacity .2s;
   }
-  .fade-enter, .fade-leave-to {
+  .fade-enter-from, .fade-leave-to {
     opacity: 0;
   }
 </style>

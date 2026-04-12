@@ -1,31 +1,35 @@
 <template>
-  <div class="import-dialog" v-if="renderImport" @click="showImport = false">
-    <div class="import-dialog-overlay"></div>
-    <div class="import-dialog-panel" @click.stop>
-      <div class="body">
-        <div
-          class="drop-container"
-          :class="{active: isOver}"
-          @dragover="dragOverHandler"
-          @dragleave="dragLeaveHandler"
-          @drop="dropHandler"
-        >
-          <div class="img-wrapper">
-            <img :src="`${importIcon.url}`" alt="import file">
+  <transition name="dialog-fade">
+    <div class="import-dialog" v-if="renderImport" @click="showImport = false">
+      <transition name="dialog-slide">
+        <div class="import-dialog-panel" v-if="showImport" @click.stop>
+          <div class="body">
+            <div
+              class="drop-container"
+              :class="{active: isOver}"
+              @dragover="dragOverHandler"
+              @dragleave="dragLeaveHandler"
+              @drop="dropHandler"
+            >
+              <div class="img-wrapper">
+                <img :src="`${importIcon.url}`" alt="import file">
+              </div>
+              <div>{{ $t('fileOperation.import.title') }}</div>
+              <p>{{ $t('fileOperation.import.dropHere') }}</p>
+            </div>
+            <div class="file-list">
+              <div>.md</div>
+              <div>.html</div>
+              <div>.docx</div>
+              <div>.tex</div>
+              <div>.wiki</div>
+            </div>
           </div>
-          <div>{{ $t('fileOperation.import.title') }}</div>
-          <p>{{ $t('fileOperation.import.dropHere') }}</p>
         </div>
-        <div class="file-list">
-          <div>.md</div>
-          <div>.html</div>
-          <div>.docx</div>
-          <div>.tex</div>
-          <div>.wiki</div>
-        </div>
-      </div>
+      </transition>
+      <div class="import-dialog-overlay"></div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -79,8 +83,10 @@ export default {
   watch: {
     showImport (val) {
       if (!val) {
-        this.renderImport = false
-        this.isOver = false
+        setTimeout(() => {
+          this.renderImport = false
+          this.isOver = false
+        }, 200)
       }
     }
   }
@@ -116,7 +122,7 @@ export default {
 }
 
 .drop-container {
-  border-radius: 5px;
+  border-radius: 8px;
   color: var(--sideBarColor);
   border: 1px dashed var(--sideBarTextColor);
 }
@@ -131,7 +137,7 @@ export default {
 .img-wrapper {
   width: 50px;
   height: 70px;
-  margin: 40px auto 0 auto;
+  margin: 20px auto 0 auto;
 }
 .img-wrapper img {
   width: 100%;
@@ -146,10 +152,35 @@ export default {
   width: 70px;
   height: 70px;
   border: 1px solid var(--sideBarTextColor);
-  border-radius: 3px;
+  border-radius: 4px;
   text-align: center;
   font-size: 18px;
   line-height: 70px;
   color: var(--sideBarTitleColor);
+}
+
+/* Transitions */
+.dialog-fade-enter-active,
+.dialog-fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+.dialog-fade-enter-from,
+.dialog-fade-leave-to {
+  opacity: 0;
+}
+
+.dialog-slide-enter-active {
+  transition: all 0.2s ease;
+}
+.dialog-slide-leave-active {
+  transition: all 0.15s ease;
+}
+.dialog-slide-enter-from {
+  opacity: 0;
+  transform: translateY(12px) scale(0.97);
+}
+.dialog-slide-leave-to {
+  opacity: 0;
+  transform: translateY(8px) scale(0.97);
 }
 </style>

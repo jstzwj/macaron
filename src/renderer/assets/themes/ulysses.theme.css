@@ -1,73 +1,74 @@
 :root {
-  --themeColor: rgb(12, 139, 186);
-  --themeColor90: rgba(12, 139, 186, .9);
-  --themeColor80: rgba(12, 139, 186, .8);
-  --themeColor70: rgba(12, 139, 186, .7);
-  --themeColor60: rgba(12, 139, 186, .6);
-  --themeColor50: rgba(12, 139, 186, .5);
-  --themeColor40: rgba(12, 139, 186, .4);
-  --themeColor30: rgba(12, 139, 186, .3);
-  --themeColor20: rgba(12, 139, 186, .2);
-  --themeColor10: rgba(12, 139, 186, .1);
+  /* Ulysses - Warm paper-like writing theme */
+  --themeColor: #C05621;
+  --themeColor90: rgba(192, 86, 33, .9);
+  --themeColor80: rgba(192, 86, 33, .8);
+  --themeColor70: rgba(192, 86, 33, .7);
+  --themeColor60: rgba(192, 86, 33, .6);
+  --themeColor50: rgba(192, 86, 33, .5);
+  --themeColor40: rgba(192, 86, 33, .4);
+  --themeColor30: rgba(192, 86, 33, .3);
+  --themeColor20: rgba(192, 86, 33, .2);
+  --themeColor10: rgba(192, 86, 33, .1);
 
-  --highlightColor: rgba(12, 139, 186, .4);
-  --selectionColor: rgba(0, 0, 0, .1);
-  --editorColor: rgba(101, 101, 101, .7);
-  --editorColor80: rgba(101, 101, 101, .8);
-  --editorColor60: rgba(101, 101, 101, .6);
-  --editorColor50: rgba(101, 101, 101, .5);
-  --editorColor40: rgba(101, 101, 101, .4);
-  --editorColor30: rgba(101, 101, 101, .3);
-  --editorColor10: rgba(101, 101, 101, .1);
-  --editorColor04: rgba(101, 101, 101, .04);
-  --editorBgColor: #f3f3f3;
-  --deleteColor: #ff6969;
-  --iconColor: rgba(101, 101, 101, .8);
-  --codeBgColor: #d8d8d869;
-  --codeBlockBgColor: rgba(12, 139, 186, .05);
-  --footnoteBgColor: rgba(0, 0, 0, .03);
-  --inputBgColor: rgba(0, 0, 0, .06);
+  --highlightColor: rgba(192, 86, 33, .2);
+  --selectionColor: rgba(192, 86, 33, .12);
+  --editorColor: #3D2C20;
+  --editorColor80: rgba(61, 44, 32, .8);
+  --editorColor60: rgba(61, 44, 32, .6);
+  --editorColor50: rgba(61, 44, 32, .5);
+  --editorColor40: rgba(61, 44, 32, .4);
+  --editorColor30: rgba(61, 44, 32, .3);
+  --editorColor10: rgba(61, 44, 32, .1);
+  --editorColor04: rgba(61, 44, 32, .04);
+  --editorBgColor: #FEFCF3;
+  --deleteColor: #C53030;
+  --iconColor: #A89585;
+  --codeBgColor: #F5F0E8;
+  --codeBlockBgColor: rgba(192, 86, 33, .05);
+  --footnoteBgColor: rgba(61, 44, 32, .03);
+  --inputBgColor: #F5F0E8;
   --focusColor: var(--themeColor);
 
   --buttonFontColor: var(--editorColor);
-  --buttonBgColor: #ffffff;
-  --buttonBorder: 1px solid #dcdfe6;
-  --buttonShadow: none;
+  --buttonBgColor: #FFFFFF;
+  --buttonBorder: 1px solid #E8DDD0;
+  --buttonShadow: 0 1px 2px rgba(0, 0, 0, .05);
   --buttonFontColorHover: var(--buttonFontColor);
-  --buttonBgColorHover: linear-gradient(#fafafa, #f5f5f5);
-  --buttonBorderHover: var(--buttonBorder);
+  --buttonBgColorHover: #F5F0E8;
+  --buttonBorderHover: 1px solid #D4C4B0;
   --buttonFontColorActive: var(--buttonFontColor);
-  --buttonBgColorActive: #f5f5f5;
+  --buttonBgColorActive: #EDE5D8;
   --buttonBorderActive: var(--buttonBorder);
   --buttonFocusBorder: 1px solid var(--themeColor);
 
-  --buttonPrimaryFontColor: #ffffff;
+  --buttonPrimaryFontColor: #FFFFFF;
   --buttonPrimaryBgColor: var(--themeColor);
   --buttonPrimaryBorder: none;
-  --buttonPrimaryShadow: 0 0 8px 0 rgba(0, 0, 0, .1);
+  --buttonPrimaryShadow: 0 2px 8px rgba(192, 86, 33, .25);
   --buttonPrimaryFontColorHover: var(--buttonPrimaryFontColor);
-  --buttonPrimaryBgColorHover: var(--buttonPrimaryBgColor);
+  --buttonPrimaryBgColorHover: #A0451C;
   --buttonPrimaryBorderHover: var(--buttonPrimaryBorder);
   --buttonPrimaryFontColorActive: var(--buttonPrimaryFontColor);
-  --buttonPrimaryBgColorActive: var(--buttonPrimaryBgColor);
+  --buttonPrimaryBgColorActive: #8B3A16;
   --buttonPrimaryBorderActive: var(--buttonPrimaryBorder);
   --buttonPrimaryFocusBorder: none;
-  --buttonPrimaryFocusShadow: inset 0 0 0 1px rgba(5, 66, 89, 0.5), 0 0 0 1px var(--themeColor);
-  --tableBorderColor: #e5e5e5;
+  --buttonPrimaryFocusShadow: inset 0 0 0 1px rgba(61, 44, 32, 0.5), 0 0 0 1px var(--themeColor);
+  --tableBorderColor: #E8DDD0;
 
-  --sideBarColor: rgba(101, 101, 101, .6);
-  --sideBarIconColor: var(--iconColor);
-  --sideBarTitleColor: rgba(101, 101, 101, 1);
-  --sideBarTextColor: rgba(101, 101, 101, .4);
-  --sideBarBgColor: rgba(248, 248, 248, 0.9);
-  --sideBarItemHoverBgColor: rgba(101, 101, 101, .03);
-  --itemBgColor: rgba(245, 245, 245, 0.6);
+  --sideBarColor: #A89585;
+  --sideBarIconColor: #8B7969;
+  --sideBarTitleColor: #3D2C20;
+  --sideBarTextColor: #A89585;
+  --sideBarBgColor: #F5F0E8;
+  --sideBarItemHoverBgColor: rgba(192, 86, 33, .06);
+  --itemBgColor: #FFFFFF;
 
-  --floatFontColor: rgba(101, 101, 101, .7);
-  --floatBgColor: #ffffff;
-  --floatHoverColor: rgba(101, 101, 101, .04);
-  --floatBorderColor: rgba(0, 0, 0, .03);
-  --maskColor: rgba(232, 232, 232, .8);
+  --floatFontColor: #3D2C20;
+  --floatBgColor: #FFFFFF;
+  --floatHoverColor: rgba(192, 86, 33, .04);
+  --floatBorderColor: #E8DDD0;
+  --maskColor: rgba(61, 44, 32, .4);
   --editorAreaWidth: 750px;
 }
 
@@ -76,12 +77,13 @@
 }
 
 .tabs-container > li {
-  border-right: 1px solid #e5e5e5 !important;
+  border-right: 1px solid #E8DDD0 !important;
   background: var(--editorBgColor) !important;
 }
 
 /* ------------------------------------ */
 
+/* Ulysses: centered headings for distraction-free writing */
 h1, h2, h3, h4, h5, h6 {
   color: var(--themeColor);
   text-align: center;
@@ -103,7 +105,7 @@ li.ag-bullet-list-item::before {
 }
 
 blockquote.ag-paragraph {
-  background: rgb(233, 233, 233);
+  background: var(--codeBlockBgColor);
 }
 blockquote.ag-paragraph::before {
   content: none;
@@ -170,17 +172,17 @@ li.ag-task-list-item > input.ag-checkbox-checked::after {
   transform: rotate(-45deg) scale(1);
 }
 
-/*horizontal line*/
+/*horizontal line - Ulysses: short, centered, warm */
 p:not(.ag-active)[data-role="hr"]::before {
   content: '';
   position: absolute;
-  width: 50%;
+  width: 30%;
   display: block;
   left: 50%;
   top: 50%;
-  height: 2px;
+  height: 1px;
   box-sizing: border-box;
   border: none;
-  border-bottom: 2px dashed var(--editorColor50);
+  border-bottom: 1px solid var(--themeColor30);
   transform: translateX(-50%) translateY(-50%);
 }

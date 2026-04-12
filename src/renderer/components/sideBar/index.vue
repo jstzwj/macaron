@@ -190,7 +190,7 @@ export default {
     color: var(--sideBarColor);
     user-select: none;
     background: var(--sideBarBgColor);
-    border-right: 1px solid var(--itemBgColor);
+    border-right: 1px solid var(--floatBorderColor);
     & .left-column {
       & svg {
         fill: var(--iconColor);
@@ -204,8 +204,10 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding-top: 40px;
+    padding: 12px 0;
     box-sizing: border-box;
+    background: var(--itemBgColor);
+    border-right: 1px solid var(--floatBorderColor);
     & > ul {
       opacity: 1;
     }
@@ -218,23 +220,35 @@ export default {
     margin: 0;
     padding: 0;
     & > li {
-      width: 45px;
-      height: 45px;
-      margin: 0;
+      width: 37px;
+      height: 36px;
+      margin: 2px 4px;
       padding: 0;
       display: flex;
       justify-content: space-around;
       align-items: center;
       cursor: pointer;
+      border-radius: 6px;
+      transition: background-color 0.15s ease;
       & > svg {
         width: 18px;
         height: 18px;
         fill: var(--sideBarIconColor);
+        opacity: 0.8;
+        transition: transform 0.25s ease-in-out, fill 0.15s ease, opacity 0.15s ease;
+      }
+      &:hover {
+        background: var(--sideBarItemHoverBgColor);
+      }
+      &:hover > svg {
         opacity: 1;
-        transition: transform .25s ease-in-out;
+      }
+      &:active > svg {
+        transform: scale(0.9);
       }
       &.active > svg {
         fill: var(--themeColor);
+        opacity: 1;
       }
     }
   }
@@ -253,10 +267,27 @@ export default {
     right: 0;
     bottom: 0;
     height: 100%;
-    width: 3px;
+    width: 4px;
     cursor: col-resize;
+    transition: background-color 0.15s ease;
     &:hover {
-      border-right: 2px solid var(--iconColor);
+      background: var(--themeColor20);
+    }
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 2px;
+      height: 32px;
+      border-left: 1px solid var(--themeColor30);
+      border-right: 1px solid var(--themeColor30);
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+    &:hover::before {
+      opacity: 1;
     }
   }
 </style>

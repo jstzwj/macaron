@@ -301,6 +301,12 @@ export default {
       failMessage: '{filename} の印刷/エクスポートに失敗しました'
     }
   },
+  recent: {
+    welcome: 'Macaron へようこそ',
+    newFile: '新規ファイル',
+    openFile: 'ファイルを開く',
+    openFolder: 'フォルダーを開く'
+  },
   about: {
     appName: 'Macaron',
     copyright: 'Copyright © 2017-{year} Luo Ran',
@@ -583,6 +589,7 @@ export default {
       focusMode: 'フォーカスモード',
       showSidebar: 'サイドバーを表示',
       showTabBar: 'タブバーを表示',
+      showTitleBar: 'タイトルバーを表示',
       toggleToc: '目次を切り替え',
       reloadImages: '画像を再読み込み',
       showDevTools: '開発者ツールを表示',

@@ -112,17 +112,18 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 48px;
-    min-height: 48px;
-    padding: 0 20px;
+    height: 52px;
+    min-height: 52px;
+    padding: 0 24px;
     border-bottom: 1px solid var(--editorColor10);
     background: var(--editorBgColor);
   }
 
   .pref-header-title {
     font-size: 15px;
-    font-weight: 500;
+    font-weight: 600;
     color: var(--editorColor);
+    letter-spacing: -0.01em;
   }
 
   .pref-header-close {
@@ -135,12 +136,13 @@ export default {
     background: transparent;
     cursor: pointer;
     color: var(--editorColor50);
-    border-radius: 6px;
+    border-radius: 8px;
     padding: 0;
+    transition: background-color 0.15s ease, color 0.15s ease;
   }
 
   .pref-header-close:hover {
-    background: var(--editorColor10);
+    background: var(--editorColor04);
     color: var(--editorColor);
   }
 
@@ -160,7 +162,7 @@ export default {
   }
 
   .pref-inline-body {
-    padding: 20px 30px 40px;
+    padding: 24px 36px 48px;
     max-width: 800px;
   }
 </style>

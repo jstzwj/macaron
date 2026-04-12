@@ -3,7 +3,7 @@
     v-if="currentNotification"
     class="editor-notifications"
     :class="currentNotification.style"
-    :style="{'max-width': showSideBar ? `calc(100vw - ${sideBarWidth}px` : '100vw' }"
+    :style="{'max-width': showSideBar ? `calc(100vw - ${sideBarWidth}px)` : '100vw' }"
   >
     <div class="msg">
       {{ currentNotification.msg }}

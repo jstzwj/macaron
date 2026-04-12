@@ -190,10 +190,10 @@ export default {
   .editor-tabs {
     display: flex;
     flex-direction: row;
-    height: 35px;
+    height: 40px;
     align-items: stretch;
-    background: var(--floatBgColor);
-    box-shadow: 0px 0px 9px 2px rgba(0, 0, 0, .1);
+    background: var(--editorBgColor);
+    border-bottom: 1px solid var(--editorColor10);
     overflow: hidden;
     user-select: none;
   }
@@ -211,31 +211,36 @@ export default {
   .tabs-list {
     display: flex;
     flex-direction: row;
-    height: 35px;
+    height: 40px;
     min-width: min-content;
+    gap: 1px;
+    padding: 4px 8px 0;
   }
 
   .tab-item {
     display: flex;
     align-items: center;
-    padding: 0 8px;
-    height: 35px;
+    padding: 0 12px;
+    height: 36px;
     color: var(--editorColor50);
-    font-size: 12px;
-    background: var(--floatBgColor);
+    font-size: 12.5px;
+    background: transparent;
     cursor: pointer;
     position: relative;
     max-width: 200px;
     flex-shrink: 0;
+    border-radius: 6px 6px 0 0;
+    transition: background-color 0.15s ease, color 0.15s ease;
   }
 
   .tab-item:hover {
-    background: var(--editorColor10);
+    background: var(--editorColor04);
   }
 
   .tab-item.active {
-    background: var(--itemBgColor);
+    background: var(--editorBgColor);
     color: var(--themeColor);
+    font-weight: 500;
   }
 
   .tab-item.active::after {
@@ -243,9 +248,10 @@ export default {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 0;
+    top: 0;
     height: 2px;
     background: var(--themeColor);
+    border-radius: 0 0 2px 2px;
   }
 
   .tab-title {
@@ -260,16 +266,17 @@ export default {
     align-items: center;
     justify-content: center;
     margin-left: 6px;
-    width: 18px;
-    height: 18px;
-    border-radius: 3px;
-    color: var(--editorColor50);
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    color: var(--editorColor40);
     flex-shrink: 0;
+    transition: background-color 0.15s ease, color 0.15s ease;
   }
 
   .tab-close:hover {
-    background: var(--editorColor30);
-    color: var(--themeColor);
+    background: var(--editorColor10);
+    color: var(--editorColor);
   }
 
   .tab-item.unsaved:not(.active) .tab-close {
@@ -279,6 +286,7 @@ export default {
   .tab-ghost {
     opacity: 0.4;
     background: var(--editorColor10);
+    border-radius: 6px;
   }
 
   .tab-chosen {
@@ -293,15 +301,16 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 35px;
-    height: 35px;
+    width: 40px;
+    height: 40px;
     cursor: pointer;
-    color: var(--editorColor50);
+    color: var(--editorColor40);
     flex-shrink: 0;
+    transition: color 0.15s ease, background-color 0.15s ease;
   }
 
   .tab-new:hover {
     color: var(--themeColor);
-    background: var(--editorColor10);
+    background: var(--editorColor04);
   }
 </style>

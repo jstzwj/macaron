@@ -43,6 +43,11 @@ export const setSpellCheckerEnabled = (win, enabled) => {
  * @throws Throws an exception if the language cannot be set.
  */
 export const switchLanguage = (win, lang) => {
+  const available = win.webContents.session.availableSpellCheckerLanguages
+  if (available.length > 0 && !available.includes(lang)) {
+    log.warn(`Spell checker language "${lang}" is not available. Available: ${available.join(', ')}`)
+    return
+  }
   win.webContents.session.setSpellCheckerLanguages([lang])
 }
 
@@ -69,7 +74,11 @@ export default () => {
   })
   ipcMain.handle('mt::spellchecker-switch-language', async (e, lang) => {
     const win = BrowserWindow.fromWebContents(e.sender)
-    switchLanguage(win, lang)
+    try {
+      switchLanguage(win, lang)
+    } catch (error) {
+      log.warn(`Unable to switch spellchecker language to "${lang}":`, error.message)
+    }
     return null
   })
   ipcMain.handle('mt::spellchecker-get-available-dictionaries', async e => {

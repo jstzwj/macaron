@@ -67,6 +67,7 @@ const state = () => ({
   // Default values that are overwritten with the entries below.
   sideBarVisibility: false,
   tabBarVisibility: false,
+  showTitleBar: false,
   sourceCodeModeEnabled: false,
 
   searchExclusions: [],
