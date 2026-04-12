@@ -28,8 +28,8 @@
         transform: translateX(-50%) translateY(-50%);
         border-radius: 50%;
         border: 3px solid transparent;
-        border-top-color: var(--spinner-color, rgba(33, 181, 111, 1));
-        border-right-color: var(--spinner-color, rgba(33, 181, 111, 0.3));
+        border-top-color: var(--spinner-color, rgba(59, 130, 246, 1));
+        border-right-color: var(--spinner-color, rgba(59, 130, 246, 0.3));
         -webkit-animation: spinner-rotate 0.8s linear infinite;
         animation: spinner-rotate 0.8s linear infinite;
       }
@@ -63,15 +63,15 @@
     <script>
       const params = new URLSearchParams(window.location.search)
       const THEMES_COLOR = {
-        'one-dark': 'rgba(77, 120, 204, 1)',
-        'dark': '#409eff',
-        'graphite': 'rgb(104, 134, 170)',
-        'material-dark': '#f48237',
-        'light': 'rgba(33, 181, 111, 1)',
-        'ulysses': 'rgb(12, 139, 186)'
+        'one-dark': 'rgba(198, 120, 221, 1)',
+        'dark': '#5B8DEF',
+        'graphite': '#4A5568',
+        'material-dark': '#4DB6AC',
+        'light': 'rgba(59, 130, 246, 1)',
+        'ulysses': '#C05621'
       }
 
-      const color = THEMES_COLOR[params.get('theme')] || 'rgba(33, 181, 111, 1)'
+      const color = THEMES_COLOR[params.get('theme')] || 'rgba(59, 130, 246, 1)'
       const spinner = document.querySelector('.dot')
       if (spinner) {
         spinner.style.setProperty('--spinner-color', color)
