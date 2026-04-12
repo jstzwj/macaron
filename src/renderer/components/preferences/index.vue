@@ -1,5 +1,15 @@
 <template>
   <div class="pref-inline-overlay">
+    <!-- Top title bar -->
+    <div class="pref-header">
+      <span class="pref-header-title">{{ $t('app.preferences') }}</span>
+      <button class="pref-header-close" @click="close">
+        <svg viewBox="0 0 1024 1024" width="14" height="14">
+          <path fill="currentColor" d="M563.8 512l262.5-312.9c4.4-5.2 0.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L512 442.2 295.9 191.7c-3-3.6-7.5-5.7-12.3-5.7H203.8c-6.8 0-10.5 7.9-6.1 13.1L460.2 512 197.7 824.9c-4.4 5.2-0.7 13.1 6.1 13.1h79.8c4.7 0 9.2-2.1 12.3 5.7L512 581.8l216.1 250.5c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z" />
+        </svg>
+      </button>
+    </div>
+    <!-- Content area -->
     <div class="pref-inline-container">
       <pref-side-bar
         :use-router="false"
@@ -12,11 +22,6 @@
         </div>
       </div>
     </div>
-    <button class="pref-close-btn" @click="close">
-      <svg viewBox="0 0 1024 1024" width="16" height="16">
-        <path fill="currentColor" d="M563.8 512l262.5-312.9c4.4-5.2 0.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L512 442.2 295.9 191.7c-3-3.6-7.5-5.7-12.3-5.7H203.8c-6.8 0-10.5 7.9-6.1 13.1L460.2 512 197.7 824.9c-4.4 5.2-0.7 13.1 6.1 13.1h79.8c4.7 0 9.2-2.1 12.3 5.7L512 581.8l216.1 250.5c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z" />
-      </svg>
-    </button>
   </div>
 </template>
 
@@ -98,26 +103,29 @@ export default {
     inset: 0;
     z-index: 1000;
     background: var(--editorBgColor);
-  }
-
-  .pref-inline-container {
     display: flex;
-    flex-direction: row;
-    width: 100%;
-    height: 100%;
+    flex-direction: column;
   }
 
-  .pref-inline-content {
-    flex: 1;
-    position: relative;
-    overflow-y: auto;
-    padding-top: var(--titleBarHeight, 32px);
+  /* Top title bar */
+  .pref-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 48px;
+    min-height: 48px;
+    padding: 0 20px;
+    border-bottom: 1px solid var(--editorColor10);
+    background: var(--editorBgColor);
   }
 
-  .pref-close-btn {
-    position: absolute;
-    top: 6px;
-    right: 16px;
+  .pref-header-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--editorColor);
+  }
+
+  .pref-header-close {
     width: 32px;
     height: 32px;
     display: flex;
@@ -127,13 +135,28 @@ export default {
     background: transparent;
     cursor: pointer;
     color: var(--editorColor50);
-    border-radius: 4px;
-    z-index: 10;
+    border-radius: 6px;
+    padding: 0;
   }
 
-  .pref-close-btn:hover {
+  .pref-header-close:hover {
     background: var(--editorColor10);
-    color: var(--themeColor);
+    color: var(--editorColor);
+  }
+
+  /* Content area below title bar */
+  .pref-inline-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .pref-inline-content {
+    flex: 1;
+    position: relative;
+    overflow-y: auto;
   }
 
   .pref-inline-body {

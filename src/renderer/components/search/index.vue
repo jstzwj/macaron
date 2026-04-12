@@ -356,6 +356,15 @@ export default {
     width: 16px;
     height: 16px;
   }
+  .search-bar .button-group {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+  }
+  .search-bar .button-group .item {
+    display: flex;
+    align-items: center;
+  }
   .search-bar .button:active {
     opacity: .5;
   }

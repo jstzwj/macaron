@@ -1,6 +1,5 @@
 <template>
   <div class="pref-sidebar">
-    <h3 class="title">{{ $t('app.preferences') }}</h3>
     <section class="search-wrapper">
       <input
         class="search-input"
@@ -149,15 +148,8 @@ export default {
     flex-direction: column;
     background: var(--sideBarBgColor);
     width: var(--prefSideBarWidth);
-    height: 100vh;
-    padding-top: 30px;
+    height: 100%;
     box-sizing: border-box;
-    & h3 {
-      margin: 0;
-      font-weight: normal;
-      text-align: center;
-      color: var(--sideBarColor);
-    }
   }
   .search-wrapper {
     -webkit-app-region: no-drag;
