@@ -10,7 +10,8 @@ const state = () => ({
   rightColumn: 'files',
   showSideBar: false,
   showTabBar: false,
-  sideBarWidth
+  sideBarWidth,
+  showPreferences: false
 })
 
 const getters = {}
@@ -30,6 +31,9 @@ const mutations = {
     // TODO: Add side bar to session (GH#732).
     localStorage.setItem('side-bar-width', Math.max(+width, 220))
     state.sideBarWidth = width
+  },
+  SET_SHOW_PREFERENCES (state, value) {
+    state.showPreferences = value
   }
 }
 
@@ -68,6 +72,14 @@ const actions = {
 
   CHANGE_SIDE_BAR_WIDTH ({ commit }, width) {
     commit('SET_SIDE_BAR_WIDTH', width)
+  },
+
+  OPEN_PREFERENCES ({ commit }) {
+    commit('SET_SHOW_PREFERENCES', true)
+  },
+
+  CLOSE_PREFERENCES ({ commit }) {
+    commit('SET_SHOW_PREFERENCES', false)
   }
 }
 

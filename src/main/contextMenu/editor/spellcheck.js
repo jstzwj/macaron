@@ -56,7 +56,11 @@ export default (isMisspelled, misspelledWord, wordSuggestions) => {
     spellingSubmenu.push({
       label: 'Edit Dictionary...',
       click (menuItem, targetWindow) {
-        ipcMain.emit('app-create-settings-window', 'spelling')
+        if (targetWindow) {
+          targetWindow.webContents.send('mt::show-inline-preferences', 'spelling')
+        } else {
+          ipcMain.emit('app-create-settings-window', 'spelling')
+        }
       }
     })
   }

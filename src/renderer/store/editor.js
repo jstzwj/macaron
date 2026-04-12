@@ -898,7 +898,7 @@ const actions = {
 
   SHOW_TAB_VIEW ({ commit, state, dispatch }, always) {
     const { tabs } = state
-    if (always || tabs.length === 1) {
+    if (always || tabs.length <= 1) {
       commit('SET_LAYOUT', { showTabBar: true })
       dispatch('DISPATCH_LAYOUT_MENU_ITEMS')
     }

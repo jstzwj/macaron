@@ -599,42 +599,43 @@ class App {
       }
 
       const { id: tabId, pathname } = tab
+      const t = this._accessor.i18n.t.bind(this._accessor.i18n)
       const menu = Menu.buildFromTemplate([
         {
-          label: 'Close',
+          label: t('editor.contextMenu.tabs.close'),
           id: 'closeThisTab',
           click: () => event.sender.send('mt::context-menu-tabs-action', { type: 'close-this', tabId })
         },
         {
-          label: 'Close others',
+          label: t('editor.contextMenu.tabs.closeOthers'),
           id: 'closeOtherTabs',
           click: () => event.sender.send('mt::context-menu-tabs-action', { type: 'close-others', tabId })
         },
         {
-          label: 'Close saved tabs',
+          label: t('editor.contextMenu.tabs.closeSavedTabs'),
           id: 'closeSavedTabs',
           click: () => event.sender.send('mt::context-menu-tabs-action', { type: 'close-saved', tabId })
         },
         {
-          label: 'Close all tabs',
+          label: t('editor.contextMenu.tabs.closeAllTabs'),
           id: 'closeAllTabs',
           click: () => event.sender.send('mt::context-menu-tabs-action', { type: 'close-all', tabId })
         },
         { type: 'separator' },
         {
-          label: 'Rename',
+          label: t('editor.contextMenu.tabs.rename'),
           id: 'renameFile',
           enabled: !!pathname,
           click: () => event.sender.send('mt::context-menu-tabs-action', { type: 'rename', tabId })
         },
         {
-          label: 'Copy path',
+          label: t('editor.contextMenu.tabs.copyPath'),
           id: 'copyPath',
           enabled: !!pathname,
           click: () => event.sender.send('mt::context-menu-tabs-action', { type: 'copy-path', tabId })
         },
         {
-          label: 'Show in folder',
+          label: t('editor.contextMenu.tabs.showInFolder'),
           id: 'showInFolder',
           enabled: !!pathname,
           click: () => event.sender.send('mt::context-menu-tabs-action', { type: 'show-in-folder', tabId })
@@ -649,48 +650,49 @@ class App {
         return
       }
 
+      const t = this._accessor.i18n.t.bind(this._accessor.i18n)
       const menu = Menu.buildFromTemplate([
         {
-          label: 'New File',
+          label: t('editor.contextMenu.sideBar.newFile'),
           id: 'newFileMenuItem',
           click: () => event.sender.send('mt::context-menu-sidebar-action', { type: 'new-file' })
         },
         {
-          label: 'New Directory',
+          label: t('editor.contextMenu.sideBar.newDirectory'),
           id: 'newDirectoryMenuItem',
           click: () => event.sender.send('mt::context-menu-sidebar-action', { type: 'new-directory' })
         },
         { type: 'separator' },
         {
-          label: 'Copy',
+          label: t('editor.contextMenu.sideBar.copy'),
           id: 'copyMenuItem',
           click: () => event.sender.send('mt::context-menu-sidebar-action', { type: 'copy' })
         },
         {
-          label: 'Cut',
+          label: t('editor.contextMenu.sideBar.cut'),
           id: 'cutMenuItem',
           click: () => event.sender.send('mt::context-menu-sidebar-action', { type: 'cut' })
         },
         {
-          label: 'Paste',
+          label: t('editor.contextMenu.sideBar.paste'),
           id: 'pasteMenuItem',
           enabled: !!hasPathCache,
           click: () => event.sender.send('mt::context-menu-sidebar-action', { type: 'paste' })
         },
         { type: 'separator' },
         {
-          label: 'Rename',
+          label: t('editor.contextMenu.sideBar.rename'),
           id: 'renameMenuItem',
           click: () => event.sender.send('mt::context-menu-sidebar-action', { type: 'rename' })
         },
         {
-          label: 'Move To Trash',
+          label: t('editor.contextMenu.sideBar.moveToTrash'),
           id: 'deleteMenuItem',
           click: () => event.sender.send('mt::context-menu-sidebar-action', { type: 'delete' })
         },
         { type: 'separator' },
         {
-          label: 'Show In Folder',
+          label: t('editor.contextMenu.sideBar.showInFolder'),
           id: 'showInFolderMenuItem',
           click: () => event.sender.send('mt::context-menu-sidebar-action', { type: 'show-in-folder' })
         }

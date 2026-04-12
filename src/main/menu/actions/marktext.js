@@ -53,8 +53,12 @@ ipcMain.on('mt::check-for-update', e => {
 
 // --------------------------------------------------------
 
-export const userSetting = () => {
-  ipcMain.emit('app-create-settings-window')
+export const userSetting = (browserWindow) => {
+  if (browserWindow) {
+    browserWindow.webContents.send('mt::show-inline-preferences')
+  } else {
+    ipcMain.emit('app-create-settings-window')
+  }
 }
 
 export const checkUpdates = browserWindow => {

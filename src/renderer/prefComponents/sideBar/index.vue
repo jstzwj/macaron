@@ -38,6 +38,16 @@ import { ipcRenderer } from 'electron'
 import { category, searchContent } from './config'
 
 export default {
+  props: {
+    useRouter: {
+      type: Boolean,
+      default: true
+    },
+    activeCategory: {
+      type: String,
+      default: 'general'
+    }
+  },
   data () {
     this.category = category
     return {
@@ -67,39 +77,62 @@ export default {
   },
   watch: {
     '$route' (to, from) {
-      if (to.name !== from.name) {
+      if (this.useRouter && to.name !== from.name) {
         this.currentCategory = to.name
+      }
+    },
+    activeCategory (val) {
+      if (!this.useRouter && val) {
+        this.currentCategory = val
       }
     }
   },
   methods: {
     handleSelect (item) {
-      this.$router.push({
-        path: `/preference/${item.category.toLowerCase()}`
-      })
+      if (this.useRouter) {
+        this.$router.push({
+          path: `/preference/${item.category.toLowerCase()}`
+        })
+      } else {
+        const label = item.category.toLowerCase()
+        this.currentCategory = label
+        this.$emit('category-change', label)
+      }
     },
     handleCategoryItemClick (item) {
       const { currentCategory } = this
       if (item.label !== currentCategory) {
-        this.$router.push({
-          path: item.path
-        })
+        if (this.useRouter) {
+          this.$router.push({
+            path: item.path
+          })
+        } else {
+          this.currentCategory = item.label
+          this.$emit('category-change', item.label)
+        }
       }
     },
     onIpcCategoryChange (event, category) {
-      const validRoute = category && this.$router.getRoutes().findIndex(route => route.path.endsWith(`/${category}`)) !== -1
-      if (validRoute) {
-        this.$router.push({
-          path: `/preference/${category}`
-        })
+      const validCategory = category && this.category.some(c => c.label === category)
+      if (validCategory) {
+        if (this.useRouter) {
+          this.$router.push({
+            path: `/preference/${category}`
+          })
+        } else {
+          this.currentCategory = category
+          this.$emit('category-change', category)
+        }
       }
     }
   },
 
   mounted () {
     this.searchItems = searchContent
-    if (this.$route && this.$route.name) {
+    if (this.useRouter && this.$route && this.$route.name) {
       this.currentCategory = this.$route.name
+    } else if (!this.useRouter && this.activeCategory) {
+      this.currentCategory = this.activeCategory
     }
     ipcRenderer.on('settings::change-tab', this.onIpcCategoryChange)
   },

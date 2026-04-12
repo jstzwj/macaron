@@ -144,8 +144,8 @@ export default function (keybindings, userPreference, recentlyUsedFiles, i18n) {
     label: i18n.t('menu.file.preferences'),
     accelerator: keybindings.getAccelerator('file.preferences'),
     visible: !isOsx,
-    click () {
-      userSetting()
+    click (menuItem, browserWindow) {
+      userSetting(browserWindow)
     }
   }, {
     type: 'separator'

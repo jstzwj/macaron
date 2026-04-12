@@ -20,8 +20,8 @@ export default function (keybindings, i18n) {
     }, {
       label: i18n.t('menu.macaron.preferences'),
       accelerator: keybindings.getAccelerator('file.preferences'),
-      click () {
-        actions.userSetting()
+      click (menuItem, browserWindow) {
+        actions.userSetting(browserWindow)
       }
     }, {
       type: 'separator'

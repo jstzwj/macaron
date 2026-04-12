@@ -36,25 +36,27 @@ import Sortable from 'sortablejs'
 export default {
   data () {
     return {
-      sortable: null
+      sortable: null,
+      _tabs: [],
+      _currentFile: {}
     }
   },
   computed: {
     currentFile () {
-      return this.$store.state.editor.currentFile
+      return this._currentFile
     },
     tabs () {
-      return this.$store.state.editor.tabs
+      return this._tabs
     }
   },
   methods: {
     isActive (file) {
-      const cur = this.$store.state.editor.currentFile
+      const cur = this._currentFile
       return cur && cur.id === file.id
     },
     selectFile (file) {
       if (!file || !file.id) return
-      const curId = this.$store.state.editor.currentFile?.id
+      const curId = this._currentFile?.id
       if (file.id !== curId) {
         this.$store.dispatch('UPDATE_CURRENT_FILE', file)
       }
@@ -140,6 +142,19 @@ export default {
     }
   },
   created () {
+    // Initialize from store
+    this._tabs = this.$store.state.editor.tabs
+    this._currentFile = this.$store.state.editor.currentFile
+
+    // Subscribe to store changes for tab updates
+    this._unsubscribeStore = this.$store.subscribe((mutation, state) => {
+      if (mutation.type.includes('TAB') || mutation.type.includes('FILE')) {
+        // Create new array references so Vue 3 detects the change
+        this._tabs = [...state.editor.tabs]
+        this._currentFile = state.editor.currentFile
+      }
+    })
+
     this.$nextTick(() => {
       bus.$on('TABS::close-this', this.closeTab)
       bus.$on('TABS::close-others', this.closeOthers)
@@ -157,6 +172,9 @@ export default {
   },
   beforeUnmount () {
     this.destroySortable()
+    if (this._unsubscribeStore) {
+      this._unsubscribeStore()
+    }
     bus.$off('TABS::close-this', this.closeTab)
     bus.$off('TABS::close-others', this.closeOthers)
     bus.$off('TABS::close-saved', this.closeSaved)

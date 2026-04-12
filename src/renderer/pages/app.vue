@@ -33,6 +33,7 @@
       <tweet></tweet>
       <import-modal></import-modal>
     </div>
+    <inline-preferences v-if="showPreferences"></inline-preferences>
   </div>
 </template>
 
@@ -49,6 +50,7 @@ import ExportSettingDialog from '@/components/exportSettings'
 import Rename from '@/components/rename'
 import Tweet from '@/components/tweet'
 import ImportModal from '@/components/import'
+import InlinePreferences from '@/components/preferences'
 import { loadingPageMixins } from '@/mixins'
 import { mapState } from 'vuex'
 import bus from '@/bus'
@@ -68,7 +70,8 @@ export default {
     Tweet,
     ImportModal,
     CommandPalette,
-    StatusBar
+    StatusBar,
+    InlinePreferences
   },
   mixins: [loadingPageMixins],
   data () {
@@ -84,7 +87,8 @@ export default {
       _textDirection: 'ltr',
       _zoom: 1.0,
       _projectTree: null,
-      _windowActive: true
+      _windowActive: true,
+      _showPreferences: false
     }
   },
   computed: {
@@ -117,6 +121,9 @@ export default {
     },
     hasCurrentFile () {
       return typeof this.currentFile.markdown !== 'undefined'
+    },
+    showPreferences () {
+      return this._showPreferences
     }
   },
   watch: {
@@ -142,6 +149,7 @@ export default {
     this._zoom = storeState.preferences.zoom
     this._projectTree = storeState.project.projectTree
     this._windowActive = storeState.windowActive
+    this._showPreferences = storeState.layout.showPreferences
 
     this.unsubscribeStore = this.$store.subscribe((mutation, state) => {
       this.uiInit = state.init
@@ -155,6 +163,7 @@ export default {
       this._zoom = state.preferences.zoom
       this._projectTree = state.project.projectTree
       this._windowActive = state.windowActive
+      this._showPreferences = state.layout.showPreferences
     })
 
     dispatch('LINTEN_WIN_STATUS')
@@ -195,6 +204,14 @@ export default {
     dispatch('LISTEN_FOR_CONTEXT_MENU')
     dispatch('LISTEN_FOR_NOTIFICATION')
 
+    // Listen for inline preferences trigger from main process
+    ipcRenderer.on('mt::show-inline-preferences', (e, category) => {
+      this.$store.dispatch('OPEN_PREFERENCES')
+      if (category) {
+        bus.$emit('preferences::change-category', category)
+      }
+    })
+
     window.addEventListener('dragover', e => {
       if (!e.dataTransfer.types.length) return
 
@@ -227,6 +244,7 @@ export default {
     if (this.unsubscribeStore) {
       this.unsubscribeStore()
     }
+    ipcRenderer.removeListener('mt::show-inline-preferences', () => {})
   }
 }
 </script>

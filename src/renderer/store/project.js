@@ -223,8 +223,8 @@ const actions = {
       })
   },
 
-  OPEN_SETTING_WINDOW () {
-    ipcRenderer.send('mt::open-setting-window')
+  OPEN_SETTING_WINDOW ({ dispatch }) {
+    dispatch('OPEN_PREFERENCES', null, { root: true })
   }
 }
 
