@@ -15,35 +15,35 @@ export const tabSizeOptions = [{
 }]
 
 export const endOfLineOptions = [{
-  label: 'Default',
+  labelKey: 'preferences.editor.endOfLineDefault',
   value: 'default'
 }, {
-  label: 'Carriage return and line feed (CRLF)',
+  labelKey: 'preferences.editor.endOfLineCRLF',
   value: 'crlf'
 }, {
-  label: 'Line feed (LF)',
+  labelKey: 'preferences.editor.endOfLineLF',
   value: 'lf'
 }]
 
 export const trimTrailingNewlineOptions = [{
-  label: 'Trim all trailing',
+  labelKey: 'preferences.editor.trailingNewlineTrimAll',
   value: 0
 }, {
-  label: 'Ensure exactly one trailing',
+  labelKey: 'preferences.editor.trailingNewlineEnsureOne',
   value: 1
 }, {
-  label: 'Preserve style of original document',
+  labelKey: 'preferences.editor.trailingNewlinePreserve',
   value: 2
 }, {
-  label: 'Do nothing',
+  labelKey: 'preferences.editor.trailingNewlineNone',
   value: 3
 }]
 
 export const textDirectionOptions = [{
-  label: 'Left to Right',
+  labelKey: 'preferences.editor.textDirectionLTR',
   value: 'ltr'
 }, {
-  label: 'Right to Left',
+  labelKey: 'preferences.editor.textDirectionRTL',
   value: 'rtl'
 }]
 
