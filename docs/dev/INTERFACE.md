@@ -2,7 +2,7 @@
 
 ## Main interface
 
-![](assets/marktext-interface.png)
+![](assets/macaron-interface.png)
 
 - Green: titlebar
 - Orange: sidebar

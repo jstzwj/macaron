@@ -1,7 +1,7 @@
 # Command Line Interface
 
 ```
-Usage: marktext [commands] [path ...]
+Usage: macaron [commands] [path ...]
 
   Available commands:
 
@@ -15,8 +15,8 @@ Usage: marktext [commands] [path ...]
     -h, --help                    Print this help message
 ```
 
-`marktext` should point to your installation of Macaron. The exact location will vary from platform to platform. On macOS, you can create a convenient alias like:
+`macaron` should point to your installation of Macaron. The exact location will vary from platform to platform. On macOS, you can create a convenient alias like:
 
 ```sh
-alias marktext="/Applications/Mark\ Text.app/Contents/MacOS/Mark\ Text"
+alias macaron="/Applications/Macaron.app/Contents/MacOS/Macaron"
 ```

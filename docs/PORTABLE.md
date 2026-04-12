@@ -4,12 +4,12 @@ Macaron stores all user configuration inside the [application data directory](AP
 
 ## Linux and Windows
 
-On Linux and Windows you can also create a directory called `marktext-user-data` to save all user data inside the directory. Like:
+On Linux and Windows you can also create a directory called `macaron-user-data` to save all user data inside the directory. Like:
 
 ```
-marktext-portable/
- ├── marktext (Linux) or Macaron.exe (Windows)
- ├── marktext-user-data/
+macaron-portable/
+ ├── macaron (Linux) or Macaron.exe (Windows)
+ ├── macaron-user-data/
  ├── resources/
  ├── THIRD-PARTY-LICENSES.txt
  └── ...

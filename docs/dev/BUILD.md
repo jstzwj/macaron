@@ -3,7 +3,7 @@
 Clone the repository:
 
 ```
-git clone https://github.com/marktext/marktext.git
+git clone https://github.com/jstzwj/macaron.git
 ```
 
 ### Prerequisites

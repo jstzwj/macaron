@@ -17,7 +17,7 @@ You can use the built-in developer tools via `View -> Toggle Developer Tools` in
 You can use the default Electron command-line parameters to enable debug mode as described above.
 
 ```shell
-$ marktext --inspect=5858 --remote-debugging-port=8315
+$ macaron --inspect=5858 --remote-debugging-port=8315
 ```
 
 ## Debug slow startup performance
@@ -27,7 +27,7 @@ Regardless of whether you are using the built or development version, you can us
 ```shell
 $ node-profiler main
 $ node-profiler renderer
-$ marktext --inspect=5858 --remote-debugging-port=8315
+$ macaron --inspect=5858 --remote-debugging-port=8315
 ```
 
 After the successful launch of Macaron, press `Ctrl+C` on both `node-profiler` instances. The tools created two files named `main.cpuprofile` and `renderer.cpuprofile`. You can now analyse these files via *Chrome Developer Tools* or *Visual Studio Code*.

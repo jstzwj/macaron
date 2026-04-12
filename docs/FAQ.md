@@ -10,7 +10,7 @@ Macaron is a desktop application and available for:
 
 ### Is Macaron open-source and free?
 
-Yes, Macaron is licensed under the [MIT](https://github.com/marktext/marktext/blob/develop/LICENSE) license and completely free for everyone. The source-code is available on [GitHub](https://github.com/marktext/marktext).
+Yes, Macaron is licensed under the [MIT](https://github.com/jstzwj/macaron/blob/develop/LICENSE) license and completely free for everyone. The source-code is available on [GitHub](https://github.com/jstzwj/macaron).
 
 ### Can I use Macaron as note management/taking app?
 
@@ -20,9 +20,9 @@ Macaron is a pure markdown editor without feature such as knowledge management a
 
 Documentation is currently under development.
 
-- [End-user documentation](https://github.com/marktext/marktext/blob/develop/docs/README.md)
+- [End-user documentation](https://github.com/jstzwj/macaron/blob/develop/docs/README.md)
 
-- [Developer documentation](https://github.com/marktext/marktext/blob/develop/docs/dev/README.md)
+- [Developer documentation](https://github.com/jstzwj/macaron/blob/develop/docs/dev/README.md)
 
 ### Can I run a portable version of Macaron?
 
@@ -30,7 +30,7 @@ Yes, please see [here](PORTABLE.md) for further information.
 
 ### How can I report bugs and problems
 
-You can report bugs and problems via our [GitHub issue tracker](https://github.com/marktext/marktext/issues). Please provide a detailed description of the problem to better solve the issue.
+You can report bugs and problems via our [GitHub issue tracker](https://github.com/jstzwj/macaron/issues). Please provide a detailed description of the problem to better solve the issue.
 
 ### I cannot launch Macaron on Linux (SUID sandbox)
 
@@ -39,5 +39,5 @@ You can report bugs and problems via our [GitHub issue tracker](https://github.c
 Normally, you should never get this error but if you disabled user namespaces, this error message may appears in the command output when launching Macaron. To solve the issue, that Chromium cannot start the sandbox (process), you can choose one of the following steps:
 
 - Enable Linux kernel user namespaces to use the preferred sandbox: `sudo sysctl kernel.unprivileged_userns_clone=1`.
-- Set correct SUID sandbox helper binary permissions: `sudo chown root <path_to_marktext_dir>/chrome-sandbox && sudo chmod 4755 <path_to_marktext_dir>/chrome-sandbox`. This is preferred if you don't want to enable user namespaces.
+- Set correct SUID sandbox helper binary permissions: `sudo chown root <path_to_macaron_dir>/chrome-sandbox && sudo chmod 4755 <path_to_macaron_dir>/chrome-sandbox`. This is preferred if you don't want to enable user namespaces.
 - Launch Macaron with `--no-sandbox` argument.

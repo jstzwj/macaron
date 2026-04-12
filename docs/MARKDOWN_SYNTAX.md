@@ -235,18 +235,18 @@ Note that placement of achors is arbitrary, you can put them anywhere you want, 
 Images have a similar syntax to links but include a preceding exclamation point.
 
 ```markdown
-![Macaron](https://raw.githubusercontent.com/marktext/marktext/develop/resources/icons/256x256/marktext.png)
+![Macaron](https://raw.githubusercontent.com/jstzwj/macaron/develop/resources/icons/256x256/marktext.png)
 ```
 
-![Macaron](https://raw.githubusercontent.com/marktext/marktext/develop/resources/icons/256x256/marktext.png)
+![Macaron](https://raw.githubusercontent.com/jstzwj/macaron/develop/resources/icons/256x256/marktext.png)
 
 or
 
 ```markdown
-![Alt text](hhttps://raw.githubusercontent.com/marktext/marktext/develop/resources/icons/256x256/marktext.png "Macaron logo")
+![Alt text](hhttps://raw.githubusercontent.com/jstzwj/macaron/develop/resources/icons/256x256/marktext.png "Macaron logo")
 ```
 
-![Alt text](https://raw.githubusercontent.com/marktext/marktext/develop/resources/icons/256x256/marktext.png "Macaron logo")
+![Alt text](https://raw.githubusercontent.com/jstzwj/macaron/develop/resources/icons/256x256/marktext.png "Macaron logo")
 
 Like links, Images also have a footnote style syntax
 
@@ -258,10 +258,10 @@ Like links, Images also have a footnote style syntax
 
 With a reference later in the document defining the URL location:
 
-[id]: https://raw.githubusercontent.com/marktext/marktext/develop/resources/icons/256x256/marktext.png  "Macaron logo"
+[id]: https://raw.githubusercontent.com/jstzwj/macaron/develop/resources/icons/256x256/marktext.png  "Macaron logo"
 
 ```markdown
-[id]: https://raw.githubusercontent.com/marktext/marktext/develop/resources/icons/256x256/marktext.png  "Macaron logo"
+[id]: https://raw.githubusercontent.com/jstzwj/macaron/develop/resources/icons/256x256/marktext.png  "Macaron logo"
 ```
 
 <br>

@@ -2,7 +2,7 @@
 
 Welcome to the end-user documentation of Macaron.
 
-![](assets/marktext-interface-2.png)
+![](assets/macaron-interface-2.png)
 
 **Quick start:**
 
