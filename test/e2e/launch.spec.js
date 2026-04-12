@@ -17,6 +17,6 @@ test.describe('Check Launch Macaron', async () => {
 
   test('Empty Macaron', async () => {
     const title = await page.title()
-    expect(/^Macaron|Untitled-1 - Macaron$/.test(title)).toBeTruthy()
+    expect(/^Macaron$|^Untitled(-\d+)? - Macaron$/.test(title)).toBeTruthy()
   })
 })
