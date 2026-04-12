@@ -75,6 +75,15 @@ export default {
     & .el-tree-node:focus > .el-tree-node__content {
       background-color: var(--sideBarItemHoverBgColor);
       }
+    & .el-tree-node__expand-icon {
+      transition: transform 0.2s ease;
+      &.expanded {
+        transform: rotate(90deg);
+      }
+      &.is-leaf {
+        visibility: hidden;
+      }
+    }
     & .el-tree-node__content:hover {
       background: var(--sideBarItemHoverBgColor);
     }
