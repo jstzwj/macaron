@@ -1,0 +1,54 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="cardGrad" x1="84" y1="68" x2="428" y2="436" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFF9FC"/>
+      <stop offset="1" stop-color="#FFF3EA"/>
+    </linearGradient>
+
+    <linearGradient id="leftShade" x1="76" y1="106" x2="116" y2="106" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#D5C3CD" stop-opacity="0.52"/>
+      <stop offset="1" stop-color="#D5C3CD" stop-opacity="0"/>
+    </linearGradient>
+
+    <filter id="shadow" x="28" y="32" width="456" height="456" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#7B5F6A" flood-opacity="0.16"/>
+    </filter>
+  </defs>
+
+  <rect width="512" height="512" fill="transparent"/>
+
+  <g filter="url(#shadow)">
+    <rect x="84" y="68" width="344" height="344" rx="58" fill="url(#cardGrad)"/>
+  </g>
+
+  <path d="M95 104C87 121 84 146 84 182V324C84 349 93 370 111 385V102C103 102 98 103 95 104Z" fill="url(#leftShade)"/>
+
+  <rect x="84.5" y="68.5" width="343" height="343" rx="57.5" stroke="#F0DEE8"/>
+
+  <g opacity="0.82">
+    <rect x="198" y="116" width="192" height="10" rx="5" fill="#F9D9E7"/>
+    <rect x="198" y="139" width="174" height="10" rx="5" fill="#DFF2FF"/>
+    <rect x="198" y="162" width="182" height="10" rx="5" fill="#E9E2FF"/>
+    <rect x="198" y="185" width="167" height="10" rx="5" fill="#FFEBCD"/>
+  </g>
+
+  <g opacity="0.9">
+    <rect x="142" y="284" width="226" height="12" rx="6" fill="#FFE1EA"/>
+    <rect x="142" y="312" width="207" height="12" rx="6" fill="#E2F4FF"/>
+    <rect x="142" y="340" width="185" height="12" rx="6" fill="#ECE5FF"/>
+  </g>
+
+  <circle cx="348" cy="94" r="9" fill="#FFD8E8"/>
+  <circle cx="370" cy="94" r="9" fill="#E1F4FF"/>
+  <circle cx="392" cy="94" r="9" fill="#EAE3FF"/>
+
+  <text x="256" y="260"
+        text-anchor="middle"
+        font-family="Times New Roman, Georgia, serif"
+        font-size="210"
+        font-weight="700"
+        fill="#594048"
+        letter-spacing="1">
+    T
+  </text>
+</svg>

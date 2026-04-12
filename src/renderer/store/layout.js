@@ -56,12 +56,28 @@ const actions = {
     ipcRenderer.on('mt::toggle-view-layout-entry', (event, entryName) => {
       commit('TOGGLE_LAYOUT_ENTRY', entryName)
       dispatch('DISPATCH_LAYOUT_MENU_ITEMS')
+      // Persist layout visibility to electron-store
+      if (entryName === 'showTabBar') {
+        dispatch('SET_SINGLE_PREFERENCE', { type: 'tabBarVisibility', value: state.showTabBar })
+      } else if (entryName === 'showSideBar') {
+        dispatch('SET_SINGLE_PREFERENCE', { type: 'sideBarVisibility', value: state.showSideBar })
+      } else if (entryName === 'showTitleBar') {
+        dispatch('SET_SINGLE_PREFERENCE', { type: 'titleBarVisibility', value: state.showTitleBar })
+      }
     })
 
     bus.$on('view:toggle-layout-entry', entryName => {
       commit('TOGGLE_LAYOUT_ENTRY', entryName)
       const { windowId } = global.marktext.env
       ipcRenderer.send('mt::view-layout-changed', windowId, { [entryName]: state[entryName] })
+      // Persist layout visibility to electron-store
+      if (entryName === 'showTabBar') {
+        dispatch('SET_SINGLE_PREFERENCE', { type: 'tabBarVisibility', value: state.showTabBar })
+      } else if (entryName === 'showSideBar') {
+        dispatch('SET_SINGLE_PREFERENCE', { type: 'sideBarVisibility', value: state.showSideBar })
+      } else if (entryName === 'showTitleBar') {
+        dispatch('SET_SINGLE_PREFERENCE', { type: 'titleBarVisibility', value: state.showTitleBar })
+      }
     })
   },
 

@@ -1,7 +1,6 @@
 import { ipcMain, MenuItem } from 'electron'
-import log from 'electron-log/main'
 import { isOsx } from '../../config'
-import { addToDictionary } from '../../spellchecker'
+import { hunspellService } from '../../hunspell/HunspellService'
 import { SEPARATOR } from './menuItems'
 
 /**
@@ -29,12 +28,7 @@ export default (isMisspelled, misspelledWord, wordSuggestions) => {
     spellingSubmenu.push({
       label: 'Add to Dictionary',
       click (menuItem, targetWindow) {
-        if (!addToDictionary(targetWindow, misspelledWord)) {
-          log.error(`Error while adding "${misspelledWord}" to dictionary.`)
-          return
-        }
-        // Need to notify Chromium to invalidate the spelling underline.
-        targetWindow.webContents.replaceMisspelling(misspelledWord)
+        hunspellService.addToDictionary(misspelledWord)
       }
     })
 

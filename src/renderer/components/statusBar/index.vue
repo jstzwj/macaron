@@ -35,7 +35,7 @@
           <path v-if="spellcheckerEnabled" fill="currentColor" d="M400 640l-120-120 56-56 64 64 144-144 56 56-200 200z" />
         </svg>
       </button>
-      <div class="status-bar-item status-bar-dropdown">
+      <div class="status-bar-item status-bar-dropdown" v-if="!isMacOS">
         <button
           class="dropdown-trigger"
           @click.stop="toggleSpellLangMenu"
@@ -55,7 +55,7 @@
             :class="{ active: spellcheckerLanguage === lang }"
             @click="selectSpellLang(lang)"
           >
-            {{ SPELLCHECK_LANG_LABELS[lang] || lang }}
+            {{ spellLangLabels[lang] || lang }}
           </div>
         </div>
       </div>
@@ -85,28 +85,10 @@
 </template>
 
 <script>
-import { ipcRenderer } from 'electron'
 import bus from '@/bus'
-
-// Spellchecker languages (BCP-47 format used by Electron)
-const SPELLCHECK_LANGUAGES = [
-  'en-US', 'zh-CN', 'zh-TW', 'ja', 'ko',
-  'fr', 'es', 'pt', 'pl', 'tr', 'ar'
-]
-
-const SPELLCHECK_LANG_LABELS = {
-  'en-US': 'English (US)',
-  'zh-CN': '简体中文',
-  'zh-TW': '繁體中文',
-  ja: '日本語',
-  ko: '한국어',
-  fr: 'Français',
-  es: 'Español',
-  pt: 'Português',
-  pl: 'Polski',
-  tr: 'Türkçe',
-  ar: 'العربية'
-}
+import { SpellChecker } from '@/spellchecker'
+import { getLanguageName } from '@/spellchecker/languageMap'
+import { isOsx } from '@/util'
 
 export default {
   data () {
@@ -118,13 +100,14 @@ export default {
       wordCount: null,
       showSpellLangMenu: false,
       showWordCountMenu: false,
-      spellcheckLanguages: SPELLCHECK_LANGUAGES,
-      SPELLCHECK_LANG_LABELS
+      spellcheckLanguages: [],
+      spellLangLabels: {},
+      isMacOS: isOsx
     }
   },
   computed: {
     spellLangLabel () {
-      return SPELLCHECK_LANG_LABELS[this.spellcheckerLanguage] || this.spellcheckerLanguage
+      return this.spellLangLabels[this.spellcheckerLanguage] || this.spellcheckerLanguage
     },
     defaultWordCountText () {
       if (!this.wordCount) return ''
@@ -170,6 +153,21 @@ export default {
 
     document.addEventListener('click', this.handleDocClick)
   },
+  async mounted () {
+    // Load available spellcheck languages dynamically
+    try {
+      const dicts = await SpellChecker.getAllLanguages()
+      this.spellcheckLanguages = dicts
+      this.spellLangLabels = dicts.reduce((acc, lang) => {
+        acc[lang] = getLanguageName(lang) || lang
+        return acc
+      }, {})
+    } catch (error) {
+      // Fallback: if nothing loads, at least show the current language
+      this.spellcheckLanguages = [this.spellcheckerLanguage]
+      this.spellLangLabels[this.spellcheckerLanguage] = getLanguageName(this.spellcheckerLanguage) || this.spellcheckerLanguage
+    }
+  },
   beforeUnmount () {
     if (this._unsub) this._unsub()
     document.removeEventListener('click', this.handleDocClick)
@@ -191,10 +189,15 @@ export default {
     toggleSpellLangMenu () {
       this.showSpellLangMenu = !this.showSpellLangMenu
     },
-    selectSpellLang (lang) {
+    async selectSpellLang (lang) {
       this.$store.dispatch('SET_SINGLE_PREFERENCE', { type: 'spellcheckerLanguage', value: lang })
-      // Apply immediately to the current session
-      ipcRenderer.invoke('mt::spellchecker-switch-language', lang)
+      // Apply immediately via unified SpellChecker API (routes to Hunspell or Electron)
+      const sc = new SpellChecker(true, lang)
+      try {
+        await sc.activateSpellchecker(lang)
+      } catch (error) {
+        console.error('Failed to switch spellchecker language:', error)
+      }
       this.showSpellLangMenu = false
     },
     toggleWordCountMenu () {
@@ -293,6 +296,8 @@ export default {
     bottom: 100%;
     right: 0;
     min-width: 140px;
+    max-height: 320px;
+    overflow-y: auto;
     margin-bottom: 6px;
     padding: 4px 0;
     background: var(--floatBgColor);

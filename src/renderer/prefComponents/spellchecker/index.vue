@@ -78,7 +78,7 @@ export default {
   },
   methods: {
     async getAvailableDictionaries () {
-      const dictionaries = await SpellChecker.getAvailableDictionaries()
+      const dictionaries = await SpellChecker.getAllLanguages()
       return dictionaries.map(selectedItem => {
         return {
           value: selectedItem,

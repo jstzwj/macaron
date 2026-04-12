@@ -382,6 +382,11 @@
     "type": "boolean",
     "default": false
   },
+  "titleBarVisibility": {
+    "description": "View--Whether the title bar is shown.",
+    "type": "boolean",
+    "default": true
+  },
   "sourceCodeModeEnabled": {
     "description": "View--Whether the source-code mode is enabled by default.",
     "type": "boolean",

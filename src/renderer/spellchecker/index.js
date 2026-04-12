@@ -2,7 +2,8 @@ import { ipcRenderer } from 'electron'
 import { isOsx } from '@/util'
 
 /**
- * High level spell checker API based on Chromium built-in spell checker.
+ * High level spell checker API based on Hunspell.
+ * All languages use Hunspell for consistent behavior.
  */
 export class SpellChecker {
   /**
@@ -14,8 +15,7 @@ export class SpellChecker {
     this.enabled = enabled
     this.currentSpellcheckerLanguage = lang
 
-    // Helper to forbid the usage of the spell checker (e.g. failed to create native spell checker),
-    // even if spell checker is enabled in settings.
+    // Whether the Hunspell provider is available and initialized
     this.isProviderAvailable = true
   }
 
@@ -27,7 +27,7 @@ export class SpellChecker {
   }
 
   /**
-   * Enable the spell checker and sets `lang` or tries to find a fallback.
+   * Enable the spell checker and sets the language.
    *
    * @param {string} lang The language to set.
    * @returns {Promise<boolean>}
@@ -36,11 +36,43 @@ export class SpellChecker {
     try {
       this.enabled = true
       this.isProviderAvailable = true
+
+      // Keep native spellcheck enabled for underline rendering.
+      await ipcRenderer.invoke('mt::spellchecker-set-enabled', true)
+
       if (isOsx) {
-        // No language string needed on macOS.
-        return await ipcRenderer.invoke('mt::spellchecker-set-enabled', true)
+        // On macOS the OS spell checker is used and will detect the language automatically.
+        return true
       }
-      return await this.switchLanguage(lang || this.currentSpellcheckerLanguage)
+
+      const targetLang = lang || this.currentSpellcheckerLanguage
+      if (!targetLang) {
+        throw new Error('Expected non-empty language for spell checker.')
+      }
+
+      // Best-effort: configure Chromium spellchecker language for red underline rendering.
+      await ipcRenderer.invoke('mt::spellchecker-switch-language', targetLang)
+
+      // Use Hunspell for all languages on Windows/Linux
+      const success = await ipcRenderer.invoke('mt::hunspell-switch-language', targetLang)
+      if (!success) {
+        // Dictionary not available locally - try to download
+        const hasDict = await ipcRenderer.invoke('mt::hunspell-has-dictionary', targetLang)
+        if (!hasDict) {
+          const downloaded = await ipcRenderer.invoke('mt::hunspell-download-dictionary', targetLang)
+          if (downloaded) {
+            await ipcRenderer.invoke('mt::hunspell-switch-language', targetLang)
+          } else {
+            this.isProviderAvailable = false
+            return false
+          }
+        } else {
+          this.isProviderAvailable = false
+          return false
+        }
+      }
+      this.lang = targetLang
+      return true
     } catch (error) {
       this.deactivateSpellchecker()
       throw error
@@ -48,12 +80,12 @@ export class SpellChecker {
   }
 
   /**
-   * Disables the native spell checker.
+   * Disables the spell checker.
    */
   deactivateSpellchecker () {
     this.enabled = false
     this.isProviderAvailable = false
-    ipcRenderer.invoke('mt::spellchecker-set-enabled', false)
+    ipcRenderer.invoke('mt::spellchecker-set-enabled', false).catch(() => {})
   }
 
   /**
@@ -76,7 +108,7 @@ export class SpellChecker {
    * NOTE: This function can throw an exception.
    *
    * @param {string} lang The language code
-   * @returns {Promise<boolean>} Return the language on success or null.
+   * @returns {Promise<boolean>} Return true on success or false.
    */
   async switchLanguage (lang) {
     if (isOsx) {
@@ -85,15 +117,40 @@ export class SpellChecker {
     } else if (!lang) {
       throw new Error('Expected non-empty language for spell checker.')
     } else if (this.isEnabled) {
-      await ipcRenderer.invoke('mt::spellchecker-switch-language', lang)
-      this.lang = lang
-      return true
+      return this.activateSpellchecker(lang)
     }
     return false
   }
 
   /**
-   * Returns a list of available dictionaries.
+   * Check if a word is misspelled.
+   * @param {string} word
+   * @returns {Promise<boolean>}
+   */
+  async checkWord (word) {
+    return ipcRenderer.invoke('mt::hunspell-is-misspelled', word)
+  }
+
+  /**
+   * Get spelling suggestions for a word.
+   * @param {string} word
+   * @returns {Promise<string[]>}
+   */
+  async getSuggestions (word) {
+    return ipcRenderer.invoke('mt::hunspell-get-suggestions', word) || []
+  }
+
+  /**
+   * Add word to Hunspell user dictionary.
+   * @param {string} word
+   * @returns {Promise<boolean>}
+   */
+  async addToDictionary (word) {
+    return ipcRenderer.invoke('mt::hunspell-add-to-dictionary', word)
+  }
+
+  /**
+   * Returns a list of available (downloaded) Hunspell dictionaries.
    * @returns {Promise<string[]>} Available dictionary languages.
    */
   static async getAvailableDictionaries () {
@@ -101,6 +158,36 @@ export class SpellChecker {
       // NB: On macOS the OS spell checker is used and will detect the language automatically.
       return []
     }
-    return ipcRenderer.invoke('mt::spellchecker-get-available-dictionaries')
+    return ipcRenderer.invoke('mt::hunspell-get-available-dictionaries')
+  }
+
+  /**
+   * Returns all supported Hunspell language codes.
+   * @returns {Promise<string[]>}
+   */
+  static async getAllLanguages () {
+    try {
+      return ipcRenderer.invoke('mt::hunspell-all-languages')
+    } catch (error) {
+      return []
+    }
+  }
+
+  /**
+   * Download a Hunspell dictionary.
+   * @param {string} lang
+   * @returns {Promise<boolean>}
+   */
+  static async downloadDictionary (lang) {
+    return ipcRenderer.invoke('mt::hunspell-download-dictionary', lang)
+  }
+
+  /**
+   * Check if a Hunspell dictionary is available locally.
+   * @param {string} lang
+   * @returns {Promise<boolean>}
+   */
+  static async hasDictionary (lang) {
+    return ipcRenderer.invoke('mt::hunspell-has-dictionary', lang)
   }
 }

@@ -157,9 +157,6 @@ const HUNSPELL_DICTIONARY_LANGUAGE_MAP = Object.freeze([{
   label: 'தமிழ்', // Tamil
   value: 'ta-IN'
 }, {
-  label: 'тоҷикӣ', // Tajik
-  value: 'tg-TG'
-}, {
   label: 'Türkçe', // Turkish
   value: 'tr-TR'
 }, {
@@ -168,4 +165,22 @@ const HUNSPELL_DICTIONARY_LANGUAGE_MAP = Object.freeze([{
 }, {
   label: 'Tiếng Việt', // Vietnamese
   value: 'vi-VN'
+}, {
+  label: 'Esperanto', // Esperanto
+  value: 'eo'
+}, {
+  label: 'فارسی', // Persian
+  value: 'fa'
+}, {
+  label: 'Español (México)', // Spanish (Mexico)
+  value: 'es-MX'
+}, {
+  label: 'Español (Estados Unidos)', // Spanish (US)
+  value: 'es-US'
+}, {
+  label: '한국어', // Korean
+  value: 'ko'
+}, {
+  label: 'Indonesia', // Indonesian
+  value: 'id-ID'
 }])

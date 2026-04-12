@@ -628,6 +628,7 @@ const actions = {
         lineEnding,
         sideBarVisibility,
         tabBarVisibility,
+        titleBarVisibility,
         sourceCodeModeEnabled,
         typewriterModeEnabled,
         focusModeEnabled
@@ -638,7 +639,8 @@ const actions = {
       commit('SET_LAYOUT', {
         rightColumn: 'files',
         showSideBar: !!sideBarVisibility,
-        showTabBar: !!tabBarVisibility
+        showTabBar: !!tabBarVisibility,
+        showTitleBar: !!titleBarVisibility
       })
       dispatch('DISPATCH_LAYOUT_MENU_ITEMS')
 

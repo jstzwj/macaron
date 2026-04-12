@@ -8,7 +8,7 @@ import { ensureWindowPosition, zoomIn, zoomOut } from './utils'
 import { TITLE_BAR_HEIGHT, editorWinOptions, isLinux, isOsx } from '../config'
 import { showEditorContextMenu } from '../contextMenu/editor'
 import { loadMarkdownFile } from '../filesystem/markdown'
-import { switchLanguage } from '../spellchecker'
+import { hunspellService } from '../hunspell/HunspellService'
 
 class EditorWindow extends BaseWindow {
   /**
@@ -57,6 +57,7 @@ class EditorWindow extends BaseWindow {
       theme,
       sideBarVisibility,
       tabBarVisibility,
+      titleBarVisibility,
       sourceCodeModeEnabled,
       typewriterModeEnabled,
       focusModeEnabled,
@@ -86,11 +87,23 @@ class EditorWindow extends BaseWindow {
     this.id = win.id
 
     if (spellcheckerEnabled && !isOsx) {
-      try {
-        switchLanguage(win, spellcheckerLanguage)
-      } catch (error) {
-        log.error('Unable to set spell checker language on startup:', error)
-      }
+      // Initialize Hunspell spellchecker asynchronously
+      ;(async () => {
+        try {
+          const hasDict = await hunspellService.hasDictionary(spellcheckerLanguage)
+          if (hasDict) {
+            await hunspellService.setLanguage(spellcheckerLanguage)
+          } else {
+            // Dictionary not available locally - try to download
+            const downloaded = await hunspellService.downloadDictionary(spellcheckerLanguage)
+            if (downloaded) {
+              await hunspellService.setLanguage(spellcheckerLanguage)
+            }
+          }
+        } catch (error) {
+          log.error('Unable to set spell checker language on startup:', error)
+        }
+      })()
     }
 
     // Create a menu for the current window
@@ -121,6 +134,7 @@ class EditorWindow extends BaseWindow {
         lineEnding,
         sideBarVisibility,
         tabBarVisibility,
+        titleBarVisibility,
         sourceCodeModeEnabled,
         typewriterModeEnabled,
         focusModeEnabled
@@ -442,7 +456,7 @@ class EditorWindow extends BaseWindow {
     browserWindow.webContents.once('did-finish-load', () => {
       this.lifecycle = WindowLifecycle.READY
       const { preferences } = this._accessor
-      const { sideBarVisibility, tabBarVisibility, sourceCodeModeEnabled, typewriterModeEnabled, focusModeEnabled } = preferences.getAll()
+      const { sideBarVisibility, tabBarVisibility, titleBarVisibility, sourceCodeModeEnabled, typewriterModeEnabled, focusModeEnabled } = preferences.getAll()
       const lineEnding = preferences.getPreferredEol()
       browserWindow.webContents.send('mt::bootstrap-editor', {
         addBlankTab: true,
@@ -450,6 +464,7 @@ class EditorWindow extends BaseWindow {
         lineEnding,
         sideBarVisibility,
         tabBarVisibility,
+        titleBarVisibility,
         sourceCodeModeEnabled,
         typewriterModeEnabled,
         focusModeEnabled
