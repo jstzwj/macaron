@@ -50,9 +50,6 @@ files:
 - "!node_modules/**/{*.vcxproj,*.vcxproj.filters}"
 - "!node_modules/**/build/Release/{*.lib,*.exp,*.ilk,*.pdb,*.iobj,*.ipdb}"
 - "!node_modules/**/build/Release/obj"
-extraFiles:
-- from: "resources/THIRD-PARTY-LICENSES.txt"
-  to: "THIRD-PARTY-LICENSES.txt"
 
 fileAssociations:
 - ext:
@@ -71,7 +68,6 @@ mac:
   artifactName: "macaron-${arch}-mac.${ext}"
   icon: "resources/icons/icon.icns"
   darkModeSupport: true
-  extraFiles: []
   extraResources:
   - from: "LICENSE"
     to: "LICENSE"
@@ -97,6 +93,9 @@ win:
   icon: "resources/icons/icon.ico"
   extraFiles:
   - "LICENSE"
+  extraResources:
+  - from: "resources/THIRD-PARTY-LICENSES.txt"
+    to: "THIRD-PARTY-LICENSES.txt"
   target:
   - target: "nsis"
     arch: [x64]
@@ -120,6 +119,9 @@ linux:
   icon: "resources/icons"
   extraFiles:
   - "LICENSE"
+  extraResources:
+  - from: "resources/THIRD-PARTY-LICENSES.txt"
+    to: "THIRD-PARTY-LICENSES.txt"
   desktop:
     entry:
       StartupWMClass: "macaron"
