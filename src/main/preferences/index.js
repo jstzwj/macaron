@@ -146,6 +146,8 @@ class Preference extends EventEmitter {
     })
     ipcMain.on('mt::set-user-preference', (e, settings) => {
       this.setItems(settings)
+      // Send updated preferences back to the renderer so Vuex state updates
+      e.sender.send('mt::user-preference', this.getAll())
     })
     ipcMain.on('mt::cmd-toggle-autosave', e => {
       this.setItem('autoSave', !!this.getItem('autoSave'))

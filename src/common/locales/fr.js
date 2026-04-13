@@ -75,6 +75,7 @@ export default {
     allCharacters: 'Tous les caractères'
   },
   search: {
+    placeholder: 'Rechercher',
     replacementPlaceholder: 'Remplacement',
     caseSensitive: 'Respecter la casse',
     wholeWord: 'Sélectionner le mot entier',

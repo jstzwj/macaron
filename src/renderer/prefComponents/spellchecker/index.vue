@@ -108,7 +108,25 @@ export default {
         })
     },
     handleSpellcheckerEnabled (isEnabled) {
+      // Update preference state first so compound reacts immediately
       this.onSelectChange('spellcheckerEnabled', isEnabled)
+
+      if (isEnabled) {
+        this.ensureDictLanguage(this.spellcheckerLanguage)
+          .catch(error => {
+            log.error('Failed to activate spellchecker:', error)
+            notice.notify({
+              title: translate('preferences.spellchecker.switchLanguageFailed'),
+              type: 'error',
+              message: error.message
+            })
+          })
+      } else {
+        if (!this.spellchecker) {
+          this.spellchecker = new SpellChecker(true, 'en-US')
+        }
+        this.spellchecker.deactivateSpellchecker()
+      }
     },
     onSelectChange (type, value) {
       this.$store.dispatch('SET_SINGLE_PREFERENCE', { type, value })

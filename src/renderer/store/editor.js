@@ -898,10 +898,11 @@ const actions = {
     }
   },
 
-  SHOW_TAB_VIEW ({ commit, state, dispatch }, always) {
+  SHOW_TAB_VIEW ({ commit, state, dispatch, rootState }, always) {
     const { tabs } = state
+    const { tabBarVisibility } = rootState.preferences
     if (always || tabs.length <= 1) {
-      commit('SET_LAYOUT', { showTabBar: true })
+      commit('SET_LAYOUT', { showTabBar: tabBarVisibility })
       dispatch('DISPATCH_LAYOUT_MENU_ITEMS')
     }
   },

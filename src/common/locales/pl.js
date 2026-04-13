@@ -75,6 +75,7 @@ export default {
     allCharacters: 'Wszystkie znaki'
   },
   search: {
+    placeholder: 'Szukaj',
     replacementPlaceholder: 'Zastąp',
     caseSensitive: 'Rozróżniaj wielkość liter',
     wholeWord: 'Zaznacz całe słowo',

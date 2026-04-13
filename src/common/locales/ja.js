@@ -75,6 +75,7 @@ export default {
     allCharacters: 'すべての文字'
   },
   search: {
+    placeholder: '検索',
     replacementPlaceholder: '置換',
     caseSensitive: '大文字と小文字を区別',
     wholeWord: '単語全体を選択',

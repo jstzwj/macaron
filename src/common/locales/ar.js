@@ -75,6 +75,7 @@ export default {
     allCharacters: 'كل الأحرف'
   },
   search: {
+    placeholder: 'بحث',
     replacementPlaceholder: 'الاستبدال',
     caseSensitive: 'حساس لحالة الأحرف',
     wholeWord: 'تحديد الكلمة كاملة',
@@ -292,7 +293,7 @@ export default {
     untitled: 'بدون عنوان {id}',
     import: {
       title: 'استيراد أو فتح',
-      dropHere: 'اسحب到这里 لاستيراد ملفاتك إلى Macaron'
+      dropHere: 'اسحب الملفات هنا لاستيراد ملفاتك إلى Macaron'
     },
     export: {
       successTitle: 'تم التصدير بنجاح',

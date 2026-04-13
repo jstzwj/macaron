@@ -74,13 +74,13 @@ const mutations = {
 }
 
 const actions = {
-  LISTEN_FOR_LOAD_PROJECT ({ commit, dispatch }) {
+  LISTEN_FOR_LOAD_PROJECT ({ commit, dispatch, rootState }) {
     ipcRenderer.on('mt::open-directory', (e, pathname) => {
       commit('SET_ROOT_DIRECTORY', pathname)
       commit('SET_LAYOUT', {
         rightColumn: 'files',
         showSideBar: true,
-        showTabBar: true
+        showTabBar: rootState.preferences.tabBarVisibility
       })
       dispatch('DISPATCH_LAYOUT_MENU_ITEMS')
     })

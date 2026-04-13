@@ -10,10 +10,11 @@
       ref="editor"
       class="editor-component"
     ></div>
-    <div
-      class="image-viewer"
-      v-show="imageViewerVisible"
-    >
+    <transition name="image-viewer-fade">
+      <div
+        class="image-viewer"
+        v-show="imageViewerVisible"
+      >
       <span class="icon-close" @click="setImageViewerVisible(false)">
         <svg :viewBox="CloseIcon.viewBox">
           <use :xlink:href="CloseIcon.url"></use>
@@ -24,6 +25,7 @@
       >
       </div>
     </div>
+    </transition>
     <dialog
       v-if="dialogTableVisible"
       class="ag-dialog-table"
@@ -1397,7 +1399,7 @@ export default {
     left: 0;
     bottom: 0;
     background: rgba(0, 0, 0, .8);
-    z-index: 11;
+    z-index: 10001;
     & .icon-close {
       z-index: 1000;
       width: 30px;
@@ -1407,11 +1409,21 @@ export default {
       left: 50px;
       display: block;
       & svg {
-        fill: #efefef;
+        fill: var(--floatFontColor, #efefef);
         width: 100%;
         height: 100%;
       }
     }
+  }
+
+  .image-viewer-fade-enter-active,
+  .image-viewer-fade-leave-active {
+    transition: opacity 0.25s ease;
+  }
+
+  .image-viewer-fade-enter-from,
+  .image-viewer-fade-leave-to {
+    opacity: 0;
   }
 
   .iv-container {

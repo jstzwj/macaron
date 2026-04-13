@@ -75,6 +75,7 @@ export default {
     allCharacters: 'Todos los caracteres'
   },
   search: {
+    placeholder: 'Buscar',
     replacementPlaceholder: 'Reemplazo',
     caseSensitive: 'Distinguir mayúsculas',
     wholeWord: 'Seleccionar palabra completa',

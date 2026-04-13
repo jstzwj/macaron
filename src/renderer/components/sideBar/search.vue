@@ -54,7 +54,7 @@
       >
         <el-button
           type="primary"
-          size="mini"
+          size="small"
           @click="cancelSearcher"
         >
           {{ $t('searchFolder.cancel') }} <el-icon><VideoPause /></el-icon>

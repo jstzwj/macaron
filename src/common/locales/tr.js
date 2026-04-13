@@ -75,6 +75,7 @@ export default {
     allCharacters: 'Tüm Karakterler'
   },
   search: {
+    placeholder: 'Ara',
     replacementPlaceholder: 'Değiştirme',
     caseSensitive: 'Büyük/Küçük Harf Duyarlı',
     wholeWord: 'Tüm kelimeyi seç',

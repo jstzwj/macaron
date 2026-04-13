@@ -70,9 +70,13 @@
   --floatBgColor: #2C313C;
   --floatHoverColor: rgba(198, 120, 221, .06);
   --floatBorderColor: #3E4451;
-  --floatShadow: rgba(0, 0, 0, 0.3) 0px 4px 16px;
+  --floatShadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   --maskColor: rgba(0, 0, 0, .6);
   --editorAreaWidth: 750px;
+
+  /* Image placeholder icon colors (dark theme) */
+  --imageIconColor: #ABB2BF;
+  --imageIconFailColor: #5C6370;
 }
 
 ::-webkit-scrollbar,
@@ -116,7 +120,7 @@
 
 .ag-front-menu .submenu,
 .ag-float-wrapper {
-  box-shadow: 0 4px 8px 0 var(--floatShadow) !important;
+  box-shadow: var(--floatShadow) !important;
 }
 
 .title-bar .frameless-titlebar-button > div > svg {
@@ -269,7 +273,7 @@ li.ag-task-list-item > input.ag-checkbox-checked::after {
   transform: rotate(-45deg) scale(1);
 }
 figure.ag-active.ag-container-block > div.ag-container-preview {
-  box-shadow: 0 3px 8px 0 var(--floatShadow) !important;
+  box-shadow: var(--floatShadow) !important;
 }
 
 /* ------------------------------------ */

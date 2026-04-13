@@ -350,7 +350,7 @@
           <div class="footer-copy">
             {{ $t(isPrintable ? 'exportDialog.footerPrintable' : 'exportDialog.footerHtml') }}
           </div>
-          <div class="button-controlls">
+          <div class="button-controls">
             <button class="button-primary" @click="handleClicked">
               {{ $t('exportDialog.export') }}
             </button>
@@ -849,14 +849,14 @@ export default {
     color: var(--editorColor40);
   }
 
-  .button-controlls {
+  .button-controls {
     display: flex;
     align-items: center;
     justify-content: flex-end;
     flex-shrink: 0;
   }
 
-  .button-controlls .button-primary {
+  .button-controls .button-primary {
     min-width: 132px;
     height: 36px;
     padding: 0 18px;
@@ -883,11 +883,11 @@ export default {
       align-items: stretch;
     }
 
-    .button-controlls {
+    .button-controls {
       justify-content: stretch;
     }
 
-    .button-controlls .button-primary {
+    .button-controls .button-primary {
       width: 100%;
     }
 

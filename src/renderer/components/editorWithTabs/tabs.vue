@@ -10,6 +10,7 @@
           @click.middle="removeFileInTab(file)"
           @contextmenu.prevent="handleContextMenu($event, file)"
         >
+          <span :class="getFileIconClass(file)" class="tab-icon"></span>
           <span class="tab-title">{{ file.filename }}</span>
           <span class="tab-close" @click.stop="removeFileInTab(file)">
             <svg viewBox="0 0 1024 1024" width="12" height="12">
@@ -32,6 +33,7 @@ import { shell, clipboard } from 'electron'
 import { showContextMenu } from '../../contextMenu/tabs'
 import bus from '../../bus'
 import Sortable from 'sortablejs'
+import fileIcons from 'muya/lib/ui/fileIcons'
 
 export default {
   data () {
@@ -53,6 +55,14 @@ export default {
     isActive (file) {
       const cur = this._currentFile
       return cur && cur.id === file.id
+    },
+    getFileIconClass (file) {
+      const name = file.filename || 'mock.md'
+      let classNames = fileIcons.getClassByName(name)
+      if (!classNames) {
+        classNames = fileIcons.getClassByName('mock.md')
+      }
+      return classNames
     },
     selectFile (file) {
       if (!file || !file.id) return
@@ -233,6 +243,20 @@ export default {
     transition: background-color 0.15s ease, color 0.15s ease;
   }
 
+  .tab-icon {
+    flex-shrink: 0;
+    width: 14px;
+    height: 14px;
+    margin-right: 5px;
+    font-size: 12px;
+    line-height: 1;
+    opacity: 0.7;
+  }
+
+  .tab-item.active .tab-icon {
+    opacity: 1;
+  }
+
   .tab-item:hover {
     background: var(--editorColor04);
   }
@@ -284,9 +308,10 @@ export default {
   }
 
   .tab-ghost {
-    opacity: 0.4;
-    background: var(--editorColor10);
+    opacity: 1;
+    background: var(--themeColor10);
     border-radius: 6px;
+    border-left: 2px solid var(--themeColor);
   }
 
   .tab-chosen {

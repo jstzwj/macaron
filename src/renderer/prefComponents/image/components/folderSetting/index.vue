@@ -5,8 +5,8 @@
       :regexValidator="/^(?:$|([a-zA-Z]:)?[\/\\].*$)/" :defaultValue="folderPathPlaceholder"
       :onChange="value => modifyImageFolderPath(value)"></text-box>
     <div>
-      <el-button size="mini" @click="modifyImageFolderPath(undefined)">{{ $t('preferences.image.folder.open') }}</el-button>
-      <el-button size="mini" @click="openImageFolder">{{ $t('preferences.image.folder.showInFolder') }}</el-button>
+      <el-button size="small" @click="modifyImageFolderPath(undefined)">{{ $t('preferences.image.folder.open') }}</el-button>
+      <el-button size="small" @click="openImageFolder">{{ $t('preferences.image.folder.showInFolder') }}</el-button>
     </div>
     <compound>
       <template #head>
@@ -82,10 +82,25 @@ export default {
 </script>
 
 <style scoped>
-.image-folder .footnote {
-  font-size: 13px;
-  & code {
+.image-folder {
+  & .footnote {
     font-size: 13px;
+    & code {
+      font-size: 13px;
+    }
+  }
+  & > div {
+    margin-top: 10px;
+  }
+  & .el-button--small {
+    color: var(--editorColor);
+    background: transparent;
+    border-color: var(--editorColor10);
+    font-size: 13px;
+  }
+  & .el-button--small:hover {
+    background: var(--floatHoverColor);
+    border-color: var(--editorColor30);
   }
 }
 </style>

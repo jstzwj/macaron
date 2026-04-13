@@ -70,9 +70,13 @@
   --floatBgColor: #252525;
   --floatHoverColor: rgba(91, 141, 239, .06);
   --floatBorderColor: #333333;
-  --floatShadow: rgba(0, 0, 0, 0.4) 0px 4px 16px;
+  --floatShadow: 0 4px 12px rgba(0, 0, 0, 0.25);
   --maskColor: rgba(0, 0, 0, .6);
   --editorAreaWidth: 750px;
+
+  /* Image placeholder icon colors (dark theme) */
+  --imageIconColor: #C8CED8;
+  --imageIconFailColor: #6B7280;
 }
 
 ::-webkit-scrollbar {
@@ -81,7 +85,7 @@
 
 .ag-front-menu .submenu,
 .ag-float-wrapper {
-  box-shadow: 0 4px 8px 0 var(--floatShadow) !important;
+  box-shadow: var(--floatShadow) !important;
 }
 
 .title-bar .frameless-titlebar-button > div > svg {
@@ -147,7 +151,7 @@ p:not(.ag-active)[data-role="hr"]::before {
   background: none !important;
 }
 figure.ag-active.ag-container-block > div.ag-container-preview {
-  box-shadow: 0 3px 8px 0 var(--floatShadow) !important;
+  box-shadow: var(--floatShadow) !important;
 }
 
 /*

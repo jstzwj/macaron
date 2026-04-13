@@ -27,25 +27,25 @@
               <el-icon><InfoFilled /></el-icon>
             </span>
           </div>
-          <el-input v-model="githubToken" :placeholder="$t('preferences.image.uploader.tokenPlaceholder')" size="mini"></el-input>
+          <el-input v-model="githubToken" :placeholder="$t('preferences.image.uploader.tokenPlaceholder')" size="small"></el-input>
         </div>
         <div class="form-group">
           <div class="label">{{ $t('preferences.image.uploader.ownerName') }}</div>
-          <el-input v-model="github.owner" :placeholder="$t('preferences.image.uploader.ownerPlaceholder')" size="mini"></el-input>
+          <el-input v-model="github.owner" :placeholder="$t('preferences.image.uploader.ownerPlaceholder')" size="small"></el-input>
         </div>
         <div class="form-group">
           <div class="label">{{ $t('preferences.image.uploader.repoName') }}</div>
-          <el-input v-model="github.repo" :placeholder="$t('preferences.image.uploader.repoPlaceholder')" size="mini"></el-input>
+          <el-input v-model="github.repo" :placeholder="$t('preferences.image.uploader.repoPlaceholder')" size="small"></el-input>
         </div>
         <div class="form-group">
           <div class="label">{{ $t('preferences.image.uploader.branchName') }}</div>
-          <el-input v-model="github.branch" :placeholder="$t('preferences.image.uploader.branchPlaceholder')" size="mini"></el-input>
+          <el-input v-model="github.branch" :placeholder="$t('preferences.image.uploader.branchPlaceholder')" size="small"></el-input>
         </div>
         <legal-notices-checkbox class="github"
           :class="[{ 'error': legalNoticesErrorStates.github }]"
           :uploaderService="uploadServices.github"></legal-notices-checkbox>
         <div class="form-group">
-          <el-button size="mini" :disabled="githubDisable" @click="save('github')">{{ $t('preferences.image.uploader.saveConfigTitle') }}
+          <el-button size="small" :disabled="githubDisable" @click="save('github')">{{ $t('preferences.image.uploader.saveConfigTitle') }}
           </el-button>
         </div>
       </div>
@@ -55,10 +55,10 @@
         </div>
         <div class="form-group">
           <div class="label">{{ $t('preferences.image.uploader.scriptLocation') }}</div>
-          <el-input v-model="cliScript" :placeholder="$t('preferences.image.uploader.scriptPathPlaceholder')" size="mini"></el-input>
+          <el-input v-model="cliScript" :placeholder="$t('preferences.image.uploader.scriptPathPlaceholder')" size="small"></el-input>
         </div>
         <div class="form-group">
-          <el-button size="mini" :disabled="cliScriptDisable" @click="save('cliScript')">{{ $t('preferences.image.uploader.saveConfigTitle') }}
+          <el-button size="small" :disabled="cliScriptDisable" @click="save('cliScript')">{{ $t('preferences.image.uploader.saveConfigTitle') }}
           </el-button>
         </div>
       </div>

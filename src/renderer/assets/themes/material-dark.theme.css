@@ -70,14 +70,18 @@
   --floatBgColor: #37474F;
   --floatHoverColor: rgba(77, 182, 172, .06);
   --floatBorderColor: #455A64;
-  --floatShadow: rgba(0, 0, 0, 0.35) 0px 4px 16px;
+  --floatShadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   --maskColor: rgba(0, 0, 0, .6);
   --editorAreaWidth: 750px;
+
+  /* Image placeholder icon colors (dark theme) */
+  --imageIconColor: #B0BEC5;
+  --imageIconFailColor: #607D8B;
 }
 
 .ag-front-menu .submenu,
 .ag-float-wrapper {
-  box-shadow: 0 4px 8px 0 var(--floatShadow) !important;
+  box-shadow: var(--floatShadow) !important;
 }
 
 .title-bar .frameless-titlebar-button > div > svg {
@@ -115,7 +119,7 @@ pre.ag-paragraph {
   border: none !important;
 }
 figure.ag-active.ag-container-block > div.ag-container-preview {
-  box-shadow: 0 3px 8px 0 var(--floatShadow) !important;
+  box-shadow: var(--floatShadow) !important;
 }
 
 /*

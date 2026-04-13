@@ -75,6 +75,7 @@ export default {
     allCharacters: '모든 문자'
   },
   search: {
+    placeholder: '검색',
     replacementPlaceholder: '바꿀 내용',
     caseSensitive: '대소문자 구분',
     wholeWord: '단어 단위 선택',

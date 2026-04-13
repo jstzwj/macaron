@@ -138,7 +138,9 @@ const actions = {
   },
 
   SET_SINGLE_PREFERENCE ({ commit }, { type, value }) {
-    // save to electron-store
+    // Update Vuex state immediately for reactive UI
+    commit('SET_USER_PREFERENCE', { [type]: value })
+    // Persist to electron-store via main process
     ipcRenderer.send('mt::set-user-preference', { [type]: value })
   },
 

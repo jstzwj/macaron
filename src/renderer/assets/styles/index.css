@@ -67,6 +67,10 @@
   --buttonPrimaryFocusShadow: inset 0 0 0 1px rgba(30, 64, 110, 0.5), 0 0 0 1px var(--themeColor);
   --tableBorderColor: #E2E8F0;
 
+  /* Image placeholder icon colors */
+  --imageIconColor: #1E293B;
+  --imageIconFailColor: #94A3B8;
+
   /*marktext*/
   --sideBarColor: #64748B;
   --sideBarIconColor: #94A3B8;
@@ -189,19 +193,6 @@ body {
   border-bottom-color: var(--floatBorderColor);
 }
 
-.el-button:hover,
-.el-button--primary:hover {
-  border-color: unset;
-}
-.el-button:active,
-.el-button--primary:active {
-  border-color: unset;
-}
-.el-button:focus,
-.el-button--primary:focus {
-  border-color: unset;
-}
-
 .el-slider__button {
   border-color: var(--themeColor);
 }
@@ -278,8 +269,7 @@ div.el-tab-pane {
 }
 
 .button,
-.muya-button,
-.el-button {
+.muya-button {
   cursor: pointer;
   text-decoration: none;
   color: var(--buttonFontColor);
@@ -290,29 +280,46 @@ div.el-tab-pane {
   padding: 7px 14px;
 }
 .button:hover,
-.muya-button:hover,
-.el-button:hover {
+.muya-button:hover {
   color: var(--buttonFontColorHover);
   background: var(--buttonBgColorHover);
   border: var(--buttonBorderHover);
 }
 .button:active,
-.muya-button:active,
-.el-button:active {
+.muya-button:active {
   color: var(--buttonFontColorActive);
   background: var(--buttonBgColorActive);
   border: var(--buttonBorderActive);
 }
 .button:focus,
-.muya-button:focus,
-.el-button:focus {
+.muya-button:focus {
   outline: none;
   border: var(--buttonFocusBorder);
 }
 
+/* Element Plus button theme overrides - apply CSS variables while keeping EP's own styles */
+.el-button {
+  color: var(--buttonFontColor);
+  background-color: var(--buttonBgColor);
+  border-color: var(--tableBorderColor);
+}
+.el-button:hover {
+  color: var(--buttonFontColorHover);
+  background-color: var(--buttonBgColorHover);
+  border-color: var(--buttonBorderHover);
+}
+.el-button:active {
+  color: var(--buttonFontColorActive);
+  background-color: var(--buttonBgColorActive);
+}
+.el-button:focus {
+  outline: none;
+  background-color: var(--buttonBgColor);
+  border-color: var(--themeColor);
+}
+
 .button-primary,
-.muya-button-primary,
-.el-button--primary {
+.muya-button-primary {
   cursor: pointer;
   text-decoration: none;
   color: var(--buttonPrimaryFontColor);
@@ -323,25 +330,45 @@ div.el-tab-pane {
   padding: 7px 14px;
 }
 .button-primary:hover,
-.muya-button-primary:hover,
-.el-button--primary:hover {
+.muya-button-primary:hover {
   color: var(--buttonPrimaryFontColorHover);
   background: var(--buttonPrimaryBgColorHover);
   border: var(--buttonPrimaryBorderHover);
 }
 .button-primary:active,
-.muya-button-primary:active,
-.el-button--primary:active {
+.muya-button-primary:active {
   color: var(--buttonPrimaryFontColorActive);
   background: var(--buttonPrimaryBgColorActive);
   border: var(--buttonPrimaryBorderActive);
 }
 button.button-primary:not(.custom):focus,
 .button-primary:focus,
-.muya-button-primary:focus,
-.el-button--primary:focus {
+.muya-button-primary:focus {
   outline: none;
   border: var(--buttonPrimaryFocusBorder);
+  box-shadow: var(--buttonPrimaryFocusShadow);
+}
+
+/* Element Plus primary button theme overrides */
+.el-button--primary {
+  color: var(--buttonPrimaryFontColor);
+  background-color: var(--buttonPrimaryBgColor);
+  border-color: var(--buttonPrimaryBgColor);
+}
+.el-button--primary:hover {
+  color: var(--buttonPrimaryFontColorHover);
+  background-color: var(--buttonPrimaryBgColorHover);
+  border-color: var(--buttonPrimaryBgColorHover);
+}
+.el-button--primary:active {
+  color: var(--buttonPrimaryFontColorActive);
+  background-color: var(--buttonPrimaryBgColorActive);
+  border-color: var(--buttonPrimaryBgColorActive);
+}
+.el-button--primary:focus {
+  outline: none;
+  background-color: var(--buttonPrimaryBgColor);
+  border-color: var(--buttonPrimaryBgColor);
   box-shadow: var(--buttonPrimaryFocusShadow);
 }
 
@@ -349,12 +376,10 @@ button.button-primary:not(.custom):focus,
 .button[disabled],
 .muya-button.disabled,
 .muya-button[disabled],
-.el-button.disabled,
-.el-button[disabled],
 .button-primary.disabled,
 .button-primary[disabled],
-.el-button--primary.disabled,
-.el-button--primary[disabled] {
+.muya-button-primary.disabled,
+.muya-button-primary[disabled] {
   cursor: not-allowed !important;
   opacity: .65 !important;
   box-shadow: none !important;
@@ -362,18 +387,14 @@ button.button-primary:not(.custom):focus,
 
 .button.small,
 .muya-button.small,
-.el-button.small,
 .button-primary.small,
-.muya-button-primary.small,
-.el-button--primary.small {
+.muya-button-primary.small {
   padding: 5px 8px;
 }
 .button.tiny,
 .muya-button.tiny,
-.el-button.tiny,
 .button-primary.tiny,
-.muya-button-primary.tiny,
-.el-button--primary.tiny {
+.muya-button-primary.tiny {
   font-size: 13px;
   padding: 4px 7px;
 }
@@ -400,45 +421,35 @@ button.button-primary:not(.custom):focus,
   margin-right: 0;
 }
 
-/* Overwrite element UI button padding */
-.el-button,
-.el-button--primary {
-  padding: 7px 14px;
-}
-.el-button:focus {
-  background-color: var(--buttonBgColor);
-}
-.el-button--primary:focus {
-  background-color: var(--buttonPrimaryBgColor);
-}
+/* Element Plus disabled button theme overrides */
 .el-button.is-disabled,
 .el-button.is-disabled:focus,
 .el-button.is-disabled:hover {
   color: var(--buttonFontColor);
-  background: var(--buttonBgColor);
-  border: var(--buttonBorder);
+  background-color: var(--buttonBgColor);
+  border-color: var(--tableBorderColor);
   box-shadow: none;
 }
 .el-button--primary.is-disabled,
 .el-button--primary.is-disabled:focus,
 .el-button--primary.is-disabled:hover {
   color: var(--buttonPrimaryFontColor);
-  background: var(--buttonPrimaryBgColor);
-  border: var(--buttonPrimaryBorder);
+  background-color: var(--buttonPrimaryBgColor);
+  border-color: var(--buttonPrimaryBgColor);
   box-shadow: none;
 }
 
-.image-viewer {
-  z-index: 10001;
-}
-
 /* Global transitions for theme-aware properties */
+body,
 .side-bar,
 .status-bar,
 .title-bar,
 .editor-tabs,
 .pref-sidebar,
-.pref-header {
+.pref-header,
+#ag-editor-id,
+.editor-wrapper,
+.editor-component {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 

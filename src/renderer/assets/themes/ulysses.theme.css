@@ -84,7 +84,12 @@
 /* ------------------------------------ */
 
 /* Ulysses: centered headings for distraction-free writing */
-h1, h2, h3, h4, h5, h6 {
+.editor-wrapper h1,
+.editor-wrapper h2,
+.editor-wrapper h3,
+.editor-wrapper h4,
+.editor-wrapper h5,
+.editor-wrapper h6 {
   color: var(--themeColor);
   text-align: center;
 }

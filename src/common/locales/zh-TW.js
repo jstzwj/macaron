@@ -75,6 +75,7 @@ export default {
     allCharacters: '所有字元'
   },
   search: {
+    placeholder: '搜尋',
     replacementPlaceholder: '取代內容',
     caseSensitive: '區分大小寫',
     wholeWord: '全字匹配',
