@@ -65,6 +65,17 @@ describe('Muya parser', () => {
   it('GFM - Tables', () => {
     verifyMarkdown(templates.GfmTablesTemplate(), defaultOptions)
   })
+  it('handles stale cursor keys when computing render range', () => {
+    const ctx = createMuyaContext(defaultOptions)
+    ctx.contentState.importMarkdown(templates.BasicTextFormattingTemplate())
+    ctx.contentState.cursor = {
+      start: { key: 'missing-start', offset: 0 },
+      end: { key: 'missing-end', offset: 0 }
+    }
+
+    expect(() => ctx.contentState.setNextRenderRange()).to.not.throw()
+    expect(ctx.contentState.renderRange).to.deep.equal([null, null])
+  })
 })
 
 describe('Muya parser (CRLF)', () => {

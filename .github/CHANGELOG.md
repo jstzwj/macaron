@@ -1,3 +1,29 @@
+## 0.18.1
+
+**:butterfly:Optimization**
+
+- Improved preference button styling consistency across native buttons, Element Plus buttons, and link-style actions.
+- Improved accessibility feedback by restoring clearer focus visibility and semantic interactive controls.
+
+**:beetle:Bug fix**
+
+- Fixed preference action buttons that could lose their intended visual styling.
+- Fixed multiple accessibility and responsive layout regressions in the editor shell and preferences UI.
+
+## 0.18.0
+
+**:butterfly:Optimization**
+
+- Improved accessibility across the editor and preferences UI by restoring visible focus feedback and using more semantic interactive controls.
+- Improved consistency of preference actions across native buttons, Element Plus buttons, and link-style controls.
+- Improved layout behavior in narrow windows and high-zoom scenarios.
+
+**:beetle:Bug fix**
+
+- Fixed multiple preference buttons that could render without their intended visual styling.
+- Fixed stale-cursor and post-render DOM errors that could cause unit tests to fail after all assertions had already passed.
+- Fixed several responsive and interaction regressions in the editor shell and preferences area.
+
 ## 0.17.1
 
 - Added experimental native support for Apple M1 (see #2983 if you have issues).
