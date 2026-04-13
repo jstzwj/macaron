@@ -45,7 +45,7 @@
           :class="[{ 'error': legalNoticesErrorStates.github }]"
           :uploaderService="uploadServices.github"></legal-notices-checkbox>
         <div class="form-group">
-          <el-button size="small" :disabled="githubDisable" @click="save('github')">{{ $t('preferences.image.uploader.saveConfigTitle') }}
+          <el-button class="pref-action-button" size="small" :disabled="githubDisable" @click="save('github')">{{ $t('preferences.image.uploader.saveConfigTitle') }}
           </el-button>
         </div>
       </div>
@@ -58,7 +58,7 @@
           <el-input v-model="cliScript" :placeholder="$t('preferences.image.uploader.scriptPathPlaceholder')" size="small"></el-input>
         </div>
         <div class="form-group">
-          <el-button size="small" :disabled="cliScriptDisable" @click="save('cliScript')">{{ $t('preferences.image.uploader.saveConfigTitle') }}
+          <el-button class="pref-action-button" size="small" :disabled="cliScriptDisable" @click="save('cliScript')">{{ $t('preferences.image.uploader.saveConfigTitle') }}
           </el-button>
         </div>
       </div>
@@ -233,10 +233,6 @@ export default {
   & .warning {
     color: var(--deleteColor);
   }
-  & .link {
-    color: var(--themeColor);
-    cursor: pointer;
-  }
   & .description {
     margin-top: 20px;
     margin-bottom: 20px;
@@ -253,6 +249,39 @@ export default {
   & .el-button.btn-reset,
   & .button-group {
     margin-top: 30px;
+  }
+  & .pref-action-button.el-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 34px;
+    padding: 0 14px;
+    border: 1px solid var(--tableBorderColor);
+    border-radius: 8px;
+    background: var(--buttonBgColor);
+    color: var(--buttonFontColor);
+    font-size: 13px;
+    line-height: 1.2;
+    box-shadow: var(--buttonShadow);
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+  }
+  & .pref-action-button.el-button:hover {
+    background: var(--buttonBgColorHover);
+    border-color: var(--buttonBorderHover);
+    color: var(--buttonFontColorHover);
+  }
+  & .pref-action-button.el-button:active {
+    background: var(--buttonBgColorActive);
+    border-color: var(--buttonBorderActive);
+    color: var(--buttonFontColorActive);
+  }
+  & .pref-action-button.el-button.is-disabled,
+  & .pref-action-button.el-button.is-disabled:hover,
+  & .pref-action-button.el-button.is-disabled:focus {
+    box-shadow: none;
+    opacity: .7;
+    cursor: not-allowed;
   }
   & .pref-cb-legal-notices {
     &.github {

@@ -261,13 +261,12 @@ export default {
   .editor-container {
     display: flex;
     flex-direction: row;
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    position: fixed;
+    inset: 0;
+    width: auto;
+    height: auto;
+    min-width: 0;
+    min-height: 0;
   }
   .editor-container .hide {
     z-index: -1;
@@ -282,10 +281,12 @@ export default {
     display: flex;
     flex-direction: column;
     flex: 1;
-    min-height: 100vh;
+    min-width: 0;
+    min-height: 0;
     position: relative;
     & > .editor {
       flex: 1;
+      min-height: 0;
     }
   }
 </style>

@@ -1,8 +1,5 @@
 <template>
-    <div
-      class="editor-with-tabs"
-      :style="{'max-width': showSideBar ? `calc(100vw - ${sideBarWidth}px)` : '100vw' }"
-    >
+    <div class="editor-with-tabs">
       <tabs v-show="showTabBar"></tabs>
       <div class="container">
         <editor
@@ -57,43 +54,6 @@ export default {
       required: true
     }
   },
-  data () {
-    return {
-      _showSideBar: false,
-      _sideBarWidth: 280
-    }
-  },
-  computed: {
-    showSideBar () {
-      return this._showSideBar
-    },
-    sideBarWidth () {
-      return this._sideBarWidth
-    }
-  },
-  watch: {
-    // Watch store changes via bus events
-  },
-  created () {
-    // Initialize from store
-    this._showSideBar = this.$store.state.layout.showSideBar
-    this._sideBarWidth = this.$store.state.layout.sideBarWidth
-
-    // Subscribe to store changes
-    this._unsubscribe = this.$store.subscribe((mutation, state) => {
-      if (mutation.type === 'SET_LAYOUT' || mutation.type === 'TOGGLE_LAYOUT_ENTRY') {
-        this._showSideBar = state.layout.showSideBar
-      }
-      if (mutation.type === 'SET_SIDE_BAR_WIDTH') {
-        this._sideBarWidth = state.layout.sideBarWidth
-      }
-    })
-  },
-  beforeUnmount () {
-    if (this._unsubscribe) {
-      this._unsubscribe()
-    }
-  },
   components: {
     Tabs,
     Editor,
@@ -107,6 +67,8 @@ export default {
   .editor-with-tabs {
     position: relative;
     height: 100%;
+    min-width: 0;
+    min-height: 0;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -115,6 +77,8 @@ export default {
     background: var(--editorBgColor);
     & > .container {
       flex: 1;
+      min-width: 0;
+      min-height: 0;
       overflow: hidden;
     }
   }

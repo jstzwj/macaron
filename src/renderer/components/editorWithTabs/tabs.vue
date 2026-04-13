@@ -1,30 +1,37 @@
 <template>
   <div class="editor-tabs">
     <div class="tabs-scroll" ref="tabsScroll">
-      <div class="tabs-list" ref="tabsList">
+      <div class="tabs-list" ref="tabsList" role="tablist" aria-label="Open files">
         <div
           v-for="file of tabs"
           :key="file.id"
           :class="['tab-item', { active: isActive(file), unsaved: !file.isSaved }]"
-          @click="selectFile(file)"
           @click.middle="removeFileInTab(file)"
           @contextmenu.prevent="handleContextMenu($event, file)"
         >
-          <span :class="getFileIconClass(file)" class="tab-icon"></span>
-          <span class="tab-title">{{ file.filename }}</span>
-          <span class="tab-close" @click.stop="removeFileInTab(file)">
+          <button
+            type="button"
+            class="tab-button"
+            role="tab"
+            :aria-selected="isActive(file)"
+            @click="selectFile(file)"
+          >
+            <span :class="getFileIconClass(file)" class="tab-icon"></span>
+            <span class="tab-title">{{ file.filename }}</span>
+          </button>
+          <button type="button" class="tab-close" :aria-label="`Close ${file.filename}`" :title="`Close ${file.filename}`" @click.stop="removeFileInTab(file)">
             <svg viewBox="0 0 1024 1024" width="12" height="12">
               <path fill="currentColor" d="M563.8 512l262.5-312.9c4.4-5.2 0.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L512 442.2 295.9 191.7c-3-3.6-7.5-5.7-12.3-5.7H203.8c-6.8 0-10.5 7.9-6.1 13.1L460.2 512 197.7 824.9c-4.4 5.2-0.7 13.1 6.1 13.1h79.8c4.7 0 9.2 2.1 12.3 5.7L512 581.8l216.1 250.5c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z" />
             </svg>
-          </span>
+          </button>
         </div>
       </div>
     </div>
-    <div class="tab-new" @click="newFile">
+    <button type="button" class="tab-new" aria-label="Create new file" title="Create new file" @click="newFile">
       <svg viewBox="0 0 1024 1024" width="14" height="14">
         <path fill="currentColor" d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64z m192 480H544v160c0 17.7-14.3 32-32 32s-32-14.3-32-32V544H320c-17.7 0-32-14.3-32-32s14.3-32 32-32h160V320c0-17.7 14.3-32 32-32s32 14.3 32 32v160h160c17.7 0 32 14.3 32 32s-14.3 32-32 32z" />
       </svg>
-    </div>
+    </button>
   </div>
 </template>
 
@@ -210,6 +217,7 @@ export default {
 
   .tabs-scroll {
     flex: 1;
+    min-width: 0;
     overflow-x: auto;
     overflow-y: hidden;
   }
@@ -229,8 +237,7 @@ export default {
 
   .tab-item {
     display: flex;
-    align-items: center;
-    padding: 0 12px;
+    align-items: stretch;
     height: 36px;
     color: var(--editorColor50);
     font-size: 12.5px;
@@ -241,6 +248,26 @@ export default {
     flex-shrink: 0;
     border-radius: 6px 6px 0 0;
     transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .tab-button,
+  .tab-close,
+  .tab-new {
+    border: none;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    padding: 0;
+  }
+
+  .tab-button {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    flex: 1;
+    padding: 0 12px;
+    cursor: pointer;
+    text-align: left;
   }
 
   .tab-icon {
@@ -289,13 +316,14 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: 6px;
+    margin: 8px 8px 8px 0;
     width: 20px;
     height: 20px;
     border-radius: 4px;
     color: var(--editorColor40);
     flex-shrink: 0;
     transition: background-color 0.15s ease, color 0.15s ease;
+    cursor: pointer;
   }
 
   .tab-close:hover {

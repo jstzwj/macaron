@@ -38,5 +38,8 @@ export default {
   & .el-checkbox {
     margin-right: 0;
   }
+  & .link {
+    cursor: pointer;
+  }
 }
 </style>

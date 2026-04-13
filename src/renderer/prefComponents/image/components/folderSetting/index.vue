@@ -5,8 +5,8 @@
       :regexValidator="/^(?:$|([a-zA-Z]:)?[\/\\].*$)/" :defaultValue="folderPathPlaceholder"
       :onChange="value => modifyImageFolderPath(value)"></text-box>
     <div>
-      <el-button size="small" @click="modifyImageFolderPath(undefined)">{{ $t('preferences.image.folder.open') }}</el-button>
-      <el-button size="small" @click="openImageFolder">{{ $t('preferences.image.folder.showInFolder') }}</el-button>
+      <el-button class="pref-action-button folder-action-button" size="small" @click="modifyImageFolderPath(undefined)">{{ $t('preferences.image.folder.open') }}</el-button>
+      <el-button class="pref-action-button folder-action-button" size="small" @click="openImageFolder">{{ $t('preferences.image.folder.showInFolder') }}</el-button>
     </div>
     <compound>
       <template #head>
@@ -91,16 +91,35 @@ export default {
   }
   & > div {
     margin-top: 10px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
   }
-  & .el-button--small {
-    color: var(--editorColor);
-    background: transparent;
-    border-color: var(--editorColor10);
+  & .folder-action-button.el-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 34px;
+    padding: 0 14px;
+    border: 1px solid var(--tableBorderColor);
+    border-radius: 8px;
+    background: var(--buttonBgColor);
+    color: var(--buttonFontColor);
     font-size: 13px;
+    line-height: 1.2;
+    box-shadow: var(--buttonShadow);
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
   }
-  & .el-button--small:hover {
-    background: var(--floatHoverColor);
-    border-color: var(--editorColor30);
+  & .folder-action-button.el-button:hover {
+    background: var(--buttonBgColorHover);
+    border-color: var(--buttonBorderHover);
+    color: var(--buttonFontColorHover);
+  }
+  & .folder-action-button.el-button:active {
+    background: var(--buttonBgColorActive);
+    border-color: var(--buttonBorderActive);
+    color: var(--buttonFontColorActive);
   }
 }
 </style>

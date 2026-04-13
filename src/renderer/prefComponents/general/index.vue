@@ -96,7 +96,7 @@
             >
             {{ $t('settings.general.openDefaultDirectory') }}<span>: {{defaultDirectoryToOpen}}</span>
           </label>
-          <button type="button" class="select-folder-button" @click="selectDefaultDirectoryToOpen">{{ $t('settings.general.selectFolder') }}</button>
+          <button type="button" class="button small select-folder-button" @click="selectDefaultDirectoryToOpen">{{ $t('settings.general.selectFolder') }}</button>
           <label>
             <input
               type="radio"
@@ -213,7 +213,8 @@ export default {
       font-size: 14px;
       user-select: none;
       color: var(--editorColor);
-      & .el-button--small {
+      & .el-button--small,
+      & .select-folder-button {
         margin-left: 25px;
       }
       & label {

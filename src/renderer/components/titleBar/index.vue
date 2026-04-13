@@ -6,7 +6,7 @@
     ></div>
     <div
       class="title-bar"
-      :class="[{ 'active': active }, { 'tabs-visible': showTabBar }, { 'frameless': titleBarStyle === 'custom' }, { 'isOsx': isOsx }]"
+      :class="[{ 'active': active }, { 'tabs-visible': showTabBar }, { 'frameless': titleBarStyle === 'custom' }, { 'isOsx': isOsx } ]"
     >
       <div class="title" @dblclick.stop="toggleMaxmizeOnMacOS">
         <span v-if="!filename">{{ $t('app.name') }}</span>
@@ -20,52 +20,56 @@
               <use xlink:href="#icon-arrow-right"></use>
             </svg>
           </span>
-          <span
+          <button
+            type="button"
             class="filename"
             :class="{'isOsx': platform === 'darwin'}"
             @click="rename"
           >
             {{ filename }}
-          </span>
+          </button>
           <span class="save-dot" :class="{'show': !isSaved}"></span>
         </span>
       </div>
       <div :class="showCustomTitleBar ? 'left-toolbar title-no-drag' : 'right-toolbar'">
-        <div
+        <button
           v-if="showCustomTitleBar"
+          type="button"
           class="frameless-titlebar-menu title-no-drag"
+          :aria-label="$t('app.name') + ' menu'"
+          :title="$t('app.name') + ' menu'"
           @click.stop="handleMenuClick"
         >
           <span class="text-center-vertical">&#9776;</span>
-        </div>
+        </button>
       </div>
       <div
         v-if="titleBarStyle === 'custom' && !isFullScreen && !isOsx"
         class="right-toolbar"
         :class="[{ 'title-no-drag': titleBarStyle === 'custom' }]"
       >
-        <div class="frameless-titlebar-button frameless-titlebar-close" @click.stop="handleCloseClick">
+        <button type="button" class="frameless-titlebar-button frameless-titlebar-close" aria-label="Close window" title="Close window" @click.stop="handleCloseClick">
           <div>
             <svg width="10" height="10">
               <path :d="windowIconClose" />
             </svg>
           </div>
-        </div>
-        <div class="frameless-titlebar-button frameless-titlebar-toggle" @click.stop="handleMaximizeClick">
+        </button>
+        <button type="button" class="frameless-titlebar-button frameless-titlebar-toggle" :aria-label="isMaximized ? 'Restore window' : 'Maximize window'" :title="isMaximized ? 'Restore window' : 'Maximize window'" @click.stop="handleMaximizeClick">
           <div>
             <svg width="10" height="10">
               <path v-show="!isMaximized" :d="windowIconMaximize" />
               <path v-show="isMaximized" :d="windowIconRestore" />
             </svg>
           </div>
-        </div>
-        <div class="frameless-titlebar-button frameless-titlebar-minimize" @click.stop="handleMinimizeClick">
+        </button>
+        <button type="button" class="frameless-titlebar-button frameless-titlebar-minimize" aria-label="Minimize window" title="Minimize window" @click.stop="handleMinimizeClick">
           <div>
             <svg width="10" height="10">
               <path :d="windowIconMinimize" />
             </svg>
           </div>
-        </div>
+        </button>
       </div>
     </div>
   </div>
@@ -250,6 +254,15 @@ export default {
     white-space: nowrap;
   }
 
+  .title-bar .title .filename {
+    border: none;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    padding: 0;
+    cursor: pointer;
+  }
+
   .title-bar .title .filename.isOsx:hover {
     color: var(--themeColor);
   }
@@ -299,12 +312,22 @@ export default {
     -webkit-app-region: no-drag;
   }
   /* frameless window controls */
+  .frameless-titlebar-button,
+  .frameless-titlebar-menu {
+    border: none;
+    background: transparent;
+    font: inherit;
+    color: inherit;
+    padding: 0;
+  }
+
   .frameless-titlebar-button {
     position: relative;
     display: block;
     width: 46px;
     height: var(--titleBarHeight);
     transition: background-color 0.15s ease;
+    cursor: pointer;
   }
   .frameless-titlebar-button > div {
     position: absolute;
@@ -315,6 +338,7 @@ export default {
   }
   .frameless-titlebar-menu {
     color: var(--sideBarColor);
+    cursor: pointer;
   }
   .frameless-titlebar-close:hover {
     background-color: rgb(228, 79, 79);
@@ -336,6 +360,26 @@ export default {
     display: inline-block;
     vertical-align: middle;
     line-height: normal;
+  }
+
+  @media (max-width: 900px) {
+    .title {
+      padding: 0 120px;
+    }
+
+    .left-toolbar {
+      width: 80px;
+    }
+
+    .right-toolbar {
+      width: 120px;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .title {
+      padding: 0 92px;
+    }
   }
 </style>
 

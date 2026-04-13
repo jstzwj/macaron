@@ -7,20 +7,38 @@
     <!-- Opened tabs -->
     <div class="opened-files">
       <div class="title">
-        <svg class="icon icon-arrow" :class="{'fold': !showOpenedFiles}" aria-hidden="true" @click.stop="toggleOpenedFiles()">
-          <use xlink:href="#icon-arrow"></use>
-        </svg>
-        <span class="default-cursor text-overflow" @click.stop="toggleOpenedFiles()">{{ $t('editor.contextMenu.tree.openedFiles') }}</span>
-        <a href="javascript:;" @click.stop="saveAll(false)" :title="$t('editor.contextMenu.tree.saveAll')">
+        <button
+          type="button"
+          class="title-toggle"
+          @click.stop="toggleOpenedFiles()"
+        >
+          <svg class="icon icon-arrow" :class="{'fold': !showOpenedFiles}" aria-hidden="true">
+            <use xlink:href="#icon-arrow"></use>
+          </svg>
+          <span class="text-overflow">{{ $t('editor.contextMenu.tree.openedFiles') }}</span>
+        </button>
+        <button
+          type="button"
+          class="title-action"
+          :title="$t('editor.contextMenu.tree.saveAll')"
+          :aria-label="$t('editor.contextMenu.tree.saveAll')"
+          @click.stop="saveAll(false)"
+        >
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-save-all"></use>
           </svg>
-        </a>
-        <a href="javascript:;" @click.stop="saveAll(true)" :title="$t('editor.contextMenu.tree.closeAll')">
+        </button>
+        <button
+          type="button"
+          class="title-action"
+          :title="$t('editor.contextMenu.tree.closeAll')"
+          :aria-label="$t('editor.contextMenu.tree.closeAll')"
+          @click.stop="saveAll(true)"
+        >
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-close-all"></use>
           </svg>
-        </a>
+        </button>
       </div>
       <div class="opened-files-list" v-show="showOpenedFiles">
         <transition-group name="list">
@@ -38,10 +56,16 @@
       class="project-tree" v-if="projectTree"
     >
       <div class="title">
-        <svg class="icon icon-arrow" :class="{'fold': !showDirectories}" aria-hidden="true" @click.stop="toggleDirectories()">
-          <use xlink:href="#icon-arrow"></use>
-        </svg>
-        <span class="default-cursor text-overflow" @click.stop="toggleDirectories()">{{ projectTree.name }}</span>
+        <button
+          type="button"
+          class="title-toggle"
+          @click.stop="toggleDirectories()"
+        >
+          <svg class="icon icon-arrow" :class="{'fold': !showDirectories}" aria-hidden="true">
+            <use xlink:href="#icon-arrow"></use>
+          </svg>
+          <span class="text-overflow">{{ projectTree.name }}</span>
+        </button>
       </div>
       <div class="tree-wrapper" v-show="showDirectories">
         <folder
@@ -63,7 +87,7 @@
         ></file>
         <div class="empty-project" v-if="projectTree.files.length === 0 && projectTree.folders.length === 0">
           <span>{{ $t('editor.contextMenu.tree.emptyProject') }}</span>
-          <a href="javascript:;" @click.stop="createFile">{{ $t('editor.contextMenu.tree.createFile') }}</a>
+          <button type="button" class="empty-project-action" @click.stop="createFile">{{ $t('editor.contextMenu.tree.createFile') }}</button>
         </div>
       </div>
     </div>
@@ -189,6 +213,7 @@ export default {
     display: flex;
     flex-direction: column;
     height: 100%;
+    min-height: 0;
   }
   .tree-view > .title {
     height: 35px;
@@ -219,34 +244,61 @@ export default {
     }
   }
 
-  .opened-files .title {
+  .title-toggle,
+  .title-action,
+  .empty-project-action {
+    border: none;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    padding: 0;
+  }
+
+  .opened-files .title,
+  .project-tree > .title {
     padding-right: 15px;
     display: flex;
     align-items: center;
-    & > span {
-      flex: 1;
-    }
-    & > a {
-      display: none;
-      text-decoration: none;
-      color: var(--sideBarColor);
-      margin-left: 8px;
-    }
   }
-  .opened-files div.title:hover > a,
-  .opened-files div.title > a:hover {
-    display: block;
-    &:hover {
-      color: var(--highlightThemeColor);
-    }
+
+  .title-toggle {
+    display: inline-flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+    cursor: pointer;
+    text-align: left;
+    user-select: none;
   }
+
+  .title-toggle > span {
+    flex: 1;
+  }
+
+  .title-action {
+    display: none;
+    margin-left: 8px;
+    color: var(--sideBarColor);
+    cursor: pointer;
+  }
+
+  .opened-files .title:hover > .title-action,
+  .opened-files .title > .title-action:hover,
+  .opened-files .title > .title-action:focus-visible {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .opened-files .title > .title-action:hover {
+    color: var(--highlightThemeColor);
+  }
+
   .opened-files {
     display: flex;
     flex-direction: column;
   }
-  .default-cursor {
-    cursor: pointer;
-  }
+
   .opened-files .opened-files-list {
     max-height: 200px;
     overflow: auto;
@@ -260,40 +312,36 @@ export default {
     display: flex;
     flex-direction: column;
     overflow: auto;
+    flex: 1;
+    min-height: 0;
     & > .title {
-      padding-right: 15px;
-      display: flex;
-      align-items: center;
-      & > span {
-        flex: 1;
-        user-select: none;
-      }
-      & > a {
+      & > .title-action {
         pointer-events: auto;
-        cursor: pointer;
         margin-left: 8px;
         color: var(--sideBarIconColor);
         opacity: 0;
       }
-      & > a:hover {
+      & > .title-action:hover,
+      & > .title-action.active,
+      & > .title-action:focus-visible {
         color: var(--highlightThemeColor);
-      }
-      & > a.active {
-        color: var(--highlightThemeColor);
+        opacity: 1;
       }
     }
     & > .tree-wrapper {
       overflow: auto;
       flex: 1;
+      min-height: 0;
       &::-webkit-scrollbar:vertical {
         width: 8px;
       }
     }
-    flex: 1;
   }
-  .project-tree div.title:hover > a {
+
+  .project-tree div.title:hover > .title-action {
     opacity: 1;
   }
+
   .open-project {
     flex: 1;
     display: flex;
@@ -316,7 +364,6 @@ export default {
     }
   }
   .new-input {
-    outline: none;
     height: 22px;
     margin: 5px 0;
     padding: 0 6px;
@@ -338,11 +385,11 @@ export default {
     flex-direction: column;
     padding-top: 40px;
     align-items: center;
-    & > a {
+    & > .empty-project-action {
       color: var(--highlightThemeColor);
       text-align: center;
       margin-top: 15px;
-      text-decoration: none;
+      cursor: pointer;
     }
   }
   .bold {

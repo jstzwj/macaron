@@ -16,13 +16,13 @@
         </el-table-column>
         <el-table-column fixed="right" :label="$t('preferences.keybindings.columnOptions')" width="90">
           <template #default="scope">
-            <el-button @click="handleEditClick(scope.$index, scope.row)" link size="small" :title="$t('preferences.keybindings.buttonEdit')">
+            <el-button class="keybinding-action-button" @click="handleEditClick(scope.$index, scope.row)" link size="small" :title="$t('preferences.keybindings.buttonEdit')">
               <el-icon><Edit /></el-icon>
             </el-button>
-            <el-button @click="handleResetClick(scope.$index, scope.row)" link size="small" :title="$t('preferences.keybindings.buttonReset')">
+            <el-button class="keybinding-action-button" @click="handleResetClick(scope.$index, scope.row)" link size="small" :title="$t('preferences.keybindings.buttonReset')">
               <el-icon><RefreshRight /></el-icon>
             </el-button>
-            <el-button @click="handleUnbindClick(scope.$index, scope.row)" link size="small" :title="$t('preferences.keybindings.buttonUnbind')">
+            <el-button class="keybinding-action-button" @click="handleUnbindClick(scope.$index, scope.row)" link size="small" :title="$t('preferences.keybindings.buttonUnbind')">
               <el-icon><Delete /></el-icon>
             </el-button>
           </template>
@@ -31,13 +31,13 @@
     </section>
     <section class="footer">
       <separator></separator>
-      <el-button size="default" @click="saveKeybindings">{{ $t('preferences.keybindings.buttonSave') }}</el-button>
-      <el-button size="default" @click="restoreDefaults">{{ $t('preferences.keybindings.buttonRestoreDefaults') }}</el-button>
+      <el-button class="pref-action-button" size="default" @click="saveKeybindings">{{ $t('preferences.keybindings.buttonSave') }}</el-button>
+      <el-button class="pref-action-button" size="default" @click="restoreDefaults">{{ $t('preferences.keybindings.buttonRestoreDefaults') }}</el-button>
     </section>
     <section v-if="showDebugTools" class="keyboard-debug">
       <separator></separator>
       <div><strong>Debug options:</strong></div>
-      <el-button size="default" @click="dumpKeyboardInformation">Dump keyboard information</el-button>
+      <el-button class="pref-action-button" size="default" @click="dumpKeyboardInformation">Dump keyboard information</el-button>
     </section>
     <key-input-dialog
       :showWithId="selectedShortcutId"
@@ -184,30 +184,59 @@ export default {
     margin-bottom: 10px;
   }
   & .link {
-    color: var(--themeColor);
     cursor: pointer;
   }
   & button.el-button {
     font-size: 13px;
   }
+  & .footer,
+  & .keyboard-debug {
+    & .pref-action-button.el-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 34px;
+      padding: 0 14px;
+      border: 1px solid var(--tableBorderColor);
+      border-radius: 8px;
+      background: var(--buttonBgColor);
+      color: var(--buttonFontColor);
+      font-size: 13px;
+      line-height: 1.2;
+      box-shadow: var(--buttonShadow);
+      cursor: pointer;
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+    }
+    & .pref-action-button.el-button:hover {
+      background: var(--buttonBgColorHover);
+      border-color: var(--buttonBorderHover);
+      color: var(--buttonFontColorHover);
+    }
+    & .pref-action-button.el-button:active {
+      background: var(--buttonBgColorActive);
+      border-color: var(--buttonBorderActive);
+      color: var(--buttonFontColorActive);
+    }
+  }
 }
 .el-table, .el-table__expanded-cell {
   background: var(--editorBgColor);
 }
-.el-table button {
-  padding: 2px 2px;
-  margin: 4px 0px;
-  color: var(--themeColor);
-  background: none;
+.keybinding-action-button.el-button {
+  min-height: auto;
+  padding: 2px;
+  margin: 4px 0;
   border: none;
+  background: none;
+  box-shadow: none;
 }
-.el-table button:not(:last-child) {
+.keybinding-action-button.el-button:not(:last-child) {
   margin-right: 4px;
 }
-.el-table button:hover,
-.el-table button:active {
-  opacity: 0.9;
+.keybinding-action-button.el-button:hover,
+.keybinding-action-button.el-button:active {
   background: none;
+  opacity: 0.9;
 }
 </style>
 <style>

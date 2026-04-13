@@ -9,21 +9,31 @@
         <div class="feeling">
           <div>What's your experience feelings?</div>
           <ul>
-            <li
-              :class="{ 'active': selectedFace === 'smile' }"
-              @click="faceClick('smile')"
-            >
-              <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-smile"></use>
-              </svg>
+            <li :class="{ 'active': selectedFace === 'smile' }">
+              <button
+                type="button"
+                class="feeling-button"
+                :class="{ 'active': selectedFace === 'smile' }"
+                aria-label="Positive feedback"
+                @click="faceClick('smile')"
+              >
+                <svg class="icon" aria-hidden="true">
+                  <use xlink:href="#icon-smile"></use>
+                </svg>
+              </button>
             </li>
-            <li
-              :class="{ 'active': selectedFace === 'sad' }"
-              @click="faceClick('sad')"
-            >
-              <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-sad"></use>
-              </svg>
+            <li :class="{ 'active': selectedFace === 'sad' }">
+              <button
+                type="button"
+                class="feeling-button"
+                :class="{ 'active': selectedFace === 'sad' }"
+                aria-label="Negative feedback"
+                @click="faceClick('sad')"
+              >
+                <svg class="icon" aria-hidden="true">
+                  <use xlink:href="#icon-sad"></use>
+                </svg>
+              </button>
             </li>
           </ul>
         </div>
@@ -31,11 +41,12 @@
           <div>Tell us your feedback?</div>
           <textarea
             cols="30" rows="10" v-model="value" ref="textarea"
+            @keydown.esc="showTweetDialog = false"
           ></textarea>
         </div>
         <div class="buttons">
-          <a
-            href="javascript:;"
+          <button
+            type="button"
             class="github"
             @click="reportViaGithub"
           >
@@ -43,18 +54,19 @@
               <use xlink:href="#icon-github"></use>
             </svg>
             Report bug or feature request via github
-          </a>
-          <a
-            href="javascript:;"
+          </button>
+          <button
+            type="button"
             class="twitter"
             :class="{ 'active': value }"
+            :disabled="!value"
             @click="reportViaTwitter"
           >
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-twitter"></use>
             </svg>
             Tweet
-          </a>
+          </button>
         </div>
       </div>
     </div>
@@ -144,7 +156,8 @@ export default {
 .tweet-dialog-panel {
   position: relative;
   z-index: 1;
-  width: 450px;
+  width: min(450px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
   border-radius: 8px;
   box-shadow: var(--floatShadow);
   border: 1px solid var(--floatBorderColor);
@@ -180,24 +193,37 @@ export default {
   list-style: none;
   margin: 0;
   padding: 0;
-  height: 45px;
+  min-height: 45px;
 }
 
 .tweet-dialog-panel .feeling ul li {
   display: flex;
   align-items: center;
   margin-right: 15px;
+}
+
+.tweet-dialog-panel .feeling-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
   cursor: pointer;
 }
 
-.tweet-dialog-panel .feeling ul li svg {
+.tweet-dialog-panel .feeling-button svg {
   transition: color .25s ease-in-out;
   width: 25px;
   height: 25px;
 }
 
-.tweet-dialog-panel .feeling ul li:hover svg,
-.tweet-dialog-panel .feeling ul li.active svg {
+.tweet-dialog-panel .feeling-button:hover svg,
+.tweet-dialog-panel .feeling-button.active svg {
   color: rgb(255, 204, 0);
 }
 
@@ -207,7 +233,6 @@ export default {
   margin: 15px 0;
   padding: .5rem;
   resize: none;
-  outline: none;
   border: 1px solid var(--floatBorderColor);
   background: var(--floatBorderColor);
   color: var(--editorColor);
@@ -220,40 +245,67 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
 }
 
-.tweet-dialog-panel .buttons a.twitter {
+.tweet-dialog-panel .buttons button {
+  border: none;
+  background: transparent;
+  font: inherit;
+}
+
+.tweet-dialog-panel .buttons .twitter {
   color: var(--themeColor);
-  text-decoration: none;
   width: auto;
-  height: 30px;
-  line-height: 30px;
+  min-height: 30px;
   padding: 0 8px;
   border-radius: 2px;
   box-sizing: border-box;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   background: #eee;
   cursor: not-allowed;
 }
 
-.tweet-dialog-panel .buttons a.active {
+.tweet-dialog-panel .buttons .twitter.active {
   background: var(--themeColor);
   color: #fff;
   cursor: pointer;
 }
 
-.tweet-dialog-panel .buttons a.github {
-  color: var(--iconColor);
-  text-decoration: none;
+.tweet-dialog-panel .buttons .twitter:disabled {
+  opacity: 1;
 }
 
-.tweet-dialog-panel .buttons a.github:hover {
+.tweet-dialog-panel .buttons .github {
+  color: var(--iconColor);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.tweet-dialog-panel .buttons .github:hover {
   color: var(--themeColor);
 }
 
-.tweet-dialog-panel .buttons a.github svg {
+.tweet-dialog-panel .buttons .github svg {
   width: 1.4rem;
   height: 1.4rem;
   vertical-align: bottom;
+}
+
+@media (max-width: 640px) {
+  .tweet-dialog-panel .buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tweet-dialog-panel .buttons .github,
+  .tweet-dialog-panel .buttons .twitter {
+    justify-content: center;
+  }
 }
 </style>

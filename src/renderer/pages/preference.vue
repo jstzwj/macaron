@@ -7,7 +7,9 @@
       :class="{ 'frameless': titleBarStyle === 'custom' || isOsx }"
     >
       <div class="title-bar" v-if="!showCustomTitleBar"></div>
-      <router-view class="pref-setting"></router-view>
+      <div class="pref-setting-shell">
+        <router-view></router-view>
+      </div>
     </div>
   </div>
 </template>
@@ -78,6 +80,11 @@ export default {
 <style>
 .pref-container {
   --prefSideBarWidth: 280px;
+  --prefButtonHeight: 34px;
+  --prefButtonPaddingX: 14px;
+  --prefButtonRadius: 8px;
+  --prefButtonFontSize: 13px;
+  --prefButtonGap: 8px;
 
   width: 100vw;
   height: 100vh;
@@ -112,7 +119,7 @@ export default {
       right: 0;
       -webkit-app-region: drag;
     }
-    & .pref-setting {
+    & .pref-setting-shell {
       padding: 50px 20px;
       padding-top: var(--titleBarHeight);
       flex: 1;
@@ -124,7 +131,7 @@ export default {
       user-select: none;
     }
   }
-  & .pref-content.frameless .pref-setting {
+  & .pref-content.frameless .pref-setting-shell {
     /* Move the scrollbar below the titlebar */
     margin-top: var(--titleBarHeight);
     padding-top: 0;
@@ -139,6 +146,79 @@ export default {
   & .el-icon svg {
     width: 1em;
     height: 1em;
+  }
+
+  & .pref-setting-shell .pref-action-button,
+  & .pref-setting-shell button.pref-action-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: var(--prefButtonHeight);
+    padding: 0 var(--prefButtonPaddingX);
+    border: 1px solid var(--tableBorderColor);
+    border-radius: var(--prefButtonRadius);
+    background: var(--buttonBgColor);
+    color: var(--buttonFontColor);
+    font-size: var(--prefButtonFontSize);
+    line-height: 1.2;
+    box-shadow: var(--buttonShadow);
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  & .pref-setting-shell .pref-action-button:hover,
+  & .pref-setting-shell button.pref-action-button:hover {
+    background: var(--buttonBgColorHover);
+    border-color: var(--buttonBorderHover);
+    color: var(--buttonFontColorHover);
+  }
+
+  & .pref-setting-shell .pref-action-button:active,
+  & .pref-setting-shell button.pref-action-button:active {
+    background: var(--buttonBgColorActive);
+    border-color: var(--buttonBorderActive);
+    color: var(--buttonFontColorActive);
+  }
+
+  & .pref-setting-shell .pref-action-button.is-disabled,
+  & .pref-setting-shell .pref-action-button.is-disabled:hover,
+  & .pref-setting-shell .pref-action-button.is-disabled:focus,
+  & .pref-setting-shell button.pref-action-button[disabled] {
+    box-shadow: none;
+    opacity: .7;
+    cursor: not-allowed;
+  }
+
+  & .pref-setting-shell button.button:not(.search-result-item):not(.keybinding-action-button) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--prefButtonGap);
+    border-radius: var(--prefButtonRadius);
+  }
+
+  & .pref-setting-shell .link,
+  & .pref-setting-shell a,
+  & .pref-setting-shell .el-button.is-link,
+  & .pref-setting-shell .el-button--link {
+    color: var(--themeColor);
+    text-decoration: none;
+    transition: color 0.15s ease, opacity 0.15s ease;
+  }
+
+  & .pref-setting-shell .link:hover,
+  & .pref-setting-shell a:hover,
+  & .pref-setting-shell .el-button.is-link:hover,
+  & .pref-setting-shell .el-button--link:hover {
+    color: var(--buttonPrimaryBgColorHover);
+  }
+
+  & .pref-setting-shell .link:focus-visible,
+  & .pref-setting-shell a:focus-visible,
+  & .pref-setting-shell .el-button.is-link:focus-visible,
+  & .pref-setting-shell .el-button--link:focus-visible {
+    border-radius: 4px;
   }
 }
 </style>
