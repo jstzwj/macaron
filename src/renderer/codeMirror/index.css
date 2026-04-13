@@ -2,6 +2,47 @@
   background: transparent;
   height: auto;
 }
+
+/* Remove default CodeMirror focus outline */
+.cm-editor.cm-focused {
+  outline: none !important;
+}
+
 .cm-line::selection, .cm-line > span::selection, .cm-line > span > span::selection {
   background: rgb(178, 215, 254);
+}
+
+/* Gutter styling */
+.cm-gutters {
+  background: transparent;
+  border-right: 1px solid var(--editorColor04);
+}
+
+.cm-gutterElement {
+  color: var(--editorColor40);
+  font-size: 13px;
+  padding: 0 8px 0 12px;
+}
+
+.cm-activeLineGutter {
+  background: transparent;
+  color: var(--editorColor80);
+}
+
+/* Content area */
+.cm-content {
+  padding: 8px 0;
+  caret-color: var(--themeColor);
+  color: var(--editorColor) !important;
+}
+
+.cm-line {
+  font-size: 15px;
+  line-height: 1.6;
+  padding: 0 16px;
+  color: var(--editorColor);
+}
+
+.cm-activeLine {
+  background: var(--editorColor04);
 }

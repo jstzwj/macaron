@@ -41,6 +41,11 @@ const getThemeExtension = themeName => {
   if (oneDarkThemes.includes(themeName)) {
     return oneDark
   }
+  // Railscasts-based dark themes also use oneDark extension
+  // for readable syntax highlighting on dark backgrounds
+  if (railscastsThemes.includes(themeName)) {
+    return oneDark
+  }
   return []
 }
 

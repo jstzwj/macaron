@@ -250,19 +250,23 @@ export default {
     height: calc(100vh - var(--titleBarHeight));
     box-sizing: border-box;
     overflow: auto;
+    background: var(--editorBgColor);
   }
   .source-code .cm-editor {
     height: auto;
     margin: 50px auto;
     max-width: var(--editorAreaWidth);
     background: transparent;
+    padding: 20px 30px;
+    border-radius: 6px;
+    border: 1px solid var(--editorColor04);
   }
   .source-code .cm-gutters {
-    border-right: none;
+    border-right: 1px solid var(--editorColor04);
     background-color: transparent;
   }
   .source-code .cm-activeLineBackground,
   .source-code .cm-activeLineGutter {
-    background: var(--floatHoverColor);
+    background: var(--editorColor04);
   }
 </style>

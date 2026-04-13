@@ -126,13 +126,13 @@ export default {
   watch: {
     showSideBar: function (value, oldValue) {
       if (value && !oldValue && this.rightColumn === 'search') {
-        this.keyword = this.searchMatches.value
+        this.keyword = this.searchMatches?.value || ''
       }
     }
   },
   created () {
     this.$nextTick(() => {
-      this.keyword = this.searchMatches.value
+      this.keyword = this.searchMatches?.value || ''
       bus.$on('findInFolder', this.handleFindInFolder)
       if (this.keyword.length > 0 && this.searcherRunning === false) {
         this.searcherRunning = true
