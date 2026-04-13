@@ -69,7 +69,7 @@
       </div>
       <div class="tree-wrapper" v-show="showDirectories">
         <folder
-          v-for="(folder, index) of projectTree.folders" :key="index + 'folder'"
+          v-for="folder of projectTree.folders" :key="folder.pathname || folder.name"
           :folder="folder"
           :depth="depth"
         ></folder>
@@ -81,7 +81,7 @@
           @keydown.enter="handleInputEnter"
         >
         <file
-          v-for="(file, index) of projectTree.files" :key="index + 'file'"
+          v-for="file of projectTree.files" :key="file.pathname || file.name"
           :file="file"
           :depth="depth"
         ></file>
@@ -200,7 +200,7 @@ export default {
   }
 
   .list-enter-active, .list-leave-active {
-    transition: all .2s;
+    transition: opacity .2s, transform .2s;
   }
   .list-enter, .list-leave-to
   /* .list-leave-active for below version 2.1.8 */ {
@@ -226,7 +226,7 @@ export default {
 
   .icon-arrow {
     margin-right: 5px;
-    transition: all .25s ease-out;
+    transition: transform .25s ease-out;
     transform: rotate(90deg);
     fill: var(--sideBarTextColor);
   }

@@ -99,6 +99,15 @@ export default {
   commandPalette: {
     placeholder: '输入命令以执行'
   },
+  tweetDialog: {
+    title: '通过推文向我们反馈',
+    feelingPrompt: '你的使用体验如何？',
+    feedbackPrompt: '告诉我们你的反馈？',
+    reportGithub: '通过 GitHub 提交 Bug 或功能请求',
+    tweet: '发送推文',
+    positiveAriaLabel: '正向反馈',
+    negativeAriaLabel: '负向反馈'
+  },
   sideBar: {
     tableOfContents: '目录'
   },

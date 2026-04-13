@@ -3,18 +3,18 @@
     <div class="tweet-dialog-overlay"></div>
     <div class="tweet-dialog-panel" @click.stop>
       <div class="dialog-header">
-        <div class="title">Send us feedback via tweet</div>
+        <div class="title">{{ $t('tweetDialog.title') }}</div>
       </div>
       <div class="body">
         <div class="feeling">
-          <div>What's your experience feelings?</div>
+          <div>{{ $t('tweetDialog.feelingPrompt') }}</div>
           <ul>
             <li :class="{ 'active': selectedFace === 'smile' }">
               <button
                 type="button"
                 class="feeling-button"
                 :class="{ 'active': selectedFace === 'smile' }"
-                aria-label="Positive feedback"
+                :aria-label="$t('tweetDialog.positiveAriaLabel')"
                 @click="faceClick('smile')"
               >
                 <svg class="icon" aria-hidden="true">
@@ -27,7 +27,7 @@
                 type="button"
                 class="feeling-button"
                 :class="{ 'active': selectedFace === 'sad' }"
-                aria-label="Negative feedback"
+                :aria-label="$t('tweetDialog.negativeAriaLabel')"
                 @click="faceClick('sad')"
               >
                 <svg class="icon" aria-hidden="true">
@@ -38,7 +38,7 @@
           </ul>
         </div>
         <div class="feedback">
-          <div>Tell us your feedback?</div>
+          <div>{{ $t('tweetDialog.feedbackPrompt') }}</div>
           <textarea
             cols="30" rows="10" v-model="value" ref="textarea"
             @keydown.esc="showTweetDialog = false"
@@ -53,7 +53,7 @@
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-github"></use>
             </svg>
-            Report bug or feature request via github
+            {{ $t('tweetDialog.reportGithub') }}
           </button>
           <button
             type="button"
@@ -65,7 +65,7 @@
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-twitter"></use>
             </svg>
-            Tweet
+            {{ $t('tweetDialog.tweet') }}
           </button>
         </div>
       </div>

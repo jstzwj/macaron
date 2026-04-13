@@ -1199,6 +1199,7 @@ export default {
         } else {
           editor.setMarkdown(markdown)
         }
+        this.$store.commit('SET_TOC', editor.getTOC())
       }
     },
 
@@ -1212,6 +1213,7 @@ export default {
           }
           if (typeof markdown === 'string') {
             editor.setMarkdown(markdown, cursor, renderCursor)
+            this.$store.commit('SET_TOC', editor.getTOC())
           } else if (cursor) {
             editor.setCursor(cursor)
           }

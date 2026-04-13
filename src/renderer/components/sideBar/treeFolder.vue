@@ -28,7 +28,7 @@
       v-if="!folder.isCollapsed"
     >
       <folder
-        v-for="(childFolder, index) of folder.folders" :key="index + 'folder'"
+        v-for="childFolder of folder.folders" :key="childFolder.pathname || childFolder.name"
         :folder="childFolder"
         :depth="depth + 1"
       ></folder>
@@ -41,7 +41,7 @@
         v-model="createName"
       >
       <file
-        v-for="(file, index) of folder.files" :key="index + 'file'"
+        v-for="file of folder.files" :key="file.pathname || file.name"
         :file="file"
         :depth="depth + 1"
       ></file>

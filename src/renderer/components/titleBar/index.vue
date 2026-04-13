@@ -230,10 +230,10 @@ export default {
     font-weight: 500;
     letter-spacing: 0.01em;
     text-align: center;
-    transition: all .25s ease-in-out;
+    transition: color .25s ease-in-out;
     overflow: hidden;
     & .filename {
-      transition: all .25s ease-in-out;
+      transition: color .25s ease-in-out;
     }
     &::after {
       content: '';

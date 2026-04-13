@@ -119,7 +119,7 @@ export default {
       height: 0;
       top: 50%;
       transform: translateY(-50%);
-      transition: all .2s ease;
+      transition: height .2s ease;
     }
   }
   .side-bar-file.current::before {

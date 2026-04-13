@@ -99,6 +99,15 @@ export default {
   commandPalette: {
     placeholder: 'Type a command to execute'
   },
+  tweetDialog: {
+    title: 'Send us feedback via tweet',
+    feelingPrompt: "What's your experience feelings?",
+    feedbackPrompt: 'Tell us your feedback?',
+    reportGithub: 'Report bug or feature request via github',
+    tweet: 'Tweet',
+    positiveAriaLabel: 'Positive feedback',
+    negativeAriaLabel: 'Negative feedback'
+  },
   sideBar: {
     tableOfContents: 'Table of Contents'
   },
@@ -464,8 +473,8 @@ export default {
       textDirectionLTR: 'Left to Right',
       textDirectionRTL: 'Right to Left',
       endOfLineDefault: 'Default',
-      endOfLineCRLF: 'Carriage Return and Line Feed (CRLF)',
-      endOfLineLF: 'Line Feed (LF)',
+      endOfLineCRLF: 'Carriage return and line feed (CRLF)',
+      endOfLineLF: 'Line feed (LF)',
       trailingNewlineTrimAll: 'Trim all trailing',
       trailingNewlineEnsureOne: 'Ensure exactly one trailing',
       trailingNewlinePreserve: 'Preserve style of original document',

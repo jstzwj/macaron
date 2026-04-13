@@ -12,8 +12,8 @@
     <div class="left-column">
       <ul>
         <li
-          v-for="(c, index) of sideBarIcons"
-          :key="index"
+          v-for="c of sideBarIcons"
+          :key="c.name"
           @click="handleLeftIconClick(c.name)"
           :class="{ 'active': c.name === rightColumn }"
         >
@@ -24,8 +24,8 @@
       </ul>
       <ul class="bottom">
         <li
-          v-for="(c, index) of sideBarBottomIcons"
-          :key="index"
+          v-for="c of sideBarBottomIcons"
+          :key="c.name"
           @click="handleLeftBottomClick(c.name)"
         >
           <svg :viewBox="c.icon.viewBox">

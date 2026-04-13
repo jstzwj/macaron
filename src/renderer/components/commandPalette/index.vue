@@ -19,7 +19,7 @@
           <ul class="commands">
             <li
               v-for="(item, index) of availableCommands"
-              :key="index"
+              :key="item.id"
               ref="command-items"
               @click="search(item.id)"
               :class="{'active': index === selectedCommandIndex}"
@@ -29,7 +29,7 @@
                 <span
                   class="shortcut"
                   v-for="(accelerator, shortcutIndex) of item.shortcut"
-                  :key="shortcutIndex"
+                  :key="`${item.id}-${accelerator}-${shortcutIndex}`"
                 >
                   <kbd>{{ accelerator }}</kbd>
                 </span>
