@@ -1,9 +1,13 @@
 <template>
   <div
-    v-show="showSideBar"
     class="side-bar"
+    :class="{
+      'is-hidden': !showSideBar,
+      'is-collapsed': showSideBar && !rightColumn,
+      'is-expanded': showSideBar && !!rightColumn
+    }"
     ref="sideBar"
-    :style="[ !rightColumn ? { 'min-width': '45px' } : {}, { 'width': `${finalSideBarWidth}px` } ]"
+    :style="{ width: `${finalSideBarWidth}px`, 'min-width': `${finalSideBarWidth}px` }"
   >
     <div class="left-column">
       <ul>
@@ -191,10 +195,19 @@ export default {
     user-select: none;
     background: var(--sideBarBgColor);
     border-right: 1px solid var(--floatBorderColor);
+    overflow: hidden;
+    will-change: width, opacity;
+    transition: width 0.22s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.16s ease, border-color 0.2s ease;
     & .left-column {
       & svg {
         fill: var(--iconColor);
       }
+    }
+
+    &.is-hidden {
+      opacity: 0;
+      pointer-events: none;
+      border-right-color: transparent;
     }
   }
 
@@ -260,6 +273,15 @@ export default {
     flex: 1;
     width: calc(100% - 50px);
     overflow: hidden;
+    transform: translateX(0);
+    opacity: 1;
+    transition: transform 0.18s ease, opacity 0.14s ease;
+  }
+
+  .side-bar.is-hidden .right-column,
+  .side-bar.is-collapsed .right-column {
+    transform: translateX(-8px);
+    opacity: 0;
   }
   .drag-bar {
     position: absolute;
@@ -289,5 +311,11 @@ export default {
     &:hover::before {
       opacity: 1;
     }
+  }
+
+  .side-bar.is-hidden .drag-bar,
+  .side-bar.is-collapsed .drag-bar {
+    pointer-events: none;
+    opacity: 0;
   }
 </style>
