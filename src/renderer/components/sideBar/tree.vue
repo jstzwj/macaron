@@ -46,6 +46,7 @@
             v-for="tab of tabs"
             :key="tab.id"
             :file="tab"
+            :current-file-prop="currentFile"
           ></opened-file>
         </transition-group>
       </div>
@@ -72,6 +73,7 @@
           v-for="folder of projectTree.folders" :key="folder.pathname || folder.name"
           :folder="folder"
           :depth="depth"
+          :current-file="currentFile"
         ></folder>
         <input
           type="text" class="new-input" v-show="createCache.dirname === projectTree.pathname"
@@ -84,6 +86,7 @@
           v-for="file of projectTree.files" :key="file.pathname || file.name"
           :file="file"
           :depth="depth"
+          :current-file-prop="currentFile"
         ></file>
         <div class="empty-project" v-if="projectTree.files.length === 0 && projectTree.folders.length === 0">
           <span>{{ $t('editor.contextMenu.tree.emptyProject') }}</span>
@@ -133,7 +136,8 @@ export default {
       required: true
     },
     openedFiles: Array,
-    tabs: Array
+    tabs: Array,
+    currentFile: Object
   },
   components: {
     Folder,

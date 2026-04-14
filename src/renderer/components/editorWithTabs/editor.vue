@@ -460,11 +460,20 @@ export default {
             editor.setMarkdown(value.markdown)
           }
           this.scrollToCursor(0)
+          // Hide float tools if needed.
+          this.editor && this.editor.hideAllFloatTools()
+          // Sync TOC after editor has processed the new content
+          // Use setTimeout to ensure editor's internal state is fully updated
+          setTimeout(() => {
+            if (this.editor) {
+              this.$store.commit('SET_TOC', this.editor.getTOC())
+            }
+          }, 100)
         } else {
           this.scrollToCursor(0)
+          // Hide float tools if needed.
+          this.editor && this.editor.hideAllFloatTools()
         }
-        // Hide float tools if needed.
-        this.editor && this.editor.hideAllFloatTools()
       }
     },
 
@@ -1213,13 +1222,18 @@ export default {
           }
           if (typeof markdown === 'string') {
             editor.setMarkdown(markdown, cursor, renderCursor)
-            this.$store.commit('SET_TOC', editor.getTOC())
           } else if (cursor) {
             editor.setCursor(cursor)
           }
           if (renderCursor) {
             this.scrollToCursor(0)
           }
+          // Sync TOC after editor has fully processed the new content
+          setTimeout(() => {
+            if (this.editor) {
+              this.$store.commit('SET_TOC', this.editor.getTOC())
+            }
+          }, 50)
         }
       })
     },

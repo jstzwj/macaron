@@ -39,6 +39,7 @@
         :project-tree="projectTree"
         :opened-files="openedFiles"
         :tabs="tabs"
+        :current-file="currentFile"
         v-if="rightColumn === 'files'"
       ></tree>
       <side-bar-search
@@ -46,6 +47,8 @@
       ></side-bar-search>
       <toc
         v-else-if="rightColumn === 'toc'"
+        :toc="toc"
+        :current-file="currentFile"
       ></toc>
     </div>
     <div class="drag-bar" ref="dragBar" v-show="rightColumn"></div>
@@ -70,7 +73,9 @@ export default {
       _showSideBar: false,
       _projectTree: null,
       _sideBarWidth: 280,
-      _tabs: []
+      _tabs: [],
+      _currentFile: {},
+      _toc: []
     }
   },
   components: {
@@ -94,6 +99,12 @@ export default {
     tabs () {
       return this._tabs
     },
+    currentFile () {
+      return this._currentFile
+    },
+    toc () {
+      return this._toc
+    },
     finalSideBarWidth () {
       const { showSideBar, rightColumn, sideBarViewWidth } = this
       if (!showSideBar) return 0
@@ -108,6 +119,8 @@ export default {
     this._projectTree = this.$store.state.project.projectTree
     this._sideBarWidth = this.$store.state.layout.sideBarWidth
     this._tabs = this.$store.state.editor.tabs
+    this._currentFile = this.$store.state.editor.currentFile
+    this._toc = this.$store.state.editor.toc
 
     // Subscribe to store changes
     this._unsubscribe = this.$store.subscribe((mutation, state) => {
@@ -119,8 +132,12 @@ export default {
       if (mutation.type === 'SET_PROJECT_TREE') {
         this._projectTree = state.project.projectTree
       }
-      if (mutation.type.includes('TAB') || mutation.type.includes('FILE')) {
+      if (mutation.type === 'SET_CURRENT_FILE' || mutation.type.includes('TAB')) {
         this._tabs = state.editor.tabs
+        this._currentFile = state.editor.currentFile
+      }
+      if (mutation.type === 'SET_TOC') {
+        this._toc = state.editor.toc
       }
     })
 

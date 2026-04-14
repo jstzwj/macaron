@@ -3,7 +3,7 @@
       class="opened-file"
       :title="file.pathname"
       @click="selectFile(file)"
-      :class="[{'active': currentFile.id === file.id, 'unsaved': !file.isSaved }]"
+      :class="[{'active': currentFileProp.id === file.id, 'unsaved': !file.isSaved }]"
     >
       <svg class="icon" aria-hidden="true"
         @click.stop="removeFileInTab(file)"
@@ -24,6 +24,10 @@ export default {
     file: {
       type: Object,
       required: true
+    },
+    currentFileProp: {
+      type: Object,
+      default: () => ({})
     }
   },
   computed: {

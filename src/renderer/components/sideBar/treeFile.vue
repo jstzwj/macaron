@@ -4,7 +4,7 @@
     class="side-bar-file"
     :style="{'padding-left': `${(depth * 20) + 20}px`, 'opacity': file.isMarkdown ? 1 : 0.75 }"
     @click="handleFileClick()"
-    :class="[{'current': currentFile.pathname === file.pathname, 'active': file.id === activeItem.id }]"
+    :class="[{'current': isCurrentFile, 'active': file.id === activeItem.id }]"
     ref="file"
   >
     <file-icon
@@ -26,6 +26,7 @@
 <script>
 import FileIcon from './icon.vue'
 import { mapState } from 'vuex'
+import { isSamePathSync } from 'common/filesystem/paths'
 import { fileMixins } from '../../mixins'
 import { showContextMenu } from '../../contextMenu/sideBar'
 import bus from '../../bus'
@@ -46,6 +47,10 @@ export default {
     depth: {
       type: Number,
       required: true
+    },
+    currentFileProp: {
+      type: Object,
+      default: () => ({})
     }
   },
   components: {
@@ -58,7 +63,15 @@ export default {
       clipboard: state => state.project.clipboard,
       currentFile: state => state.editor.currentFile,
       tabs: state => state.editor.tabs
-    })
+    }),
+    isCurrentFile () {
+      const currentPath = this.currentFileProp && this.currentFileProp.pathname
+      const filePath = this.file && this.file.pathname
+      if (!currentPath || !filePath) {
+        return false
+      }
+      return isSamePathSync(currentPath, filePath)
+    }
   },
   created () {
     this.$nextTick(() => {

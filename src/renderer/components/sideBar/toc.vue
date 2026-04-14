@@ -6,6 +6,7 @@
     <div class="title">{{ $t('sideBar.tableOfContents') }}</div>
     <el-tree
       v-if="toc.length"
+      :key="tocTreeKey"
       :data="toc"
       :default-expand-all="true"
       :props="defaultProps"
@@ -27,6 +28,16 @@ import bus from '../../bus'
 import EmptyIcon from '@/assets/icons/undraw_toc_empty.svg'
 
 export default {
+  props: {
+    toc: {
+      type: Array,
+      default: () => []
+    },
+    currentFile: {
+      type: Object,
+      default: () => ({})
+    }
+  },
   data () {
     this.EmptyIcon = EmptyIcon
     return {
@@ -38,9 +49,11 @@ export default {
   },
   computed: {
     ...mapState({
-      toc: state => state.editor.toc,
       wordWrapInToc: state => state.preferences.wordWrapInToc
-    })
+    }),
+    tocTreeKey () {
+      return this.currentFile && this.currentFile.id ? this.currentFile.id : 'toc-empty'
+    }
   },
   methods: {
     handleClick ({ slug }) {

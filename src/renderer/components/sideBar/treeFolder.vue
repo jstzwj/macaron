@@ -31,6 +31,7 @@
         v-for="childFolder of folder.folders" :key="childFolder.pathname || childFolder.name"
         :folder="childFolder"
         :depth="depth + 1"
+        :current-file="currentFile"
       ></folder>
       <input
         type="text" v-if="createCache.dirname === folder.pathname"
@@ -44,6 +45,7 @@
         v-for="file of folder.files" :key="file.pathname || file.name"
         :file="file"
         :depth="depth + 1"
+        :current-file-prop="currentFile"
       ></file>
     </div>
   </div>
@@ -72,6 +74,10 @@ export default {
     depth: {
       type: Number,
       required: true
+    },
+    currentFile: {
+      type: Object,
+      default: () => ({})
     }
   },
   components: {

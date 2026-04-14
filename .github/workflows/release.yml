@@ -23,6 +23,7 @@ jobs:
       MARKTEXT_IS_STABLE: 1
       MARKTEXT_EXIT_ON_ERROR: 1
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - uses: actions/checkout@v4

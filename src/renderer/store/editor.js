@@ -38,7 +38,7 @@ const mutations = {
     if (!oldCurrentFile.id || oldCurrentFile.id !== currentFile.id) {
       const { id, markdown, cursor, history, pathname } = currentFile
       window.DIRNAME = pathname ? path.dirname(pathname) : ''
-      // set state first, then emit file changed event
+      // Directly replace the reference to ensure Vue reactivity detects the change
       state.currentFile = currentFile
       bus.$emit('file-changed', { id, markdown, cursor, renderCursor: true, history })
     }
