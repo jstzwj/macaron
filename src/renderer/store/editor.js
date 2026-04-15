@@ -16,6 +16,15 @@ import {
 } from '../commands'
 
 const autoSaveTimers = new Map()
+const registeredListenerActions = new Set()
+
+const registerListenerActionOnce = name => {
+  if (registeredListenerActions.has(name)) {
+    return false
+  }
+  registeredListenerActions.add(name)
+  return true
+}
 
 const state = {
   currentFile: {},
@@ -138,7 +147,7 @@ const mutations = {
     const oldId = tab.id
     const oldNotifications = tab.notifications
     let oldHistory = null
-    if (tab.history.index >= 0 && tab.history.stack.length >= 1) {
+    if (tab.history && tab.history.index >= 0 && tab.history.stack.length >= 1) {
       // Allow to restore the old document.
       oldHistory = {
         stack: [tab.history.stack[tab.history.index]],
@@ -265,33 +274,41 @@ const mutations = {
   CLOSE_TABS (state, tabIdList) {
     if (!tabIdList || tabIdList.length === 0) return
 
-    let tabIndex = 0
-    tabIdList.forEach(id => {
-      const index = state.tabs.findIndex(f => f.id === id)
-      if (index === -1) return
-      const { pathname } = state.tabs[index]
+    const idSet = new Set(tabIdList)
+    const currentFileIndex = state.tabs.findIndex(f => f.id === state.currentFile.id)
+    const currentWillClose = idSet.has(state.currentFile.id)
 
-      // Notify main process to remove the file from the window and free resources.
-      if (pathname) {
-        ipcRenderer.send('mt::window-tab-closed', pathname)
-      }
-
-      state.tabs.splice(index, 1)
-      if (state.currentFile.id === id) {
-        state.currentFile = {}
-        window.DIRNAME = ''
-        if (tabIdList.length === 1) {
-          tabIndex = index
+    // Collect pathnames for cleanup and filter out closed tabs in one pass.
+    const removedPathnames = []
+    state.tabs.forEach(tab => {
+      if (idSet.has(tab.id)) {
+        const { pathname } = tab
+        if (pathname) {
+          removedPathnames.push(pathname)
         }
       }
     })
+    removedPathnames.forEach(pathname => {
+      ipcRenderer.send('mt::window-tab-closed', pathname)
+    })
 
-    if (!state.currentFile.id && state.tabs.length) {
-      state.currentFile = state.tabs[tabIndex] || state.tabs[tabIndex - 1] || state.tabs[0] || {}
-      if (typeof state.currentFile.markdown === 'string') {
-        const { id, markdown, cursor, history, pathname } = state.currentFile
-        window.DIRNAME = pathname ? path.dirname(pathname) : ''
-        bus.$emit('file-changed', { id, markdown, cursor, renderCursor: true, history })
+    state.tabs = state.tabs.filter(f => !idSet.has(f.id))
+
+    if (currentWillClose) {
+      state.currentFile = {}
+      window.DIRNAME = ''
+      if (state.tabs.length) {
+        // Select the nearest tab to the previous active tab's position.
+        let newIndex = currentFileIndex
+        if (newIndex >= state.tabs.length) {
+          newIndex = state.tabs.length - 1
+        }
+        state.currentFile = state.tabs[newIndex]
+        if (typeof state.currentFile.markdown === 'string') {
+          const { id, markdown, cursor, history, pathname } = state.currentFile
+          window.DIRNAME = pathname ? path.dirname(pathname) : ''
+          bus.$emit('file-changed', { id, markdown, cursor, renderCursor: true, history })
+        }
       }
     }
 
@@ -366,6 +383,7 @@ const actions = {
   },
 
   LISTEN_SCREEN_SHOT ({ commit }) {
+    if (!registerListenerActionOnce('LISTEN_SCREEN_SHOT')) return
     ipcRenderer.on('mt::screenshot-captured', e => {
       bus.$emit('screenshot-captured')
     })
@@ -441,6 +459,7 @@ const actions = {
 
   // need pass some data to main process when `save` menu item clicked
   LISTEN_FOR_SAVE ({ state, rootState }) {
+    if (!registerListenerActionOnce('LISTEN_FOR_SAVE')) return
     ipcRenderer.on('mt::editor-ask-file-save', () => {
       const { id, filename, pathname, markdown } = state.currentFile
       const options = getOptionsFromState(state.currentFile)
@@ -453,6 +472,7 @@ const actions = {
 
   // need pass some data to main process when `save as` menu item clicked
   LISTEN_FOR_SAVE_AS ({ state, rootState }) {
+    if (!registerListenerActionOnce('LISTEN_FOR_SAVE_AS')) return
     ipcRenderer.on('mt::editor-ask-file-save-as', () => {
       const { id, filename, pathname, markdown } = state.currentFile
       const options = getOptionsFromState(state.currentFile)
@@ -464,12 +484,13 @@ const actions = {
   },
 
   LISTEN_FOR_SET_PATHNAME ({ commit, dispatch, state }) {
+    if (!registerListenerActionOnce('LISTEN_FOR_SET_PATHNAME')) return
     ipcRenderer.on('mt::set-pathname', (e, fileInfo) => {
       const { tabs } = state
       const { pathname, id } = fileInfo
       const tab = tabs.find(f => f.id === id)
       if (!tab) {
-        console.err('[ERROR] Cannot change file path from unknown tab.')
+        console.error('[ERROR] Cannot change file path from unknown tab.')
         return
       }
 
@@ -514,6 +535,7 @@ const actions = {
   },
 
   LISTEN_FOR_CLOSE ({ state }) {
+    if (!registerListenerActionOnce('LISTEN_FOR_CLOSE')) return
     ipcRenderer.on('mt::ask-for-close', e => {
       const unsavedFiles = state.tabs
         .filter(file => !file.isSaved)
@@ -528,6 +550,7 @@ const actions = {
   },
 
   LISTEN_FOR_SAVE_CLOSE ({ commit }) {
+    if (!registerListenerActionOnce('LISTEN_FOR_SAVE_CLOSE')) return
     ipcRenderer.on('mt::force-close-tabs-by-id', (e, tabIdList) => {
       if (Array.isArray(tabIdList) && tabIdList.length) {
         commit('CLOSE_TABS', tabIdList)
@@ -554,6 +577,7 @@ const actions = {
   },
 
   LISTEN_FOR_MOVE_TO ({ state, rootState }) {
+    if (!registerListenerActionOnce('LISTEN_FOR_MOVE_TO')) return
     ipcRenderer.on('mt::editor-move-file', () => {
       const { id, filename, pathname, markdown } = state.currentFile
       const options = getOptionsFromState(state.currentFile)
@@ -570,6 +594,7 @@ const actions = {
   },
 
   LISTEN_FOR_RENAME ({ commit, state, dispatch }) {
+    if (!registerListenerActionOnce('LISTEN_FOR_RENAME')) return
     ipcRenderer.on('mt::editor-rename-file', () => {
       dispatch('RESPONSE_FOR_RENAME')
     })
@@ -608,6 +633,7 @@ const actions = {
 
   // This events are only used during window creation.
   LISTEN_FOR_BOOTSTRAP_WINDOW ({ commit, state, dispatch, rootState }) {
+    if (!registerListenerActionOnce('LISTEN_FOR_BOOTSTRAP_WINDOW')) return
     // Delay load runtime commands and initialize commands.
     setTimeout(() => {
       bus.$emit('cmd::register-command', new FileEncodingCommand(rootState.editor))
@@ -679,6 +705,7 @@ const actions = {
 
   // Open a new tab, optionally with content.
   LISTEN_FOR_NEW_TAB ({ dispatch }) {
+    if (!registerListenerActionOnce('LISTEN_FOR_NEW_TAB')) return
     ipcRenderer.on('mt::open-new-tab', (e, markdownDocument, options = {}, selected = true) => {
       if (markdownDocument) {
         // Create tab with content.
@@ -696,6 +723,7 @@ const actions = {
   },
 
   LISTEN_FOR_CLOSE_TAB ({ commit, state, dispatch }) {
+    if (!registerListenerActionOnce('LISTEN_FOR_CLOSE_TAB')) return
     ipcRenderer.on('mt::editor-close-tab', e => {
       const file = state.currentFile
       if (!hasKeys(file)) return
@@ -704,6 +732,7 @@ const actions = {
   },
 
   LISTEN_FOR_TAB_CYCLE ({ commit, state, dispatch }) {
+    if (!registerListenerActionOnce('LISTEN_FOR_TAB_CYCLE')) return
     ipcRenderer.on('mt::tabs-cycle-left', e => {
       dispatch('CYCLE_TABS', false)
     })
@@ -713,6 +742,7 @@ const actions = {
   },
 
   LISTEN_FOR_SWITCH_TABS ({ commit, state, dispatch }) {
+    if (!registerListenerActionOnce('LISTEN_FOR_SWITCH_TABS')) return
     ipcRenderer.on('mt::switch-tab-by-index', (event, index) => {
       dispatch('SWITCH_TAB_BY_INDEX', index)
     })
@@ -1080,6 +1110,7 @@ const actions = {
   },
 
   LINTEN_FOR_EXPORT_SUCCESS ({ commit }) {
+    if (!registerListenerActionOnce('LINTEN_FOR_EXPORT_SUCCESS')) return
     ipcRenderer.on('mt::export-success', (e, { type, filePath }) => {
       notice.notify({
         title: translate('fileOperation.export.successTitle'),
@@ -1097,12 +1128,14 @@ const actions = {
   },
 
   LINTEN_FOR_PRINT_SERVICE_CLEARUP ({ commit }) {
+    if (!registerListenerActionOnce('LINTEN_FOR_PRINT_SERVICE_CLEARUP')) return
     ipcRenderer.on('mt::print-service-clearup', e => {
       bus.$emit('print-service-clearup')
     })
   },
 
   LINTEN_FOR_SET_LINE_ENDING ({ commit, dispatch, state }) {
+    if (!registerListenerActionOnce('LINTEN_FOR_SET_LINE_ENDING')) return
     ipcRenderer.on('mt::set-line-ending', (e, lineEnding) => {
       const { lineEnding: oldLineEnding } = state.currentFile
       if (lineEnding !== oldLineEnding) {
@@ -1119,6 +1152,7 @@ const actions = {
   },
 
   LINTEN_FOR_SET_ENCODING ({ commit, state }) {
+    if (!registerListenerActionOnce('LINTEN_FOR_SET_ENCODING')) return
     ipcRenderer.on('mt::set-file-encoding', (e, encodingName) => {
       const { encoding } = state.currentFile.encoding
       if (encoding !== encodingName) {
@@ -1129,6 +1163,7 @@ const actions = {
   },
 
   LINTEN_FOR_SET_FINAL_NEWLINE ({ commit, state }) {
+    if (!registerListenerActionOnce('LINTEN_FOR_SET_FINAL_NEWLINE')) return
     ipcRenderer.on('mt::set-final-newline', (e, value) => {
       const { trimTrailingNewline } = state.currentFile
       if (trimTrailingNewline !== value) {
@@ -1139,6 +1174,7 @@ const actions = {
   },
 
   LISTEN_FOR_FILE_CHANGE ({ commit, state, rootState }) {
+    if (!registerListenerActionOnce('LISTEN_FOR_FILE_CHANGE')) return
     ipcRenderer.on('mt::update-file', (e, { type, change }) => {
       // TODO: We should only load the changed content if the user want to reload the document.
 
@@ -1204,6 +1240,7 @@ const actions = {
   },
 
   LISTEN_WINDOW_ZOOM ({ dispatch, rootState }) {
+    if (!registerListenerActionOnce('LISTEN_WINDOW_ZOOM')) return
     ipcRenderer.on('mt::window-zoom', (e, zoomFactor) => {
       zoomFactor = Number.parseFloat(zoomFactor.toFixed(3)) // prevent float rounding errors
       const { zoom } = rootState.preferences
@@ -1215,12 +1252,14 @@ const actions = {
   },
 
   LISTEN_FOR_RELOAD_IMAGES () {
+    if (!registerListenerActionOnce('LISTEN_FOR_RELOAD_IMAGES')) return
     ipcRenderer.on('mt::invalidate-image-cache', () => {
       bus.$emit('invalidate-image-cache')
     })
   },
 
   LISTEN_FOR_CONTEXT_MENU () {
+    if (!registerListenerActionOnce('LISTEN_FOR_CONTEXT_MENU')) return
     // General context menu
     ipcRenderer.on('mt::cm-copy-as-markdown', () => {
       bus.$emit('copyAsMarkdown', 'copyAsMarkdown')

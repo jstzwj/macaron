@@ -17,6 +17,16 @@ const state = () => ({
 
 const getters = {}
 
+const registeredListenerActions = new Set()
+
+const registerListenerActionOnce = name => {
+  if (registeredListenerActions.has(name)) {
+    return false
+  }
+  registeredListenerActions.add(name)
+  return true
+}
+
 const mutations = {
   SET_LAYOUT (state, layout) {
     if (layout.showSideBar !== undefined) {
@@ -40,6 +50,7 @@ const mutations = {
 
 const actions = {
   LISTEN_FOR_LAYOUT ({ state, commit, dispatch }) {
+    if (!registerListenerActionOnce('LISTEN_FOR_LAYOUT')) return
     ipcRenderer.on('mt::set-view-layout', (e, layout) => {
       if (layout.rightColumn) {
         commit('SET_LAYOUT', {

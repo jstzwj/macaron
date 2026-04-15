@@ -36,7 +36,8 @@ export default {
   name: 'file',
   data () {
     return {
-      newName: ''
+      newName: '',
+      fileContextmenuHandler: null
     }
   },
   props: {
@@ -75,14 +76,22 @@ export default {
   },
   created () {
     this.$nextTick(() => {
-      this.$refs.file.addEventListener('contextmenu', event => {
+      this.fileContextmenuHandler = event => {
         event.preventDefault()
         this.$store.dispatch('CHANGE_ACTIVE_ITEM', this.file)
         showContextMenu(event, !!this.clipboard)
-      })
+      }
+      this.$refs.file.addEventListener('contextmenu', this.fileContextmenuHandler)
 
       bus.$on('SIDEBAR::show-rename-input', this.focusRenameInput)
     })
+  },
+  beforeUnmount () {
+    bus.$off('SIDEBAR::show-rename-input', this.focusRenameInput)
+    if (this.fileContextmenuHandler && this.$refs.file) {
+      this.$refs.file.removeEventListener('contextmenu', this.fileContextmenuHandler)
+      this.fileContextmenuHandler = null
+    }
   },
   methods: {
     noop () {},

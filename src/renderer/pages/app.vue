@@ -80,6 +80,9 @@ export default {
       uiInit: false,
       currentFile: {},
       unsubscribeStore: null,
+      inlinePreferencesHandler: null,
+      dragoverHandler: null,
+      timer: null,
       // Manually mirror store state as data properties for reactivity
       _sourceCode: false,
       _showTabBar: false,
@@ -212,14 +215,15 @@ export default {
     dispatch('LISTEN_FOR_NOTIFICATION')
 
     // Listen for inline preferences trigger from main process
-    ipcRenderer.on('mt::show-inline-preferences', (e, category) => {
+    this.inlinePreferencesHandler = (e, category) => {
       this.$store.dispatch('OPEN_PREFERENCES')
       if (category) {
         bus.$emit('preferences::change-category', category)
       }
-    })
+    }
+    ipcRenderer.on('mt::show-inline-preferences', this.inlinePreferencesHandler)
 
-    window.addEventListener('dragover', e => {
+    this.dragoverHandler = e => {
       if (!e.dataTransfer.types.length) return
 
       if (e.dataTransfer.types.indexOf('Files') >= 0) {
@@ -239,7 +243,9 @@ export default {
         e.stopPropagation()
         e.dataTransfer.dropEffect = 'none'
       }
-    }, false)
+    }
+
+    window.addEventListener('dragover', this.dragoverHandler, false)
 
     this.$nextTick(() => {
       const style = global.marktext.initialState || DEFAULT_STYLE
@@ -251,7 +257,16 @@ export default {
     if (this.unsubscribeStore) {
       this.unsubscribeStore()
     }
-    ipcRenderer.removeListener('mt::show-inline-preferences', () => {})
+    if (this.inlinePreferencesHandler) {
+      ipcRenderer.removeListener('mt::show-inline-preferences', this.inlinePreferencesHandler)
+    }
+    if (this.dragoverHandler) {
+      window.removeEventListener('dragover', this.dragoverHandler, false)
+    }
+    if (this.timer) {
+      clearTimeout(this.timer)
+      this.timer = null
+    }
   }
 }
 </script>

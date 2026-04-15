@@ -20,6 +20,16 @@ const state = {
 
 const getters = {}
 
+const registeredListenerActions = new Set()
+
+const registerListenerActionOnce = name => {
+  if (registeredListenerActions.has(name)) {
+    return false
+  }
+  registeredListenerActions.add(name)
+  return true
+}
+
 const mutations = {
   SET_ROOT_DIRECTORY (state, pathname) {
     let name = path.basename(pathname)
@@ -75,6 +85,7 @@ const mutations = {
 
 const actions = {
   LISTEN_FOR_LOAD_PROJECT ({ commit, dispatch, rootState }) {
+    if (!registerListenerActionOnce('LISTEN_FOR_LOAD_PROJECT')) return
     ipcRenderer.on('mt::open-directory', (e, pathname) => {
       commit('SET_ROOT_DIRECTORY', pathname)
       commit('SET_LAYOUT', {
@@ -86,6 +97,7 @@ const actions = {
     })
   },
   LISTEN_FOR_UPDATE_PROJECT ({ commit, state, dispatch }) {
+    if (!registerListenerActionOnce('LISTEN_FOR_UPDATE_PROJECT')) return
     ipcRenderer.on('mt::update-object-tree', (e, { type, change }) => {
       switch (type) {
         case 'add': {
@@ -128,6 +140,7 @@ const actions = {
     ipcRenderer.send('mt::ask-for-open-project-in-sidebar')
   },
   LISTEN_FOR_SIDEBAR_CONTEXT_MENU ({ commit, state }) {
+    if (!registerListenerActionOnce('LISTEN_FOR_SIDEBAR_CONTEXT_MENU')) return
     bus.$on('SIDEBAR::show-in-folder', () => {
       const { pathname } = state.activeItem
       shell.showItemInFolder(pathname)

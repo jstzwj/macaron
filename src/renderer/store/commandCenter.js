@@ -7,6 +7,16 @@ const state = {
   rootCommand: new RootCommand(staticCommands)
 }
 
+const registeredListenerActions = new Set()
+
+const registerListenerActionOnce = name => {
+  if (registeredListenerActions.has(name)) {
+    return false
+  }
+  registeredListenerActions.add(name)
+  return true
+}
+
 const getters = {}
 
 const mutations = {
@@ -20,6 +30,7 @@ const mutations = {
 
 const actions = {
   LISTEN_COMMAND_CENTER_BUS ({ commit, state }) {
+    if (!registerListenerActionOnce('LISTEN_COMMAND_CENTER_BUS')) return
     // Init stuff
     bus.$on('cmd::sort-commands', () => {
       commit('SORT_COMMANDS')

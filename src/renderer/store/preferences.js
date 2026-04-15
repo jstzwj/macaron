@@ -103,6 +103,16 @@ const state = () => ({
 
 const getters = {}
 
+const registeredListenerActions = new Set()
+
+const registerListenerActionOnce = name => {
+  if (registeredListenerActions.has(name)) {
+    return false
+  }
+  registeredListenerActions.add(name)
+  return true
+}
+
 const mutations = {
   SET_USER_PREFERENCE (state, preference) {
     const themeChanged = preference.theme !== undefined && preference.theme !== state.theme
@@ -129,6 +139,7 @@ const mutations = {
 
 const actions = {
   ASK_FOR_USER_PREFERENCE ({ commit }) {
+    if (!registerListenerActionOnce('ASK_FOR_USER_PREFERENCE')) return
     ipcRenderer.send('mt::ask-for-user-preference')
     ipcRenderer.send('mt::ask-for-user-data')
 
@@ -157,6 +168,7 @@ const actions = {
   },
 
   LISTEN_FOR_VIEW ({ commit, dispatch, state }) {
+    if (!registerListenerActionOnce('LISTEN_FOR_VIEW')) return
     ipcRenderer.on('mt::show-command-palette', () => {
       bus.$emit('show-command-palette')
     })
@@ -176,6 +188,7 @@ const actions = {
 
   // Toggle a view option and notify main process to toggle menu item.
   LISTEN_TOGGLE_VIEW ({ commit, dispatch, state }) {
+    if (!registerListenerActionOnce('LISTEN_TOGGLE_VIEW')) return
     bus.$on('view:toggle-view-entry', entryName => {
       commit('TOGGLE_VIEW_MODE', entryName)
       dispatch('DISPATCH_EDITOR_VIEW_STATE', { [entryName]: state[entryName] })

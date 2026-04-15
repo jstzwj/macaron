@@ -12,7 +12,13 @@ import { isDirectory, isFile, isSymbolicLink } from 'common/filesystem'
 export const normalizeAndResolvePath = pathname => {
   if (isSymbolicLink(pathname)) {
     const absPath = path.dirname(pathname)
-    const targetPath = path.resolve(absPath, fs.readlinkSync(pathname))
+    let targetPath
+    try {
+      targetPath = path.resolve(absPath, fs.readlinkSync(pathname))
+    } catch (err) {
+      console.error(`Failed to read link "${pathname}": ${err.message}`)
+      return path.resolve(pathname)
+    }
     if (isFile(targetPath) || isDirectory(targetPath)) {
       return path.resolve(targetPath)
     }

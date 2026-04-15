@@ -142,6 +142,20 @@ class Watcher {
     this.watchers = {}
   }
 
+  _pruneIgnoreChangeEvents (currentTime = Date.now()) {
+    const { _ignoreChangeEvents } = this
+    for (let i = _ignoreChangeEvents.length - 1; i >= 0; --i) {
+      const { start, duration } = _ignoreChangeEvents[i]
+      if (currentTime - start >= duration) {
+        _ignoreChangeEvents.splice(i, 1)
+      }
+    }
+  }
+
+  _findIgnoreChangeEventIndex (windowId, pathname) {
+    return this._ignoreChangeEvents.findIndex(event => event.windowId === windowId && event.pathname === pathname)
+  }
+
   // Watch a file or directory and return a unwatch function.
   watch (win, watchPath, type = 'dir'/* file or dir */) {
     // TODO: Is it needed to set `watcherUsePolling` ? because macOS need to set to true.
@@ -324,7 +338,17 @@ class Watcher {
    * @param {number} [duration] The duration in ms to ignore the changed event.
    */
   ignoreChangedEvent (windowId, pathname, duration = WATCHER_STABILITY_THRESHOLD + (WATCHER_STABILITY_POLL_INTERVAL * 2)) {
-    this._ignoreChangeEvents.push({ windowId, pathname, duration, start: new Date() })
+    const currentTime = Date.now()
+    this._pruneIgnoreChangeEvents(currentTime)
+
+    const start = currentTime
+    const event = { windowId, pathname, duration, start }
+    const existingIndex = this._findIgnoreChangeEventIndex(windowId, pathname)
+    if (existingIndex >= 0) {
+      this._ignoreChangeEvents[existingIndex] = event
+      return
+    }
+    this._ignoreChangeEvents.push(event)
   }
 
   /**
@@ -337,32 +361,32 @@ class Watcher {
    */
   async _shouldIgnoreEvent (winId, pathname, type, usePolling) {
     if (type === 'file') {
+      const currentTime = Date.now()
+      this._pruneIgnoreChangeEvents(currentTime)
+
       const { _ignoreChangeEvents } = this
-      const currentTime = new Date()
-      for (let i = 0; i < _ignoreChangeEvents.length; ++i) {
-        const { windowId, pathname: pathToIgnore, start, duration } = _ignoreChangeEvents[i]
-        if (windowId === winId && pathToIgnore === pathname) {
-          _ignoreChangeEvents.splice(i, 1)
-          --i
+      const index = this._findIgnoreChangeEventIndex(winId, pathname)
+      if (index >= 0) {
+        const { start, duration } = _ignoreChangeEvents[index]
+        _ignoreChangeEvents.splice(index, 1)
 
-          // Modification origin is the editor and we should ignore the event.
-          if (currentTime - start < duration) {
-            return true
-          }
+        // Modification origin is the editor and we should ignore the event.
+        if (currentTime - start < duration) {
+          return true
+        }
 
-          // Try to catch cloud drives that emit the change event not immediately or re-sync the change (GH#3044).
-          if (!usePolling) {
-            try {
-              const fileInfo = await fsPromises.stat(pathname)
-              if (fileInfo.mtime - start < duration) {
-                if (global.MARKTEXT_DEBUG_VERBOSE >= 3) {
-                  console.log(`Ignoring file event after "stat": current="${currentTime}", start="${start}", file="${fileInfo.mtime}".`)
-                }
-                return true
+        // Try to catch cloud drives that emit the change event not immediately or re-sync the change (GH#3044).
+        if (!usePolling) {
+          try {
+            const fileInfo = await fsPromises.stat(pathname)
+            if (fileInfo.mtimeMs - start < duration) {
+              if (global.MARKTEXT_DEBUG_VERBOSE >= 3) {
+                console.log(`Ignoring file event after "stat": current="${new Date(currentTime)}", start="${new Date(start)}", file="${fileInfo.mtime}".`)
               }
-            } catch (error) {
-              console.error('Failed to "stat" file to determine modification time:', error)
+              return true
             }
+          } catch (error) {
+            console.error('Failed to "stat" file to determine modification time:', error)
           }
         }
       }

@@ -125,7 +125,10 @@ export default {
       showDirectories: true,
       showNewInput: false,
       showOpenedFiles: true,
-      createName: ''
+      createName: '',
+      documentClickHandler: null,
+      documentContextmenuHandler: null,
+      documentKeydownHandler: null
     }
   },
   props: {
@@ -153,28 +156,46 @@ export default {
     this.$nextTick(() => {
       bus.$on('SIDEBAR::show-new-input', this.handleInputFocus)
       // hide rename or create input if needed
-      document.addEventListener('click', event => {
+      this.documentClickHandler = event => {
         const target = event.target
         if (target.tagName !== 'INPUT') {
           this.$store.dispatch('CHANGE_ACTIVE_ITEM', {})
           this.$store.commit('CREATE_PATH', {})
           this.$store.commit('SET_RENAME_CACHE', null)
         }
-      })
-      document.addEventListener('contextmenu', event => {
+      }
+      this.documentContextmenuHandler = event => {
         const target = event.target
         if (target.tagName !== 'INPUT') {
           this.$store.commit('CREATE_PATH', {})
           this.$store.commit('SET_RENAME_CACHE', null)
         }
-      })
-      document.addEventListener('keydown', event => {
+      }
+      this.documentKeydownHandler = event => {
         if (event.key === 'Escape') {
           this.$store.commit('CREATE_PATH', {})
           this.$store.commit('SET_RENAME_CACHE', null)
         }
-      })
+      }
+      document.addEventListener('click', this.documentClickHandler)
+      document.addEventListener('contextmenu', this.documentContextmenuHandler)
+      document.addEventListener('keydown', this.documentKeydownHandler)
     })
+  },
+  beforeUnmount () {
+    bus.$off('SIDEBAR::show-new-input', this.handleInputFocus)
+    if (this.documentClickHandler) {
+      document.removeEventListener('click', this.documentClickHandler)
+      this.documentClickHandler = null
+    }
+    if (this.documentContextmenuHandler) {
+      document.removeEventListener('contextmenu', this.documentContextmenuHandler)
+      this.documentContextmenuHandler = null
+    }
+    if (this.documentKeydownHandler) {
+      document.removeEventListener('keydown', this.documentKeydownHandler)
+      this.documentKeydownHandler = null
+    }
   },
   methods: {
     openFolder () {

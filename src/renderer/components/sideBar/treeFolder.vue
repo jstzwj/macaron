@@ -63,7 +63,8 @@ export default {
   data () {
     return {
       createName: '',
-      newName: ''
+      newName: '',
+      folderContextmenuHandler: null
     }
   },
   props: {
@@ -93,14 +94,23 @@ export default {
   },
   created () {
     this.$nextTick(() => {
-      this.$refs.folder.addEventListener('contextmenu', event => {
+      this.folderContextmenuHandler = event => {
         event.preventDefault()
         this.$store.dispatch('CHANGE_ACTIVE_ITEM', this.folder)
         showContextMenu(event, !!this.clipboard)
-      })
+      }
+      this.$refs.folder.addEventListener('contextmenu', this.folderContextmenuHandler)
       bus.$on('SIDEBAR::show-new-input', this.handleInputFocus)
       bus.$on('SIDEBAR::show-rename-input', this.focusRenameInput)
     })
+  },
+  beforeUnmount () {
+    bus.$off('SIDEBAR::show-new-input', this.handleInputFocus)
+    bus.$off('SIDEBAR::show-rename-input', this.focusRenameInput)
+    if (this.folderContextmenuHandler && this.$refs.folder) {
+      this.$refs.folder.removeEventListener('contextmenu', this.folderContextmenuHandler)
+      this.folderContextmenuHandler = null
+    }
   },
   methods: {
     folderNameClick () {
