@@ -1,7 +1,7 @@
 <template>
   <div class="editor-tabs">
     <div class="tabs-scroll" ref="tabsScroll">
-      <div class="tabs-list" ref="tabsList" role="tablist" aria-label="Open files">
+      <div class="tabs-list" ref="tabsList" role="tablist" :aria-label="$t('tabs.openFiles')">
         <div
           v-for="file of tabs"
           :key="file.id"
@@ -19,7 +19,7 @@
             <span :class="getFileIconClass(file)" class="tab-icon"></span>
             <span class="tab-title">{{ file.filename }}</span>
           </button>
-          <button type="button" class="tab-close" :aria-label="`Close ${file.filename}`" :title="`Close ${file.filename}`" @click.stop="removeFileInTab(file)">
+          <button type="button" class="tab-close" :aria-label="$t('tabs.closeFile', { filename: file.filename })" :title="$t('tabs.closeFile', { filename: file.filename })" @click.stop="removeFileInTab(file)">
             <svg viewBox="0 0 1024 1024" width="12" height="12">
               <path fill="currentColor" d="M563.8 512l262.5-312.9c4.4-5.2 0.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L512 442.2 295.9 191.7c-3-3.6-7.5-5.7-12.3-5.7H203.8c-6.8 0-10.5 7.9-6.1 13.1L460.2 512 197.7 824.9c-4.4 5.2-0.7 13.1 6.1 13.1h79.8c4.7 0 9.2 2.1 12.3 5.7L512 581.8l216.1 250.5c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z" />
             </svg>
@@ -27,7 +27,7 @@
         </div>
       </div>
     </div>
-    <button type="button" class="tab-new" aria-label="Create new file" title="Create new file" @click="newFile">
+    <button type="button" class="tab-new" :aria-label="$t('tabs.createNewFile')" :title="$t('tabs.createNewFile')" @click="newFile">
       <svg viewBox="0 0 1024 1024" width="14" height="14">
         <path fill="currentColor" d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64z m192 480H544v160c0 17.7-14.3 32-32 32s-32-14.3-32-32V544H320c-17.7 0-32-14.3-32-32s14.3-32 32-32h160V320c0-17.7 14.3-32 32-32s32 14.3 32 32v160h160c17.7 0 32 14.3 32 32s-14.3 32-32 32z" />
       </svg>

@@ -106,7 +106,17 @@ export default {
         short: 'T',
         full: '(boşlukla birlikte)karakter'
       }
-    }
+    },
+    appMenu: 'Uygulama menüsü',
+    minimizeWindow: 'Pencereyi simge durumuna küçült',
+    maximizeWindow: 'Pencereyi büyüt',
+    restoreWindow: 'Pencereyi geri yükle',
+    closeWindow: 'Pencereyi kapat'
+  },
+  tabs: {
+    openFiles: 'Açık dosyalar',
+    closeFile: '{filename} dosyasını kapat',
+    createNewFile: 'Yeni dosya oluştur'
   },
   commandPalette: {
     placeholder: 'Çalıştırmak için bir komut yazın'

@@ -112,7 +112,7 @@ export default {
 .import-dialog-panel {
   position: relative;
   z-index: 1;
-  width: 450px;
+  width: min(450px, calc(100vw - 32px));
   border-radius: 8px;
   box-shadow: var(--floatShadow);
   border: 1px solid var(--floatBorderColor);

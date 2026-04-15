@@ -106,7 +106,17 @@ export default {
         short: 'T',
         full: 'carácter (con espacio)'
       }
-    }
+    },
+    appMenu: 'Menú de la aplicación',
+    minimizeWindow: 'Minimizar ventana',
+    maximizeWindow: 'Maximizar ventana',
+    restoreWindow: 'Restaurar ventana',
+    closeWindow: 'Cerrar ventana'
+  },
+  tabs: {
+    openFiles: 'Archivos abiertos',
+    closeFile: 'Cerrar {filename}',
+    createNewFile: 'Crear archivo nuevo'
   },
   commandPalette: {
     placeholder: 'Escriba un comando para ejecutar'

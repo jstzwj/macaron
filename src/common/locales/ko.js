@@ -106,7 +106,17 @@ export default {
         short: 'A',
         full: '(공백 포함)문자'
       }
-    }
+    },
+    appMenu: '앱 메뉴',
+    minimizeWindow: '창 최소화',
+    maximizeWindow: '창 최대화',
+    restoreWindow: '창 복원',
+    closeWindow: '창 닫기'
+  },
+  tabs: {
+    openFiles: '열린 파일',
+    closeFile: '{filename} 닫기',
+    createNewFile: '새 파일 만들기'
   },
   commandPalette: {
     placeholder: '실행할 명령을 입력하세요'

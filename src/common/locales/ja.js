@@ -106,7 +106,17 @@ export default {
         short: '全',
         full: '文字（スペース含む）'
       }
-    }
+    },
+    appMenu: 'アプリメニュー',
+    minimizeWindow: 'ウィンドウを最小化',
+    maximizeWindow: 'ウィンドウを最大化',
+    restoreWindow: 'ウィンドウを元に戻す',
+    closeWindow: 'ウィンドウを閉じる'
+  },
+  tabs: {
+    openFiles: '開いているファイル',
+    closeFile: '{filename} を閉じる',
+    createNewFile: '新しいファイルを作成'
   },
   commandPalette: {
     placeholder: 'コマンドを入力して実行'

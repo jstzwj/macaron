@@ -100,7 +100,7 @@ export default {
 .rename-dialog-panel {
   position: relative;
   z-index: 1;
-  width: 410px;
+  width: min(410px, calc(100vw - 32px));
   border-radius: 8px;
   box-shadow: var(--floatShadow);
   border: 1px solid var(--floatBorderColor);

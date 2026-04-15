@@ -125,14 +125,6 @@
   color: #FFFFFF !important;
 }
 
-.dropdown-trigger {
-  color: rgba(255, 255, 255, .7) !important;
-}
-
-.dropdown-trigger:hover {
-  color: #FFFFFF !important;
-}
-
 li.ag-paragraph {
   color: var(--editorColor);
 }

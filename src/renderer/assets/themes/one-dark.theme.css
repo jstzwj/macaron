@@ -72,6 +72,14 @@
   --floatBorderColor: #3E4451;
   --floatShadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   --maskColor: rgba(0, 0, 0, .6);
+  --notificationPrimaryColor: #F2E9F7;
+  --notificationPrimaryBg: #6E3E7E;
+  --notificationInfoColor: #E9F2FF;
+  --notificationInfoBg: #335A8C;
+  --notificationWarningColor: #FFF4E5;
+  --notificationWarningBg: #7A4E1D;
+  --notificationErrorColor: #FFECEC;
+  --notificationErrorBg: #8C2F2F;
   --editorAreaWidth: 750px;
 
   /* Image placeholder icon colors (dark theme) */
@@ -121,10 +129,6 @@
 .ag-front-menu .submenu,
 .ag-float-wrapper {
   box-shadow: var(--floatShadow) !important;
-}
-
-.title-bar .frameless-titlebar-button > div > svg {
-  fill: #ABB2BF;
 }
 .title-bar .frameless-titlebar-minimize:hover,
 .title-bar .frameless-titlebar-toggle:hover {

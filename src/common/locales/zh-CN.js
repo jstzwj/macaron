@@ -94,7 +94,17 @@ export default {
         short: '全',
         full: '字符（含空格）'
       }
-    }
+    },
+    appMenu: '应用菜单',
+    minimizeWindow: '最小化窗口',
+    maximizeWindow: '最大化窗口',
+    restoreWindow: '还原窗口',
+    closeWindow: '关闭窗口'
+  },
+  tabs: {
+    openFiles: '已打开文件',
+    closeFile: '关闭 {filename}',
+    createNewFile: '创建新文件'
   },
   commandPalette: {
     placeholder: '输入命令以执行'

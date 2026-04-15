@@ -289,7 +289,8 @@ export default {
     left: 50%;
     transform: translateX(-50%);
     z-index: 10001;
-    width: 500px;
+    width: min(500px, calc(100vw - 32px));
+    max-height: calc(100vh - 32px);
     margin-top: 8px;
   }
 

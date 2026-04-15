@@ -36,8 +36,8 @@
           v-if="showCustomTitleBar"
           type="button"
           class="frameless-titlebar-menu title-no-drag"
-          :aria-label="$t('app.name') + ' menu'"
-          :title="$t('app.name') + ' menu'"
+          :aria-label="$t('titleBar.appMenu')"
+          :title="$t('titleBar.appMenu')"
           @click.stop="handleMenuClick"
         >
           <span class="text-center-vertical">&#9776;</span>
@@ -48,14 +48,14 @@
         class="right-toolbar"
         :class="[{ 'title-no-drag': titleBarStyle === 'custom' }]"
       >
-        <button type="button" class="frameless-titlebar-button frameless-titlebar-close" aria-label="Close window" title="Close window" @click.stop="handleCloseClick">
+        <button type="button" class="frameless-titlebar-button frameless-titlebar-close" :aria-label="$t('titleBar.closeWindow')" :title="$t('titleBar.closeWindow')" @click.stop="handleCloseClick">
           <div>
             <svg width="10" height="10">
               <path :d="windowIconClose" />
             </svg>
           </div>
         </button>
-        <button type="button" class="frameless-titlebar-button frameless-titlebar-toggle" :aria-label="isMaximized ? 'Restore window' : 'Maximize window'" :title="isMaximized ? 'Restore window' : 'Maximize window'" @click.stop="handleMaximizeClick">
+        <button type="button" class="frameless-titlebar-button frameless-titlebar-toggle" :aria-label="isMaximized ? $t('titleBar.restoreWindow') : $t('titleBar.maximizeWindow')" :title="isMaximized ? $t('titleBar.restoreWindow') : $t('titleBar.maximizeWindow')" @click.stop="handleMaximizeClick">
           <div>
             <svg width="10" height="10">
               <path v-show="!isMaximized" :d="windowIconMaximize" />
@@ -63,7 +63,7 @@
             </svg>
           </div>
         </button>
-        <button type="button" class="frameless-titlebar-button frameless-titlebar-minimize" aria-label="Minimize window" title="Minimize window" @click.stop="handleMinimizeClick">
+        <button type="button" class="frameless-titlebar-button frameless-titlebar-minimize" :aria-label="$t('titleBar.minimizeWindow')" :title="$t('titleBar.minimizeWindow')" @click.stop="handleMinimizeClick">
           <div>
             <svg width="10" height="10">
               <path :d="windowIconMinimize" />
@@ -281,7 +281,7 @@ export default {
     visibility: visible;
   }
   .title:hover {
-    color: var(sideBarTitleColor);
+    color: var(--sideBarTitleColor);
   }
 
   .left-toolbar {
@@ -350,10 +350,10 @@ export default {
     transition: background-color 0.15s ease;
   }
   .frameless-titlebar-button svg {
-    fill: #000000
+    fill: currentColor;
   }
   .frameless-titlebar-close:hover svg {
-    fill: #ffffff
+    color: #ffffff;
   }
 
   .text-center-vertical {

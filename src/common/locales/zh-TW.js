@@ -106,7 +106,17 @@ export default {
         short: '全',
         full: '字元（含空格）'
       }
-    }
+    },
+    appMenu: '應用程式選單',
+    minimizeWindow: '最小化視窗',
+    maximizeWindow: '最大化視窗',
+    restoreWindow: '還原視窗',
+    closeWindow: '關閉視窗'
+  },
+  tabs: {
+    openFiles: '已開啟檔案',
+    closeFile: '關閉 {filename}',
+    createNewFile: '建立新檔案'
   },
   commandPalette: {
     placeholder: '輸入命令以執行'

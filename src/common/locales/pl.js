@@ -106,7 +106,17 @@ export default {
         short: 'W',
         full: '(ze spacją)znak'
       }
-    }
+    },
+    appMenu: 'Menu aplikacji',
+    minimizeWindow: 'Zminimalizuj okno',
+    maximizeWindow: 'Zmaksymalizuj okno',
+    restoreWindow: 'Przywróć okno',
+    closeWindow: 'Zamknij okno'
+  },
+  tabs: {
+    openFiles: 'Otwarte pliki',
+    closeFile: 'Zamknij {filename}',
+    createNewFile: 'Utwórz nowy plik'
   },
   commandPalette: {
     placeholder: 'Wpisz polecenie do wykonania'

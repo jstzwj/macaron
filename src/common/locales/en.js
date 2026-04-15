@@ -94,7 +94,17 @@ export default {
         short: 'A',
         full: '(with space)character'
       }
-    }
+    },
+    appMenu: 'App menu',
+    minimizeWindow: 'Minimize window',
+    maximizeWindow: 'Maximize window',
+    restoreWindow: 'Restore window',
+    closeWindow: 'Close window'
+  },
+  tabs: {
+    openFiles: 'Open files',
+    closeFile: 'Close {filename}',
+    createNewFile: 'Create new file'
   },
   commandPalette: {
     placeholder: 'Type a command to execute'

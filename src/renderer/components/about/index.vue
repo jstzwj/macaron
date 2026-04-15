@@ -103,7 +103,7 @@ export default {
 .about-dialog-panel {
   position: relative;
   z-index: 1;
-  width: 400px;
+  width: min(400px, calc(100vw - 32px));
   border-radius: 8px;
   box-shadow: var(--floatShadow);
   border: 1px solid var(--floatBorderColor);

@@ -106,7 +106,17 @@ export default {
         short: 'ك',
         full: 'حرف (مع المسافات)'
       }
-    }
+    },
+    appMenu: 'قائمة التطبيق',
+    minimizeWindow: 'تصغير النافذة',
+    maximizeWindow: 'تكبير النافذة',
+    restoreWindow: 'استعادة النافذة',
+    closeWindow: 'إغلاق النافذة'
+  },
+  tabs: {
+    openFiles: 'الملفات المفتوحة',
+    closeFile: 'إغلاق {filename}',
+    createNewFile: 'إنشاء ملف جديد'
   },
   commandPalette: {
     placeholder: 'اكتب أمراً للتنفيذ'

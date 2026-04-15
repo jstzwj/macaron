@@ -292,7 +292,7 @@ export default {
 <style scoped>
   .search-bar {
     position: absolute;
-    width: 420px;
+    width: min(420px, calc(100vw - 32px));
     padding: 8px;
     top: 8px;
     right: 20px;
